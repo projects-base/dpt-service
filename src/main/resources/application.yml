@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: daily-problem-tracker-service
+  sql:
+    init:
+      mode: always
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:6543/postgres?sslmode=require}
+    username: ${DATABASE_USERNAME:postgres.qqxeaqtjykfdujxgocdr}
+    password: ${DATABASE_PASSWORD:sup5r21s5@P1sswor4}
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Google's OIDC issuer — do not change
+          issuer-uri: https://accounts.google.com
+
+app:
+  google:
+    # Replace with your Google OAuth Client ID from console.cloud.google.com
+    client-id: ${GOOGLE_CLIENT_ID:683627191123-5551q39di0quqsd7p3oj1nt6oodlajfe.apps.googleusercontent.com}
+  gemini:
+    api-key: ${GEMINI_API_KEY:YOUR_GEMINI_API_KEY}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:*,chrome-extension://*,https://*.netlify.app}
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
