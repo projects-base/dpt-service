@@ -29,4 +29,19 @@ public class TechnicalConceptController {
     public ResponseEntity<TechnicalConcept> addConcept(@RequestBody TechnicalConcept concept) {
         return ResponseEntity.ok(conceptService.saveConcept(concept));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TechnicalConcept> updateConcept(@PathVariable Long id, @RequestBody TechnicalConcept patch) {
+        try {
+            return ResponseEntity.ok(conceptService.updateConcept(id, patch));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteConcept(@PathVariable Long id) {
+        conceptService.deleteConcept(id);
+        return ResponseEntity.noContent().build();
+    }
 }

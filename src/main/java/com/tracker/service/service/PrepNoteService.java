@@ -24,4 +24,17 @@ public class PrepNoteService {
     public PrepNote saveNote(PrepNote note) {
         return prepNoteRepository.save(note);
     }
+
+    public PrepNote updateNote(Long id, PrepNote patch) {
+        return prepNoteRepository.findById(id).map(existing -> {
+            if (patch.getTitle()   != null) existing.setTitle(patch.getTitle());
+            if (patch.getContent() != null) existing.setContent(patch.getContent());
+            existing.setPublic(patch.isPublic());
+            return prepNoteRepository.save(existing);
+        }).orElseThrow(() -> new RuntimeException("PrepNote not found: " + id));
+    }
+
+    public void deleteNote(Long id) {
+        prepNoteRepository.deleteById(id);
+    }
 }

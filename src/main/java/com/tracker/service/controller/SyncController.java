@@ -94,6 +94,8 @@ public class SyncController {
                     .url(req.link())
                     .difficulty(req.difficulty() != null ? req.difficulty().toUpperCase() : "MEDIUM")
                     .notes(notes.toString())
+                    .question(req.question())
+                    .code(req.code())
                     .tags(tags)
                     .user(user)
                     .build();

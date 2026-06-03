@@ -30,6 +30,12 @@ public class Problem {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
+    @Column(columnDefinition = "TEXT")
+    private String question;
+
+    @Column(columnDefinition = "TEXT")
+    private String code;
+
     private String tags;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

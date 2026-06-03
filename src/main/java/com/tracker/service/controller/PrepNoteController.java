@@ -29,4 +29,19 @@ public class PrepNoteController {
     public ResponseEntity<PrepNote> createNote(@RequestBody PrepNote note) {
         return ResponseEntity.ok(prepNoteService.saveNote(note));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PrepNote> updateNote(@PathVariable Long id, @RequestBody PrepNote patch) {
+        try {
+            return ResponseEntity.ok(prepNoteService.updateNote(id, patch));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
+        prepNoteService.deleteNote(id);
+        return ResponseEntity.noContent().build();
+    }
 }

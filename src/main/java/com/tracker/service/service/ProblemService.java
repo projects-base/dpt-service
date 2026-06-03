@@ -40,4 +40,18 @@ public class ProblemService {
     public Optional<Problem> getProblem(Long id) {
         return problemRepository.findById(id);
     }
+
+    public Problem updateProblem(Long id, Problem patch) {
+        return problemRepository.findById(id).map(existing -> {
+            if (patch.getTitle()      != null) existing.setTitle(patch.getTitle());
+            if (patch.getUrl()        != null) existing.setUrl(patch.getUrl());
+            if (patch.getDifficulty() != null) existing.setDifficulty(patch.getDifficulty().toUpperCase());
+            if (patch.getNotes()      != null) existing.setNotes(patch.getNotes());
+            if (patch.getQuestion()   != null) existing.setQuestion(patch.getQuestion());
+            if (patch.getCode()       != null) existing.setCode(patch.getCode());
+            if (patch.getTags()       != null) existing.setTags(patch.getTags());
+            if (patch.getSolvedAt()   != null) existing.setSolvedAt(patch.getSolvedAt());
+            return problemRepository.save(existing);
+        }).orElseThrow(() -> new RuntimeException("Problem not found: " + id));
+    }
 }

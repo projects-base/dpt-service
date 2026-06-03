@@ -20,9 +20,25 @@ public class ProblemController {
         return ResponseEntity.ok(problemService.getUserProblems(userId));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Problem> getProblem(@PathVariable Long id) {
+        return problemService.getProblem(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<Problem> addProblem(@RequestBody Problem problem) {
         return ResponseEntity.ok(problemService.saveProblem(problem));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Problem> updateProblem(@PathVariable Long id, @RequestBody Problem patch) {
+        try {
+            return ResponseEntity.ok(problemService.updateProblem(id, patch));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")

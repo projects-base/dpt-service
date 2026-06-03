@@ -9,3 +9,7 @@ UPDATE users SET open_sheet = FALSE WHERE open_sheet IS NULL;
 
 ALTER TABLE users ALTER COLUMN open_doc SET NOT NULL;
 ALTER TABLE users ALTER COLUMN open_sheet SET NOT NULL;
+
+-- Add code and question fields to problems table (safe to run multiple times)
+ALTER TABLE problems ADD COLUMN IF NOT EXISTS code TEXT;
+ALTER TABLE problems ADD COLUMN IF NOT EXISTS question TEXT;
