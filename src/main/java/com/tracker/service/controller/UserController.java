@@ -46,8 +46,8 @@ public class UserController {
                         user.getSheetUrl(),
                         user.getFolderId(),
                         user.getGoogleApiKey(),
-                        user.getOpenDoc(),
-                        user.getOpenSheet()
+                        user.isOpenDoc(),
+                        user.isOpenSheet()
                 )))
                 .orElse(ResponseEntity.status(404)
                         .body(new AuthController.ErrorResponse(
@@ -74,8 +74,8 @@ public class UserController {
                             saved.getSheetUrl(),
                             saved.getFolderId(),
                             saved.getGoogleApiKey(),
-                            saved.getOpenDoc(),
-                            saved.getOpenSheet()
+                            saved.isOpenDoc(),
+                            saved.isOpenSheet()
                     ));
                 })
                 .orElse(ResponseEntity.status(404).body(new AuthController.ErrorResponse("User not found")));

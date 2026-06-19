@@ -68,8 +68,8 @@ public class AuthController {
                     user.getSheetUrl(),
                     user.getFolderId(),
                     user.getGoogleApiKey(),
-                    user.getOpenDoc(),
-                    user.getOpenSheet()
+                    user.isOpenDoc(),
+                    user.isOpenSheet()
             ));
 
         } catch (JwtException e) {
