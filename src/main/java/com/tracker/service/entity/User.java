@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,11 +48,9 @@ public class User {
     
     private String googleApiKey;
     
-    @Column(nullable = true)
-    private Boolean openDoc;
+    private boolean openDoc;
     
-    @Column(nullable = true)
-    private Boolean openSheet;
+    private boolean openSheet;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

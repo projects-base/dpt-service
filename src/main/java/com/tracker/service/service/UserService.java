@@ -24,6 +24,8 @@ public class UserService {
                 .name(name)
                 .pictureUrl(pictureUrl)
                 .role("ROLE_USER")
+                .openDoc(false)
+                .openSheet(false)
                 .build();
         return userRepository.save(newUser);
     }
