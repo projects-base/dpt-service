@@ -37,9 +37,9 @@ public class User {
     
     private String googleApiKey;
     
-    private Boolean openDoc;
+    private Boolean openDoc = false;
     
-    private Boolean openSheet;
+    private Boolean openSheet = false;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
