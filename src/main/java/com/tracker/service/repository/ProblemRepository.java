@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface ProblemRepository extends JpaRepository<Problem, Long> {
     List<Problem> findByUserId(Long userId);
+    List<Problem> findByUserIdOrderBySolvedAtDesc(Long userId);
     List<Problem> findByUserIdAndDifficulty(Long userId, String difficulty);
 }

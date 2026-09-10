@@ -295,6 +295,8 @@ Use this checklist every time you onboard a new test user:
 | **Network error** from extension           | Backend not running on `http://localhost:8080`                                                 | Start the service with `./mvnw spring-boot:run`                                                             |
 | **Token expired** after ~1 hour            | Google ID tokens expire after 1 hour                                                          | Sign in again to get a fresh token; the web app stores it in `sessionStorage`                                |
 | **Extension sync fails (401)**             | Google access token expired or invalid                                                        | Re-authenticate in the extension; `chrome.identity.getAuthToken()` should refresh it                         |
+| **403 on `/api/problems/user/{id}`**       | Asking for a userId that is not the caller's own                                              | Use `/api/problems` (no id) or pass your own id. This is the ownership check working as intended.            |
+| **Extension logs sync failures**           | Extension pointed at a backend that is not running                                            | `BACKEND_URL` lives in `js/constants/config.js`; override locally via `env.js`                               |
 | **"Error: idpiframe_initialization_failed"** | Running on a non-allowed origin or cookies/3rd-party blocked                                 | Add the origin to OAuth client's authorized JS origins; allow 3rd-party cookies for Google                   |
 | **User created but no problems**           | Problem was submitted but the user ID didn't match                                             | Check the `user_id` FK on the `problems` table; ensure the same email resolves to the same user              |
 
@@ -311,36 +313,168 @@ Use this checklist every time you onboard a new test user:
 
 ### Protected (requires Google ID Token as Bearer)
 
-| Method | Path                         | Description                         |
-| ------ | ---------------------------- | ----------------------------------- |
-| GET    | `/api/users/me`              | Get current user's profile          |
-| PUT    | `/api/users/me/settings`     | Update user settings                |
-| GET    | `/api/problems`              | List user's problems                |
-| POST   | `/api/problems`              | Create a new problem                |
-| GET    | `/api/analytics`             | Get user's analytics/stats          |
-| POST   | `/api/gemini/analyze`        | Gemini AI code analysis             |
-| POST   | `/api/gemini/chat`           | Gemini AI chat                      |
-| GET    | `/api/prep-notes`            | List prep notes                     |
-| POST   | `/api/prep-notes`            | Create a prep note                  |
-| GET    | `/api/technical-concepts`    | List technical concepts             |
-| POST   | `/api/technical-concepts`    | Create a technical concept          |
+Every route below resolves the caller from the token's `email` claim and serves
+**only that user's data**. Routes that still take a `{userId}` are kept for the
+existing web dashboard, but reject an id that is not the caller's own with `403`.
+
+| Method | Path                          | Description                                   |
+| ------ | ----------------------------- | --------------------------------------------- |
+| GET    | `/api/users/me`               | Current user's profile                        |
+| PUT    | `/api/users/me/settings`      | Update settings (all fields optional)         |
+| GET    | `/api/problems`               | The caller's problems                         |
+| GET    | `/api/problems/user/{userId}` | Same, by id — must be the caller's own        |
+| GET    | `/api/problems/{id}`          | One problem — must be owned by the caller     |
+| POST   | `/api/problems`               | Create; owner comes from the token, not body  |
+| PUT    | `/api/problems/{id}`          | Update own problem                            |
+| DELETE | `/api/problems/{id}`          | Delete own problem                            |
+| GET    | `/api/analytics/me`           | Caller's stats and streak                     |
+| GET    | `/api/analytics/user/{userId}`| Same, by id — must be the caller's own        |
+| POST   | `/api/gemini/analyze`         | Gemini AI code analysis                       |
+| POST   | `/api/gemini/chat`            | Gemini AI chat                                |
+| GET    | `/api/notes`                  | The caller's prep notes                       |
+| GET    | `/api/notes/public`           | Notes their authors marked public             |
+| POST   | `/api/notes`                  | Create; author comes from the token           |
+| PUT    | `/api/notes/{id}`             | Update own note                               |
+| DELETE | `/api/notes/{id}`             | Delete own note                               |
+
+### Knowledge map
+
+The mindmap of saved resources. It lived in the browser's `localStorage` until
+now, which tied it to one browser profile. Every route derives the owner from
+the token — there is no `userId` in any path, so one user's map is not
+addressable by another.
+
+| Method | Path                                  | Description                                        |
+| ------ | ------------------------------------- | -------------------------------------------------- |
+| GET    | `/api/knowledge`                      | The whole map; seeds a starter map on first call    |
+| POST   | `/api/knowledge/nodes`                | Save a resource under a category                    |
+| PATCH  | `/api/knowledge/nodes/{nodeKey}`      | Rename, re-link or re-file a node                   |
+| DELETE | `/api/knowledge/nodes/{nodeKey}`      | Remove a node and its edges                         |
+| POST   | `/api/knowledge/categories`           | Add a branch (creates its pillar node)              |
+| DELETE | `/api/knowledge/categories/{key}`     | Remove a branch and everything filed under it       |
+| POST   | `/api/knowledge/import`               | One-time adoption of a browser's `localStorage` map |
+
+`/import` is deliberately conservative: it is ignored (`200` with
+`imported: false`) once the stored map contains any saved resource, so a second
+device carrying a stale local copy cannot overwrite real work.
+
+The three tables (`knowledge_nodes`, `knowledge_edges`, `knowledge_categories`)
+use `ON DELETE CASCADE` on their user foreign key, so deleting an account takes
+its map with it.
+
+### Shared concept catalogue
+
+| Method | Path                              | Auth                |
+| ------ | --------------------------------- | ------------------- |
+| GET    | `/api/concepts`                   | Public              |
+| GET    | `/api/concepts/category/{category}` | Public            |
+| POST   | `/api/concepts`                   | `ROLE_ADMIN` only   |
+| PUT    | `/api/concepts/{id}`              | `ROLE_ADMIN` only   |
+| DELETE | `/api/concepts/{id}`              | `ROLE_ADMIN` only   |
+
+> These were previously mounted under `/api/public/concepts`, where the blanket
+> `permitAll` on `/api/public/**` meant *anyone* could POST, PUT and DELETE into
+> the shared catalogue without signing in.
 
 ---
 
 ## Environment Variables
 
-| Variable               | Default                                           | Description                                |
-| ---------------------- | ------------------------------------------------- | ------------------------------------------ |
-| `DATABASE_URL`         | Supabase pooler URL                               | JDBC connection string for PostgreSQL      |
-| `DATABASE_USERNAME`    | `postgres.qqxeaqtjykfdujxgocdr`                   | Database username                          |
-| `DATABASE_PASSWORD`    | (set in application.yml)                           | Database password                          |
-| `GOOGLE_CLIENT_ID`     | `683627191123-...apps.googleusercontent.com`       | Google OAuth 2.0 Client ID                 |
-| `GEMINI_API_KEY`       | `YOUR_GEMINI_API_KEY`                              | Google Gemini API key                      |
-| `CORS_ALLOWED_ORIGINS` | `http://localhost:*,chrome-extension://*,https://*.netlify.app` | Comma-separated allowed CORS origins |
+| Variable               | Required | Description                                            |
+| ---------------------- | -------- | ------------------------------------------------------ |
+| `DATABASE_URL`         | **yes**  | JDBC connection string for PostgreSQL                  |
+| `DATABASE_USERNAME`    | **yes**  | Database username                                      |
+| `DATABASE_PASSWORD`    | **yes**  | Database password                                      |
+| `GOOGLE_CLIENT_ID`     | **yes**  | Google OAuth 2.0 Client ID (audience for ID tokens)    |
+| `GEMINI_API_KEY`       | no       | Server-side fallback key; users can supply their own   |
+| `CORS_ALLOWED_ORIGINS` | no       | Defaults to localhost + `chrome-extension://*` + `*.netlify.app` |
+
+> These have **no defaults**. The service will not start without the first four.
+> That is deliberate: `application.yml` previously carried a working Supabase
+> password as a fallback value, which meant a live credential sat in every clone
+> of the repo. Copy `.env.example` and fill it in, or set them in Render.
+>
+> **If you had that password committed, rotate it in Supabase now** — removing it
+> from the file does not remove it from your git history.
+
+For local development there is a `local` profile that points at the
+docker-compose Postgres, so you do not need cloud credentials at all:
+
+```bash
+docker-compose up -d
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+```
 
 ---
 
+## Reliability notes
+
+Measured on 2026-09-10, from India:
+
+| Component | Result |
+|-----------|--------|
+| Supabase pooler (`aws-1-ap-south-1`, port 6543) | TCP open in 435-699 ms, 3/3 attempts |
+| Render service (`dpt-service.onrender.com`) | TCP connects in ~0.3 s, then **no HTTP response** at 10 s, 60 s, 90 s or 120 s — 0/6 attempts |
+
+If the app feels "down all the time", the database is not the reason. Two
+separate things sleep on free tiers, and both should be ruled out before
+blaming Postgres:
+
+- **Render free web services spin down after ~15 minutes idle.** The next
+  request pays a 50 s+ cold start, and the Chrome extension's sync will time
+  out long before that. 750 free instance-hours/month covers one service
+  running 24/7 (720 h), so an uptime ping every 10 minutes against
+  `/actuator/health` keeps it warm within the free allowance.
+- **Supabase free projects pause after 7 days of no activity** and need a
+  manual restore from the dashboard. The same health ping, which touches the
+  database, prevents this.
+
+### The pooler and prepared statements
+
+Port 6543 is Supavisor in **transaction mode**: each transaction may land on a
+different backend. The Postgres JDBC driver promotes a query to a server-side
+prepared statement after five executions, which then goes missing on the next
+transaction, producing intermittent
+
+```
+ERROR: prepared statement "S_1" already exists
+```
+
+These arrive at random and look exactly like an unstable database.
+`application.yml` sets `prepareThreshold: 0` and `preparedStatementCacheQueries: 0`
+to disable server-side prepared statements. Keep those if you stay on the
+pooler; they are harmless on a direct (5432) connection.
+
 ## Deployment
+
+> [!IMPORTANT]
+> **Before the first deploy after this change, set the database environment
+> variables in Render.**
+>
+> `application.yml` used to carry the Supabase URL, username and password as
+> *defaults*, so production started even with nothing configured. Those
+> defaults are gone — the file now falls back to a **local** Postgres. If
+> Render has no `DATABASE_URL` / `DATABASE_USERNAME` / `DATABASE_PASSWORD`, the
+> service will try `localhost:5432` and fail to start.
+>
+> Render dashboard → your service → **Environment** → confirm all three exist.
+> The previous values are recoverable with
+> `git show <old-commit>:src/main/resources/application.yml`.
+>
+> `GEMINI_API_KEY` is optional (users can supply their own key), and `PORT` is
+> set by Render automatically.
+
+### Verifying a deploy
+
+```bash
+curl -s https://dpt-service.onrender.com/actuator/health
+# {"status":"UP", ...}  → the app booted AND reached the database
+```
+
+A free-tier instance sleeps after ~15 minutes idle, so the first request after
+a quiet spell can take 50 s. No response at all after that points at a failed
+deploy rather than a cold start — check the Render logs.
+
 
 ### Docker
 
@@ -360,5 +494,6 @@ docker run -p 8080:8080 \
 
 ### Render.com
 
-The service is deployed on Render at `https://daily-problem-tracker.onrender.com`.  
+The service is deployed on Render at `https://dpt-service.onrender.com` — this is the
+URL the web dashboard uses in `Daily-Problem-Tracker-Web/js/config.js`. Keep the two in sync.  
 Environment variables are configured in the Render dashboard.

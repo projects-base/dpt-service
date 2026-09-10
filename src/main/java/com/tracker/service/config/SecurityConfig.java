@@ -41,7 +41,12 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 // Allow preflight OPTIONS requests through without authentication
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/api/public/**", "/auth/**", "/api/sync/**").permitAll()
+                // Sign-in, extension sync (validates its own Google access token),
+                // and liveness probes.
+                .requestMatchers("/auth/**", "/api/sync/**", "/actuator/health").permitAll()
+                // The shared concept catalogue is readable by anyone; writing to it
+                // requires an administrator (enforced in the controller).
+                .requestMatchers(HttpMethod.GET, "/api/concepts/**").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));

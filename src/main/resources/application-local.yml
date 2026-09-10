@@ -1,0 +1,13 @@
+# Local development profile: run with  ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+# Points at the docker-compose Postgres so no cloud credentials are needed.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/daily_problem_tracker
+    username: tracker_user
+    password: tracker_password
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    org.springframework.security: DEBUG

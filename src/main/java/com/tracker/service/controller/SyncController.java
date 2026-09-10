@@ -7,8 +7,13 @@ import com.tracker.service.service.ProblemService;
 import com.tracker.service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
@@ -28,12 +33,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SyncController {
 
+    private static final String USERINFO_ENDPOINT = "https://www.googleapis.com/oauth2/v2/userinfo";
+
     private final UserService userService;
     private final ProblemService problemService;
 
+    /** One shared client rather than a fresh RestTemplate per request. */
+    private final RestTemplate restTemplate = new RestTemplate();
+
     @PostMapping("/problem")
     public ResponseEntity<?> syncProblem(
-            @RequestHeader("Authorization") String authHeader,
+            @RequestHeader(value = "Authorization", required = false) String authHeader,
             @RequestBody SyncProblemRequest req
     ) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -42,61 +52,63 @@ public class SyncController {
 
         String accessToken = authHeader.substring(7);
 
+        // Step 1: Identify the user via Google's UserInfo API.
+        Map<?, ?> userInfo;
         try {
-            // Step 1: Identify user via Google UserInfo API
-            var client = new org.springframework.web.client.RestTemplate();
-            var headers = new org.springframework.http.HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.setBearerAuth(accessToken);
-            var entity = new org.springframework.http.HttpEntity<>(headers);
-
-            @SuppressWarnings("unchecked")
-            var userInfo = client.exchange(
-                    "https://www.googleapis.com/oauth2/v2/userinfo",
-                    org.springframework.http.HttpMethod.GET,
-                    entity,
+            userInfo = restTemplate.exchange(
+                    USERINFO_ENDPOINT,
+                    HttpMethod.GET,
+                    new HttpEntity<>(headers),
                     Map.class
             ).getBody();
+        } catch (RestClientException e) {
+            // An expired or revoked access token is a client problem, not a server
+            // fault. Returning 500 here made the extension log a generic sync
+            // failure when the actual fix is to re-authenticate.
+            log.warn("[Sync] Google rejected the access token: {}", e.getMessage());
+            return ResponseEntity.status(401)
+                    .body(Map.of("error", "Google rejected the access token. Please sign in again."));
+        }
 
-            if (userInfo == null || !userInfo.containsKey("email")) {
-                return ResponseEntity.status(401).body(Map.of("error", "Could not fetch user info from Google"));
-            }
+        if (userInfo == null || !(userInfo.get("email") instanceof String email) || email.isBlank()) {
+            return ResponseEntity.status(401).body(Map.of("error", "Could not fetch user info from Google"));
+        }
 
-            String email = (String) userInfo.get("email");
-            String name = (String) userInfo.getOrDefault("name", email);
-            String picture = (String) userInfo.getOrDefault("picture", null);
+        try {
+            String name = userInfo.get("name") instanceof String n ? n : email;
+            String picture = userInfo.get("picture") instanceof String pic ? pic : null;
 
             log.info("[Sync] Problem sync from extension for user: {}", email);
 
             // Step 2: Upsert user
             User user = userService.getOrCreateUser(email, name, picture);
 
-            // Step 3: Build notes from ratings + code + docUrl
+            // Step 3: Build notes from ratings + docUrl.
+            // The extension substitutes the literal "N/A" for every field the user
+            // left blank, so those are filtered out here rather than stored as
+            // "Intuition: N/A/10".
             StringBuilder notes = new StringBuilder();
-            if (req.analysis() != null && !req.analysis().isBlank())
-                notes.append("Analysis: ").append(req.analysis()).append("\n");
-            if (req.intuition() != null && !req.intuition().isBlank())
-                notes.append("Intuition: ").append(req.intuition()).append("/10\n");
-            if (req.implementation() != null && !req.implementation().isBlank())
-                notes.append("Implementation: ").append(req.implementation()).append("/10\n");
-            if (req.readability() != null && !req.readability().isBlank())
-                notes.append("Readability: ").append(req.readability()).append("/10\n");
-            if (req.cleanCode() != null && !req.cleanCode().isBlank())
-                notes.append("Clean Code: ").append(req.cleanCode()).append("/10\n");
-            if (req.docUrl() != null && !req.docUrl().isBlank())
-                notes.append("\nGoogle Doc: ").append(req.docUrl());
+            appendIfPresent(notes, "Analysis: ", req.analysis(), "");
+            appendIfPresent(notes, "Intuition: ", req.intuition(), "/10");
+            appendIfPresent(notes, "Implementation: ", req.implementation(), "/10");
+            appendIfPresent(notes, "Readability: ", req.readability(), "/10");
+            appendIfPresent(notes, "Clean Code: ", req.cleanCode(), "/10");
+            if (present(req.docUrl())) {
+                notes.append("\nGoogle Doc: ").append(req.docUrl().trim());
+            }
 
-            // Step 4: Build tags from difficulty/analysis
-            String tags = req.difficulty() != null ? req.difficulty().toUpperCase() : null;
-
-            // Step 5: Save problem
+            // Step 4: Save. ProblemService normalizes the difficulty and strips
+            // the remaining "N/A" placeholders out of the free-text columns.
             Problem problem = Problem.builder()
-                    .title(req.title() != null ? req.title() : "Untitled")
-                    .url(req.link())
-                    .difficulty(req.difficulty() != null ? req.difficulty().toUpperCase() : "MEDIUM")
-                    .notes(notes.toString())
-                    .question(req.question())
-                    .code(req.code())
-                    .tags(tags)
+                    .title(present(req.title()) ? req.title().trim() : "Untitled")
+                    .url(present(req.link()) ? req.link().trim() : null)
+                    .difficulty(req.difficulty())
+                    .notes(notes.isEmpty() ? null : notes.toString())
+                    .question(present(req.question()) ? req.question() : null)
+                    .code(present(req.code()) ? req.code() : null)
+                    .tags(present(req.tags()) ? req.tags().trim() : null)
                     .user(user)
                     .build();
 
@@ -106,12 +118,24 @@ public class SyncController {
             return ResponseEntity.ok(Map.of(
                     "id", saved.getId(),
                     "title", saved.getTitle(),
-                    "message", "Problem synced to Supabase successfully"
+                    "message", "Problem synced successfully"
             ));
 
         } catch (Exception e) {
             log.error("[Sync] Error syncing problem from extension", e);
-            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(500)
+                    .body(Map.of("error", "Could not save the problem. Please try again."));
+        }
+    }
+
+    /** True when the client sent a real value rather than blank or its "N/A" placeholder. */
+    private static boolean present(String value) {
+        return value != null && !value.isBlank() && !"N/A".equalsIgnoreCase(value.trim());
+    }
+
+    private static void appendIfPresent(StringBuilder sb, String label, String value, String suffix) {
+        if (present(value)) {
+            sb.append(label).append(value.trim()).append(suffix).append("\n");
         }
     }
 }

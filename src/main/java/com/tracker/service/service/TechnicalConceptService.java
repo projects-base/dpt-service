@@ -1,6 +1,7 @@
 package com.tracker.service.service;
 
 import com.tracker.service.entity.TechnicalConcept;
+import com.tracker.service.exception.NotFoundException;
 import com.tracker.service.repository.TechnicalConceptRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class TechnicalConceptService {
             if (patch.getCategory()    != null) existing.setCategory(patch.getCategory());
             if (patch.getLevel()       != null) existing.setLevel(patch.getLevel());
             return repository.save(existing);
-        }).orElseThrow(() -> new RuntimeException("TechnicalConcept not found: " + id));
+        }).orElseThrow(() -> new NotFoundException("TechnicalConcept not found: " + id));
     }
 
     public void deleteConcept(Long id) {

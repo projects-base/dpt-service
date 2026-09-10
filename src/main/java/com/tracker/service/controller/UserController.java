@@ -1,5 +1,6 @@
 package com.tracker.service.controller;
 
+import com.tracker.service.config.CurrentUser;
 import com.tracker.service.dto.AuthResponse;
 import com.tracker.service.entity.User;
 import com.tracker.service.service.UserService;
@@ -24,6 +25,7 @@ import com.tracker.service.dto.UserSettingsResponse;
 public class UserController {
 
     private final UserService userService;
+    private final CurrentUser currentUser;
 
     /**
      * GET /api/users/me
@@ -33,26 +35,20 @@ public class UserController {
      * We extract the email and look up the user in our database.
      */
     @GetMapping("/me")
-    public ResponseEntity<?> getMe(@AuthenticationPrincipal Jwt jwt) {
-        String email = jwt.getClaimAsString("email");
-
-        return userService.findByEmail(email)
-                .<ResponseEntity<?>>map(user -> ResponseEntity.ok(new AuthResponse(
-                        user.getId(),
-                        user.getEmail(),
-                        user.getName(),
-                        user.getPictureUrl(),
-                        user.getRole(),
-                        user.getSheetUrl(),
-                        user.getFolderId(),
-                        user.getGoogleApiKey(),
-                        user.isOpenDoc(),
-                        user.isOpenSheet()
-                )))
-                .orElse(ResponseEntity.status(404)
-                        .body(new AuthController.ErrorResponse(
-                                "User not found. Please sign in first via POST /auth/google."
-                        )));
+    public ResponseEntity<AuthResponse> getMe(@AuthenticationPrincipal Jwt jwt) {
+        User user = currentUser.require(jwt);
+        return ResponseEntity.ok(new AuthResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getName(),
+                user.getPictureUrl(),
+                user.getRole(),
+                user.getSheetUrl(),
+                user.getFolderId(),
+                user.getGoogleApiKey(),
+                user.isOpenDoc(),
+                user.isOpenSheet()
+        ));
     }
 
     /**
@@ -60,24 +56,27 @@ public class UserController {
      * Updates the authenticated user's settings.
      */
     @PutMapping("/me/settings")
-    public ResponseEntity<?> updateSettings(@AuthenticationPrincipal Jwt jwt, @RequestBody UserSettingsRequest req) {
-        String email = jwt.getClaimAsString("email");
-        return userService.findByEmail(email)
-                .<ResponseEntity<?>>map(user -> {
-                    user.setSheetUrl(req.getSheetUrl());
-                    user.setFolderId(req.getFolderId());
-                    user.setGoogleApiKey(req.getGoogleApiKey());
-                    user.setOpenDoc(req.getOpenDoc());
-                    user.setOpenSheet(req.getOpenSheet());
-                    User saved = userService.saveUser(user);
-                    return ResponseEntity.ok(new UserSettingsResponse(
-                            saved.getSheetUrl(),
-                            saved.getFolderId(),
-                            saved.getGoogleApiKey(),
-                            saved.isOpenDoc(),
-                            saved.isOpenSheet()
-                    ));
-                })
-                .orElse(ResponseEntity.status(404).body(new AuthController.ErrorResponse("User not found")));
+    public ResponseEntity<UserSettingsResponse> updateSettings(@AuthenticationPrincipal Jwt jwt,
+                                                               @RequestBody UserSettingsRequest req) {
+        User user = currentUser.require(jwt);
+
+        // Every field is optional: a client that omits one keeps its current value.
+        // The booleans arrive as nullable Boolean precisely so that an omitted
+        // field is distinguishable from false — unboxing them blindly used to
+        // throw NullPointerException and surface as a 500.
+        if (req.getSheetUrl()     != null) user.setSheetUrl(req.getSheetUrl());
+        if (req.getFolderId()     != null) user.setFolderId(req.getFolderId());
+        if (req.getGoogleApiKey() != null) user.setGoogleApiKey(req.getGoogleApiKey());
+        if (req.getOpenDoc()      != null) user.setOpenDoc(req.getOpenDoc());
+        if (req.getOpenSheet()    != null) user.setOpenSheet(req.getOpenSheet());
+
+        User saved = userService.saveUser(user);
+        return ResponseEntity.ok(new UserSettingsResponse(
+                saved.getSheetUrl(),
+                saved.getFolderId(),
+                saved.getGoogleApiKey(),
+                saved.isOpenDoc(),
+                saved.isOpenSheet()
+        ));
     }
 }
