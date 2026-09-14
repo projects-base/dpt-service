@@ -65,6 +65,30 @@ public class GeminiService {
         return key;
     }
 
+    /**
+     * Names a few models this key can call, for the 404 message.
+     *
+     * Best-effort: if the lookup itself fails we fall back to generic advice
+     * rather than replacing a useful error with a less useful one.
+     */
+    private String describeAlternatives(String apiKey) {
+        try {
+            List<Map<String, String>> models = fetchModels(apiKey);
+            if (models.isEmpty()) {
+                return "Your key reports no models that support content generation.";
+            }
+            String names = models.stream()
+                    .map(m -> m.get("name"))
+                    .limit(5)
+                    .collect(java.util.stream.Collectors.joining(", "));
+            return "Models your key can use include: " + names
+                    + ". Pick one under Settings → Gemini Model.";
+        } catch (Exception e) {
+            log.warn("Could not list alternatives after a 404: {}", e.getClass().getSimpleName());
+            return "Press “Load models” under Settings → Gemini Model to see what your key supports.";
+        }
+    }
+
     /** The user's chosen model, or the server default when they have not picked one. */
     private String getEffectiveModel(String userEmail) {
         if (userEmail != null) {
@@ -85,8 +109,10 @@ public class GeminiService {
      * same way a wrong name does.
      */
     public List<Map<String, String>> listModels(String email) {
-        String key = getEffectiveApiKey(email);
+        return fetchModels(getEffectiveApiKey(email));
+    }
 
+    private List<Map<String, String>> fetchModels(String key) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("x-goog-api-key", key);
 
@@ -227,8 +253,11 @@ public class GeminiService {
                 case 400 -> "Gemini rejected the request — the API key may be malformed.";
                 case 401, 403 -> "Gemini rejected the API key. Check it is valid and that the "
                         + "Generative Language API is enabled for its project.";
-                case 404 -> "Gemini has no model named \"" + activeModel + "\" for this API key. "
-                        + "Pick a different one under Settings → Gemini Model.";
+                // ListModels can advertise a model that generateContent then
+                // refuses, so a bare "pick another" is not enough — name the
+                // ones that actually work.
+                case 404 -> "Gemini rejected the model \"" + activeModel + "\". "
+                        + describeAlternatives(usedApiKey);
                 case 429 -> "Gemini rate limit or quota exceeded. Try again shortly.";
                 default -> "Gemini returned HTTP " + code + ".";
             };
