@@ -13,6 +13,7 @@ public record AuthResponse(
         String sheetUrl,
         String folderId,
         String googleApiKey,
+        String geminiModel,
         Boolean openDoc,
         Boolean openSheet
 ) {}

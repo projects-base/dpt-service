@@ -46,6 +46,7 @@ public class UserController {
                 user.getSheetUrl(),
                 user.getFolderId(),
                 user.getGoogleApiKey(),
+                user.getGeminiModel(),
                 user.isOpenDoc(),
                 user.isOpenSheet()
         ));
@@ -67,6 +68,7 @@ public class UserController {
         if (req.getSheetUrl()     != null) user.setSheetUrl(req.getSheetUrl());
         if (req.getFolderId()     != null) user.setFolderId(req.getFolderId());
         if (req.getGoogleApiKey() != null) user.setGoogleApiKey(req.getGoogleApiKey());
+        if (req.getGeminiModel()  != null) user.setGeminiModel(blankToNull(req.getGeminiModel()));
         if (req.getOpenDoc()      != null) user.setOpenDoc(req.getOpenDoc());
         if (req.getOpenSheet()    != null) user.setOpenSheet(req.getOpenSheet());
 
@@ -75,8 +77,14 @@ public class UserController {
                 saved.getSheetUrl(),
                 saved.getFolderId(),
                 saved.getGoogleApiKey(),
+                saved.getGeminiModel(),
                 saved.isOpenDoc(),
                 saved.isOpenSheet()
         ));
+    }
+
+    /** An empty selection means "use the server default", not an empty model name. */
+    private static String blankToNull(String s) {
+        return (s == null || s.isBlank()) ? null : s.trim();
     }
 }

@@ -73,6 +73,11 @@ app:
   gemini:
     # Optional: a server-side fallback key. Users can supply their own in Settings.
     api-key: ${GEMINI_API_KEY:}
+    # Model availability varies by key, project and region, and a name your key
+    # cannot use comes back as a 404 rather than anything more descriptive.
+    # List what yours can reach:
+    #   curl -s https://generativelanguage.googleapis.com/v1beta/models     #        -H "x-goog-api-key: YOUR_KEY"
+    model: ${GEMINI_MODEL:gemini-2.5-flash}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:*,http://127.0.0.1:*,chrome-extension://*,https://*.netlify.app}
 

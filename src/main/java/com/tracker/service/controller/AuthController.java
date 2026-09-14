@@ -68,6 +68,7 @@ public class AuthController {
                     user.getSheetUrl(),
                     user.getFolderId(),
                     user.getGoogleApiKey(),
+                    user.getGeminiModel(),
                     user.isOpenDoc(),
                     user.isOpenSheet()
             ));

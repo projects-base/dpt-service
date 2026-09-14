@@ -47,6 +47,9 @@ public class User {
     private String folderId;
     
     private String googleApiKey;
+
+    /** Gemini model this user picked; null means use the server default. */
+    private String geminiModel;
     
     private boolean openDoc;
     

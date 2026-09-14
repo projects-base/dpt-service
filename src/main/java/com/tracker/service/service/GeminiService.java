@@ -10,12 +10,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +29,11 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class GeminiService {
 
-    private static final String GEMINI_ENDPOINT =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+    private static final String GEMINI_BASE =
+            "https://generativelanguage.googleapis.com/v1beta/models/";
+
+    @Value("${app.gemini.model:gemini-2.5-flash}")
+    private String model;
 
     @Value("${app.gemini.api-key}")
     private String globalApiKey;
@@ -58,6 +63,77 @@ public class GeminiService {
                     + "or set GEMINI_API_KEY on the server.");
         }
         return key;
+    }
+
+    /** The user's chosen model, or the server default when they have not picked one. */
+    private String getEffectiveModel(String userEmail) {
+        if (userEmail != null) {
+            String chosen = userService.findByEmail(userEmail)
+                    .map(u -> u.getGeminiModel())
+                    .orElse(null);
+            if (chosen != null && !chosen.isBlank()) return chosen.trim();
+        }
+        return model;
+    }
+
+    /**
+     * Models this user's key can actually call.
+     *
+     * Availability varies by key, project and region, so the only honest way
+     * to populate a picker is to ask. Filtered to models that support
+     * generateContent — the rest (embeddings, token counting) would 404 the
+     * same way a wrong name does.
+     */
+    public List<Map<String, String>> listModels(String email) {
+        String key = getEffectiveApiKey(email);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("x-goog-api-key", key);
+
+        try {
+            ResponseEntity<String> res = restTemplate.exchange(
+                    "https://generativelanguage.googleapis.com/v1beta/models?pageSize=100",
+                    org.springframework.http.HttpMethod.GET,
+                    new HttpEntity<>(headers),
+                    String.class);
+
+            JsonNode root = objectMapper.readTree(res.getBody());
+            List<Map<String, String>> out = new ArrayList<>();
+
+            for (JsonNode m : root.path("models")) {
+                boolean generates = false;
+                for (JsonNode method : m.path("supportedGenerationMethods")) {
+                    if ("generateContent".equals(method.asText())) { generates = true; break; }
+                }
+                if (!generates) continue;
+
+                // "models/gemini-2.0-flash" -> "gemini-2.0-flash"
+                String name = m.path("name").asText("");
+                if (name.startsWith("models/")) name = name.substring("models/".length());
+                if (name.isBlank()) continue;
+
+                Map<String, String> entry = new HashMap<>();
+                entry.put("name", name);
+                entry.put("displayName", m.path("displayName").asText(name));
+                out.add(entry);
+            }
+
+            out.sort((a, b) -> a.get("name").compareTo(b.get("name")));
+            return out;
+
+        } catch (HttpStatusCodeException e) {
+            int code = e.getStatusCode().value();
+            log.error("Gemini ListModels returned {}", code);
+            if (code == 401 || code == 403) {
+                throw new GeminiUpstreamException(
+                        "Gemini rejected the API key. Check it is valid and that the "
+                        + "Generative Language API is enabled for its project.");
+            }
+            throw new GeminiUpstreamException("Could not list models (HTTP " + code + ").");
+        } catch (Exception e) {
+            log.error("Error listing Gemini models: {}", e.getClass().getSimpleName());
+            throw new GeminiUpstreamException("Could not reach the Gemini API to list models.");
+        }
     }
 
     /** No key available — the caller can fix this, so it maps to 400. */
@@ -91,7 +167,7 @@ public class GeminiService {
                 "- \"suggestions\": string (1-3 crisp bullet points. Plain text.)\n\n" +
                 "Return ONLY valid JSON. No markdown wrappers.";
 
-        String responseText = callGeminiApi(prompt, 0.1, getEffectiveApiKey(email));
+        String responseText = callGeminiApi(prompt, 0.1, getEffectiveApiKey(email), getEffectiveModel(email));
 
         try {
             // Extract JSON from potential markdown wrappers
@@ -108,15 +184,15 @@ public class GeminiService {
     }
 
     public GeminiChatResponse chat(GeminiChatRequest request, String email) {
-        String responseText = callGeminiApi(request.getMessage(), 0.7, getEffectiveApiKey(email));
+        String responseText = callGeminiApi(request.getMessage(), 0.7, getEffectiveApiKey(email), getEffectiveModel(email));
         return new GeminiChatResponse(responseText);
     }
 
-    private String callGeminiApi(String promptText, double temperature, String usedApiKey) {
+    private String callGeminiApi(String promptText, double temperature, String usedApiKey, String activeModel) {
         // The key travels in a header, never the query string. As a URL
         // parameter it ended up inside RestTemplate's exception messages, and
         // log.error(..., e) then wrote users' API keys into the server log.
-        String endpoint = GEMINI_ENDPOINT;
+        String endpoint = GEMINI_BASE + activeModel + ":generateContent";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -151,6 +227,8 @@ public class GeminiService {
                 case 400 -> "Gemini rejected the request — the API key may be malformed.";
                 case 401, 403 -> "Gemini rejected the API key. Check it is valid and that the "
                         + "Generative Language API is enabled for its project.";
+                case 404 -> "Gemini has no model named \"" + activeModel + "\" for this API key. "
+                        + "Pick a different one under Settings → Gemini Model.";
                 case 429 -> "Gemini rate limit or quota exceeded. Try again shortly.";
                 default -> "Gemini returned HTTP " + code + ".";
             };

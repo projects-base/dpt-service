@@ -11,6 +11,7 @@ public class UserSettingsRequest {
     private String sheetUrl;
     private String folderId;
     private String googleApiKey;
+    private String geminiModel;
     private Boolean openDoc;
     private Boolean openSheet;
 }

@@ -46,6 +46,19 @@ public class GeminiController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Models this user's key can call, for the Settings picker.
+     *
+     * Availability varies by key, project and region — a name the key cannot
+     * use comes back from Gemini as a bare 404 — so the list is fetched rather
+     * than hard-coded.
+     */
+    @GetMapping("/models")
+    public ResponseEntity<?> listModels(@AuthenticationPrincipal Jwt jwt) {
+        String email = jwt.getClaimAsString("email");
+        return ResponseEntity.ok(Map.of("models", geminiService.listModels(email)));
+    }
+
     /** Missing or unusable key — the caller can fix it, so 400 not 500. */
     @ExceptionHandler(GeminiService.GeminiConfigurationException.class)
     public ResponseEntity<Map<String, String>> handleConfig(GeminiService.GeminiConfigurationException e) {
