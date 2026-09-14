@@ -2,7 +2,6 @@ package com.tracker.service.config;
 
 import com.tracker.service.entity.User;
 import com.tracker.service.exception.ForbiddenException;
-import com.tracker.service.exception.NotFoundException;
 import com.tracker.service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -23,7 +22,22 @@ public class CurrentUser {
 
     private final UserService userService;
 
-    /** The user the token belongs to. */
+    /**
+     * The user the token belongs to, provisioned on first sight.
+     *
+     * The token has already been verified by the resource server: correct
+     * Google signature, unexpired, and issued for this application's client ID.
+     * A caller holding one is exactly as entitled to an account as a caller of
+     * the permitAll {@code POST /auth/google}, which also upserts — so creating
+     * the row here widens nothing.
+     *
+     * This used to 404 with "sign in first". That left a valid session with no
+     * way forward whenever the row was missing but the token was not: pointing
+     * at a fresh database, restoring one, or deleting an account. The dashboard
+     * never re-runs /auth/google on its own, so every call failed until session
+     * storage was cleared by hand. The extension's sync path has always
+     * upserted; this makes the web path behave the same way.
+     */
     public User require(Jwt jwt) {
         if (jwt == null) {
             throw new ForbiddenException("Authentication required");
@@ -32,9 +46,10 @@ public class CurrentUser {
         if (email == null || email.isBlank()) {
             throw new ForbiddenException("Token has no email claim");
         }
-        return userService.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException(
-                        "User not found. Please sign in first via POST /auth/google."));
+        return userService.findByEmail(email).orElseGet(() -> userService.getOrCreateUser(
+                email,
+                jwt.getClaimAsString("name"),
+                jwt.getClaimAsString("picture")));
     }
 
     /**

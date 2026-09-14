@@ -192,6 +192,42 @@ class OwnershipSecurityTests {
     }
 
     @Test
+    @DisplayName("a valid token with no user row provisions the account instead of 404ing")
+    void validTokenProvisionsMissingUser() throws Exception {
+        // Exactly the state after pointing at a fresh database: the browser
+        // still holds a valid Google ID token, but the row it refers to is
+        // gone. This used to 404 "sign in first" on every call, with no way
+        // for the dashboard to recover.
+        String newcomer = "newcomer@example.com";
+        assertThat(userRepository.findByEmail(newcomer)).isEmpty();
+
+        mvc.perform(get("/api/users/me")
+                        .with(jwt().jwt(b -> b.claim("email", newcomer).claim("name", "New Comer"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(newcomer));
+
+        assertThat(userRepository.findByEmail(newcomer))
+                .as("the account is created from the token's claims")
+                .isPresent();
+
+        // Settings save — the call that was actually failing — now works too.
+        mvc.perform(put("/api/users/me/settings")
+                        .with(jwt().jwt(b -> b.claim("email", newcomer)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"sheetUrl\":\"https://docs.google.com/spreadsheets/d/x/edit\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("provisioning does not leak another user's data")
+    void provisionedUserStartsEmpty() throws Exception {
+        mvc.perform(get("/api/problems")
+                        .with(jwt().jwt(b -> b.claim("email", "stranger@example.com"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
     @DisplayName("unauthenticated callers get 401, not data")
     void anonymousIsRejected() throws Exception {
         mvc.perform(get("/api/problems/user/{id}", alice.getId()))
