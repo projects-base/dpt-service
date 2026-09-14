@@ -13,6 +13,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -26,6 +27,9 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class GeminiService {
 
+    private static final String GEMINI_ENDPOINT =
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+
     @Value("${app.gemini.api-key}")
     private String globalApiKey;
 
@@ -33,13 +37,37 @@ public class GeminiService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
 
+    /**
+     * The user's own key if they set one, otherwise the server-wide fallback.
+     *
+     * Throws rather than calling Gemini with an empty key: the API then fails
+     * with an opaque 400 that surfaced as a bare "API Error:" with nothing
+     * after it, which told the user nothing about what to fix.
+     */
     private String getEffectiveApiKey(String userEmail) {
+        String key = globalApiKey;
         if (userEmail != null) {
-            return userService.findByEmail(userEmail)
-                    .map(u -> (u.getGoogleApiKey() != null && !u.getGoogleApiKey().isBlank()) ? u.getGoogleApiKey() : globalApiKey)
+            key = userService.findByEmail(userEmail)
+                    .map(u -> (u.getGoogleApiKey() != null && !u.getGoogleApiKey().isBlank())
+                            ? u.getGoogleApiKey() : globalApiKey)
                     .orElse(globalApiKey);
         }
-        return globalApiKey;
+        if (key == null || key.isBlank()) {
+            throw new GeminiConfigurationException(
+                    "No Gemini API key configured. Add one under Settings → Google API Key (Gemini), "
+                    + "or set GEMINI_API_KEY on the server.");
+        }
+        return key;
+    }
+
+    /** No key available — the caller can fix this, so it maps to 400. */
+    public static class GeminiConfigurationException extends RuntimeException {
+        public GeminiConfigurationException(String message) { super(message); }
+    }
+
+    /** Gemini itself refused or was unreachable — maps to 502. */
+    public static class GeminiUpstreamException extends RuntimeException {
+        public GeminiUpstreamException(String message) { super(message); }
     }
 
     public GeminiAnalyzeResponse analyzeCode(GeminiAnalyzeRequest request, String email) {
@@ -73,8 +101,9 @@ public class GeminiService {
             }
             return objectMapper.readValue(responseText, GeminiAnalyzeResponse.class);
         } catch (Exception e) {
-            log.error("Failed to parse Gemini analyze response", e);
-            throw new RuntimeException("Failed to analyze code with Gemini", e);
+            log.error("Failed to parse Gemini analyze response: {}", e.getClass().getSimpleName());
+            throw new GeminiUpstreamException(
+                    "Gemini returned a response that could not be read. Please try again.");
         }
     }
 
@@ -84,10 +113,14 @@ public class GeminiService {
     }
 
     private String callGeminiApi(String promptText, double temperature, String usedApiKey) {
-        String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + usedApiKey;
+        // The key travels in a header, never the query string. As a URL
+        // parameter it ended up inside RestTemplate's exception messages, and
+        // log.error(..., e) then wrote users' API keys into the server log.
+        String endpoint = GEMINI_ENDPOINT;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("x-goog-api-key", usedApiKey);
 
         Map<String, Object> part = new HashMap<>();
         part.put("text", promptText);
@@ -109,9 +142,24 @@ public class GeminiService {
             JsonNode root = objectMapper.readTree(responseStr);
             JsonNode textNode = root.path("candidates").path(0).path("content").path("parts").path(0).path("text");
             return textNode.asText();
+        } catch (HttpStatusCodeException e) {
+            // Gemini answered, but with an error. Report enough to act on
+            // without echoing a body that may quote the request.
+            int code = e.getStatusCode().value();
+            log.error("Gemini API returned {}", code);
+            String hint = switch (code) {
+                case 400 -> "Gemini rejected the request — the API key may be malformed.";
+                case 401, 403 -> "Gemini rejected the API key. Check it is valid and that the "
+                        + "Generative Language API is enabled for its project.";
+                case 429 -> "Gemini rate limit or quota exceeded. Try again shortly.";
+                default -> "Gemini returned HTTP " + code + ".";
+            };
+            throw new GeminiUpstreamException(hint);
         } catch (Exception e) {
-            log.error("Error calling Gemini API", e);
-            throw new RuntimeException("Error communicating with Gemini API", e);
+            // Deliberately not logging the exception object: for a URL-bearing
+            // client error its message can carry request details.
+            log.error("Error calling Gemini API: {}", e.getClass().getSimpleName());
+            throw new GeminiUpstreamException("Could not reach the Gemini API. Please try again.");
         }
     }
 }
