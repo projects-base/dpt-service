@@ -22,7 +22,7 @@ import java.util.Map;
  *
  * Auth flow: Extension sends a Google OAuth access token (not ID token).
  * We validate it by calling Google's UserInfo API, then upsert the user
- * and save the problem to Supabase.
+ * and persist the problem.
  *
  * POST /api/sync/problem
  * Header: Authorization: Bearer <google_access_token>

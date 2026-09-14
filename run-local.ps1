@@ -1,6 +1,6 @@
 # Starts the service locally, loading secrets from a .env file that is never committed.
 #
-#   1. Copy .env.example to .env and fill in your Supabase credentials.
+#   1. Copy .env.example to .env and fill in your Neon credentials.
 #   2. .\run-local.ps1                 → starts on port 8080
 #      .\run-local.ps1 -Port 8081      → starts elsewhere, if 8080 is taken
 #

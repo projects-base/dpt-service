@@ -1,7 +1,7 @@
 # Daily Problem Tracker — Backend Service
 
 Spring Boot REST API that powers the **Daily Problem Tracker** ecosystem (Chrome Extension + Web Dashboard).  
-Handles authentication (Google OAuth), problem tracking, analytics, Gemini AI integration, and user settings — all backed by a Supabase-hosted PostgreSQL database.
+Handles authentication (Google OAuth), problem tracking, analytics, Gemini AI integration, and user settings — all backed by a Neon-hosted PostgreSQL database.
 
 ---
 
@@ -50,8 +50,8 @@ Handles authentication (Google OAuth), problem tracking, analytics, Gemini AI in
                      │
                      ▼
          ┌───────────────────────┐
-         │  Supabase PostgreSQL  │
-         │  (ap-south-1)         │
+         │    Neon PostgreSQL    │
+         │  (pooled endpoint)    │
          │                       │
          │  Tables:              │
          │   ● users             │
@@ -82,7 +82,7 @@ There are **two separate auth flows** — one for each client:
 | Framework   | Spring Boot 4.0.5                             |
 | Auth        | Spring Security OAuth2 Resource Server + Google OIDC |
 | ORM         | Spring Data JPA + Hibernate                   |
-| Database    | PostgreSQL (Supabase hosted)                  |
+| Database    | PostgreSQL (Neon serverless)                  |
 | AI          | Google Gemini API                              |
 | Build       | Maven 3.9+                                    |
 | Deploy      | Docker / Render.com                           |
@@ -94,7 +94,7 @@ There are **two separate auth flows** — one for each client:
 - **Java 21** — [Download Eclipse Temurin](https://adoptium.net/)
 - **Maven 3.9+** — or use the included `./mvnw` wrapper
 - **Google Cloud Project** with OAuth 2.0 credentials configured
-- **Supabase project** (or a local PostgreSQL via Docker)
+- **Neon project** (or a local PostgreSQL via Docker)
 
 ---
 
@@ -113,7 +113,7 @@ cd DailyProblemTracker-Service
 ### 2. Configure environment variables (or use defaults in application.yml)
 
 ```bash
-# Database (defaults to the Supabase instance in application.yml)
+# Database (defaults to the local docker-compose Postgres in application.yml)
 export DATABASE_URL=jdbc:postgresql://localhost:5432/daily_problem_tracker
 export DATABASE_USERNAME=tracker_user
 export DATABASE_PASSWORD=tracker_password
@@ -249,8 +249,8 @@ curl -H "Authorization: Bearer <google_id_token>" \
      http://localhost:8080/api/users/me
 ```
 
-#### Option B: Check directly in Supabase
-1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
+#### Option B: Check directly in Neon
+1. Go to [Neon Console](https://console.neon.tech/)
 2. Open your project → **Table Editor** → `users` table
 3. Look for a row with the test user's email
 
@@ -390,11 +390,11 @@ its map with it.
 | `CORS_ALLOWED_ORIGINS` | no       | Defaults to localhost + `chrome-extension://*` + `*.netlify.app` |
 
 > These have **no defaults**. The service will not start without the first four.
-> That is deliberate: `application.yml` previously carried a working Supabase
+> That is deliberate: `application.yml` previously carried a working database
 > password as a fallback value, which meant a live credential sat in every clone
 > of the repo. Copy `.env.example` and fill it in, or set them in Render.
 >
-> **If you had that password committed, rotate it in Supabase now** — removing it
+> **If you had that password committed, rotate it now** — removing it
 > from the file does not remove it from your git history.
 
 For local development there is a `local` profile that points at the
@@ -409,30 +409,30 @@ docker-compose up -d
 
 ## Reliability notes
 
-Measured on 2026-09-10, from India:
+If the app feels "down all the time", check the host before blaming the
+database. Measured on 2026-09-10, the previous Supabase instance answered in
+435-699 ms on 3/3 attempts while the Render service returned **no HTTP
+response at all** across six attempts spanning 10 s to 120 s. The database was
+never the problem.
 
-| Component | Result |
-|-----------|--------|
-| Supabase pooler (`aws-1-ap-south-1`, port 6543) | TCP open in 435-699 ms, 3/3 attempts |
-| Render service (`dpt-service.onrender.com`) | TCP connects in ~0.3 s, then **no HTTP response** at 10 s, 60 s, 90 s or 120 s — 0/6 attempts |
-
-If the app feels "down all the time", the database is not the reason. Two
-separate things sleep on free tiers, and both should be ruled out before
-blaming Postgres:
+Two things sleep on free tiers:
 
 - **Render free web services spin down after ~15 minutes idle.** The next
   request pays a 50 s+ cold start, and the Chrome extension's sync will time
   out long before that. 750 free instance-hours/month covers one service
   running 24/7 (720 h), so an uptime ping every 10 minutes against
   `/actuator/health` keeps it warm within the free allowance.
-- **Supabase free projects pause after 7 days of no activity** and need a
-  manual restore from the dashboard. The same health ping, which touches the
-  database, prevents this.
+- **Neon's free compute auto-suspends after ~5 minutes idle.** Unlike
+  Supabase's free tier — which paused a project after 7 days of inactivity and
+  needed a manual restore from the dashboard — Neon resumes on the next query,
+  typically in well under a second. The first query after a suspend is slower;
+  nothing needs restoring by hand. This is the main reason the move is an
+  improvement for a tracker used in bursts.
 
 ### The pooler and prepared statements
 
-Port 6543 is Supavisor in **transaction mode**: each transaction may land on a
-different backend. The Postgres JDBC driver promotes a query to a server-side
+Neon's **pooled endpoint** (the hostname with a `-pooler` suffix) is PgBouncer
+in **transaction mode**: each transaction may land on a different backend. The Postgres JDBC driver promotes a query to a server-side
 prepared statement after five executions, which then goes missing on the next
 transaction, producing intermittent
 
@@ -442,8 +442,8 @@ ERROR: prepared statement "S_1" already exists
 
 These arrive at random and look exactly like an unstable database.
 `application.yml` sets `prepareThreshold: 0` and `preparedStatementCacheQueries: 0`
-to disable server-side prepared statements. Keep those if you stay on the
-pooler; they are harmless on a direct (5432) connection.
+to disable server-side prepared statements. Keep those while you use the pooled
+endpoint; they are harmless on Neon's direct endpoint.
 
 ## Deployment
 
@@ -451,7 +451,7 @@ pooler; they are harmless on a direct (5432) connection.
 > **Before the first deploy after this change, set the database environment
 > variables in Render.**
 >
-> `application.yml` used to carry the Supabase URL, username and password as
+> `application.yml` used to carry the database URL, username and password as
 > *defaults*, so production started even with nothing configured. Those
 > defaults are gone — the file now falls back to a **local** Postgres. If
 > Render has no `DATABASE_URL` / `DATABASE_USERNAME` / `DATABASE_PASSWORD`, the
