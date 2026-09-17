@@ -10,7 +10,7 @@ as the API it calls — so no CORS, one deployable, one sign-in.
 npm install
 npm run extract    # regenerate the bank from source/interview-prep.html
 npm run build      # writes into ../src/main/resources/static/prep
-npm run dev        # standalone at :5180, proxying /api to localhost:8080
+npm run dev        # hot reload at http://localhost:3000/prep/, proxying /api to :8080
 ```
 
 `src/main/resources/static/prep` is committed on purpose. The Dockerfile builds

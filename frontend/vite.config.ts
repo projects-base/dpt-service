@@ -18,8 +18,10 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
-    port: 5180,
-    // dev server talks to the locally running service
+    port: 3000,
+    strictPort: true,
+    // The dev server proxies to the locally running service, so the app sees
+    // the same same-origin /api it gets in production.
     proxy: { '/api': 'http://localhost:8080', '/actuator': 'http://localhost:8080' },
   },
 })
