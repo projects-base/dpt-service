@@ -47,6 +47,12 @@ public class SecurityConfig {
                 // The shared concept catalogue is readable by anyone; writing to it
                 // requires an administrator (enforced in the controller).
                 .requestMatchers(HttpMethod.GET, "/api/concepts/**").permitAll()
+                // The study app's own bundle. These are static assets, not data:
+                // the app signs in from the browser and every /api/prep call it
+                // makes is still authenticated. Serving the shell behind auth
+                // would be a chicken-and-egg problem, since the sign-in button
+                // lives inside it.
+                .requestMatchers(HttpMethod.GET, "/prep", "/prep/**").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));

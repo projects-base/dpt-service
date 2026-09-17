@@ -1,0 +1,212 @@
+import type { Plan } from '../types'
+
+/**
+ * The Microsoft campaign. Deliberately low-volume and high-retention: the
+ * constraint it is built around is 15-hour workdays and skill decay across
+ * gaps, not a shortage of material.
+ */
+export const microsoftPlan: Plan = {
+  id: 'microsoft-15w',
+  companyId: 'microsoft',
+  title: 'The Quiet Campaign',
+  subtitle:
+    'Fifteen weeks, twenty-five minutes at a time. A bad day costs nothing; a good day is a bonus.',
+  start: '2026-09-17',
+  end: '2026-12-31',
+  liveFrom: '2027-01-01',
+
+  rules: [
+    {
+      title: 'Never zero',
+      body: 'Twenty-five minutes, every day, including the 15-hour ones. At 11:40 PM if that is what is left. A zero day costs about three days of re-warming; a 25-minute day costs nothing. You are protecting the chain, not the session.',
+    },
+    {
+      title: 'Weekdays code, weekends design',
+      body: 'You never decide what to work on — deciding is where tired people lose. Monday to Friday is DSA. One weekend day is the long block: LLD through October and November, HLD through December.',
+    },
+    {
+      title: 'Review at +3, +10, +30',
+      body: 'Every solved problem comes back three times. A review is four minutes, not a re-solve: read the title, state the approach out loud in under two minutes, write the core loop from memory. Only a failure sends it back to the start of the queue.',
+    },
+    {
+      title: 'One line per problem, same day',
+      body: 'Pattern, time, outcome, and one sentence of insight. The last field is the whole point — it is what you re-read in December. “Solved it” is not an insight.',
+    },
+    {
+      title: 'Two strikes, then a catch-up — never a restart',
+      body: 'Miss two days in a row and you owe one 90-minute weekend session. That is the entire penalty. You do not go back to week one. The restart instinct is what has been eating your months.',
+    },
+    {
+      title: 'Small and retained beats large and forgotten',
+      body: 'Around 125 problems seen three times each, not 400 seen once. Blind 75 is the spine; AlgoMaster’s pattern tracks map onto the weeks. Adding a third list is procrastination wearing a productive costume.',
+    },
+  ],
+
+  bosses: [
+    { when: '~31 Oct', html: '<b>Mock 1 — DSA.</b> A baseline. It is supposed to go badly.' },
+    { when: '~14 Nov', html: '<b>Mock 2 — LLD.</b> Machine coding against a clock.' },
+    { when: '~28 Nov', html: '<b>Mock 3 — DSA.</b> Measure the delta from October. This one sets your level.' },
+    { when: '~12 Dec', html: '<b>Mock 4 — HLD.</b> Forty-five minutes, driven by you, unprompted.' },
+    { when: 'W13', html: '<b>Mocks 5 and 6.</b> One DSA, one HLD, same weekend.' },
+    { when: '26 Dec', html: '<b>The full loop.</b> Four rounds in one day. The highest-value four hours in this plan.', big: true },
+    { when: 'Dec', html: '<b>Two real interviews elsewhere.</b> Live reps beat mocks. Use another company’s loop as free practice.' },
+  ],
+
+  weeks: [
+    {
+      n: 'W0', start: '2026-09-17', end: '2026-09-20', title: 'Reset and ignition',
+      weekdays: 'Entain round on Fri 18 — nothing else that day. Then set up the log and run the baseline diagnostic.',
+      weekend: 'Read the method twice. Put a recurring 25-minute block in your calendar and name it something you will not feel able to decline.',
+      problems: [['Two Sum', 'two-sum'], ['Longest Substring Without Repeating', 'longest-substring-without-repeating-characters'], ['Binary Tree Level Order Traversal', 'binary-tree-level-order-traversal'], ['Number of Islands', 'number-of-islands']],
+      challenge: 'Run all four timed, with no help, and log the times honestly. Whatever the result, that is your before-photo. You retake the identical four on 30 December.',
+      video: ['Blind 75 roadmap explained', 'neetcode blind 75 roadmap'],
+      algomaster: 'Set up your AlgoMaster account and pick the pattern track — do not start solving from it yet.',
+    },
+    {
+      n: 'W1', start: '2026-09-21', end: '2026-09-27', title: 'Arrays, hashing, two pointers',
+      weekdays: 'Hashing for lookup, and the two-pointer shrink. Every harder pattern later is one of these with a constraint bolted on.',
+      weekend: 'LLD fundamentals: SOLID, composition over inheritance, and what makes Java code testable — constructor injection, no static state.',
+      problems: [['Two Sum', 'two-sum'], ['Group Anagrams', 'group-anagrams'], ['Product Except Self', 'product-of-array-except-self'], ['Top K Frequent', 'top-k-frequent-elements'], ['Container With Most Water', 'container-with-most-water'], ['3Sum', '3sum'], ['Trapping Rain Water', 'trapping-rain-water'], ['Valid Palindrome', 'valid-palindrome']],
+      challenge: 'From a blank file, no reference: Two Sum, Group Anagrams and 3Sum in under 35 minutes total.',
+      video: ['Two pointers, properly explained', 'two pointers technique explained neetcode'],
+      algomaster: 'AlgoMaster: Prefix Sum and Two Pointers.',
+    },
+    {
+      n: 'W2', start: '2026-09-28', end: '2026-10-04', title: 'Sliding window, binary search',
+      weekdays: 'Window expansion and contraction; then binary search on a value range, not just an array. The second one is what most people never really get.',
+      weekend: 'Design patterns, first block: Strategy, Factory, Builder, Observer. Write each one, do not just read it.',
+      problems: [['Longest Substring Without Repeating', 'longest-substring-without-repeating-characters'], ['Minimum Window Substring', 'minimum-window-substring'], ['Longest Repeating Char Replacement', 'longest-repeating-character-replacement'], ['Sliding Window Maximum', 'sliding-window-maximum'], ['Search in Rotated Sorted Array', 'search-in-rotated-sorted-array'], ['Find Minimum in Rotated', 'find-minimum-in-rotated-sorted-array'], ['Koko Eating Bananas', 'koko-eating-bananas'], ['Median of Two Sorted Arrays', 'median-of-two-sorted-arrays']],
+      challenge: 'Explain out loud, in 90 seconds, why binary search works on Koko Eating Bananas when nothing is sorted. If you cannot, you have memorised it rather than understood it.',
+      video: ['Binary search on the answer', 'binary search on answer space explained'],
+      algomaster: 'AlgoMaster: Sliding Window and Binary Search.',
+      milestone: 'Resume v1 done — impact-first bullets, every one with a number.',
+    },
+    {
+      n: 'W3', start: '2026-10-05', end: '2026-10-11', title: 'Strings, stacks, monotonic stack',
+      weekdays: 'Microsoft asks more string manipulation than almost anyone. Monotonic stack is the one trick that turns several O(n²) problems into O(n).',
+      weekend: 'LLD 1 — Parking Lot. Ninety minutes, compiling Java, then a self-review out loud.',
+      problems: [['Reverse Words in a String', 'reverse-words-in-a-string'], ['String Compression', 'string-compression'], ['Longest Palindromic Substring', 'longest-palindromic-substring'], ['Valid Parentheses', 'valid-parentheses'], ['Roman to Integer', 'roman-to-integer'], ['Min Stack', 'min-stack'], ['Daily Temperatures', 'daily-temperatures'], ['Largest Rectangle in Histogram', 'largest-rectangle-in-histogram'], ['Evaluate RPN', 'evaluate-reverse-polish-notation']],
+      challenge: 'Write Min Stack and Daily Temperatures back to back without looking, then say in one sentence what makes a stack monotonic.',
+      video: ['Monotonic stack pattern', 'monotonic stack explained'],
+      algomaster: 'AlgoMaster: Monotonic Stack.',
+    },
+    {
+      n: 'W4', start: '2026-10-12', end: '2026-10-18', title: 'Linked lists, design a data structure',
+      weekdays: 'Pointer surgery, and then the category Microsoft loves most: build me this structure with these guarantees.',
+      weekend: 'LLD 2 — LRU and LFU cache as production code. Generics, eviction as a strategy, and a real answer on thread safety.',
+      problems: [['Reverse Linked List', 'reverse-linked-list'], ['Reverse Nodes in k-Group', 'reverse-nodes-in-k-group'], ['Merge k Sorted Lists', 'merge-k-sorted-lists'], ['Linked List Cycle', 'linked-list-cycle'], ['Copy List with Random Pointer', 'copy-list-with-random-pointer'], ['Add Two Numbers', 'add-two-numbers'], ['LRU Cache', 'lru-cache'], ['LFU Cache', 'lfu-cache'], ['Implement Trie', 'implement-trie-prefix-tree'], ['Insert Delete GetRandom O(1)', 'insert-delete-getrandom-o1']],
+      challenge: 'LRU Cache from scratch in under 20 minutes, with a working main() that proves the eviction order.',
+      video: ['LRU cache implementation in Java', 'lru cache design java hashmap doubly linked list'],
+      algomaster: 'AlgoMaster: Fast and Slow Pointers, Linked List reversal.',
+      milestone: 'Resume final and LinkedIn updated — recruiters search LinkedIn.',
+    },
+    {
+      n: 'W5', start: '2026-10-19', end: '2026-10-25', title: 'Trees and BSTs',
+      weekdays: 'Traversals until they are automatic, then LCA, validation, serialisation and path sums. This is the densest week for Microsoft specifically.',
+      weekend: 'LLD 3 — Rate limiter. Token bucket and sliding-window log. Where does it live: in-process or shared? That question is your bridge into system design.',
+      problems: [['Level Order Traversal', 'binary-tree-level-order-traversal'], ['Right Side View', 'binary-tree-right-side-view'], ['LCA of a Binary Tree', 'lowest-common-ancestor-of-a-binary-tree'], ['LCA of a BST', 'lowest-common-ancestor-of-a-binary-search-tree'], ['Validate BST', 'validate-binary-search-tree'], ['Serialize and Deserialize', 'serialize-and-deserialize-binary-tree'], ['Diameter of Binary Tree', 'diameter-of-binary-tree'], ['Path Sum III', 'path-sum-iii'], ['Kth Smallest in a BST', 'kth-smallest-element-in-a-bst']],
+      challenge: 'Serialize and deserialize a binary tree, then hand-trace it on a five-node tree on paper without running the code.',
+      video: ['Tree traversal patterns', 'binary tree interview patterns dfs bfs'],
+      algomaster: 'AlgoMaster: Tree BFS and Tree DFS.',
+    },
+    {
+      n: 'W6', start: '2026-10-26', end: '2026-11-01', title: 'Heaps, intervals, greedy',
+      weekdays: 'Top-K by heap, the interval sweep, and knowing when greedy is actually safe.',
+      weekend: 'LLD 4 — Elevator system, the hardest scheduling one. Then your first mock: DSA. Expect it to go badly; that is the point of doing it in October.',
+      problems: [['Kth Largest Element', 'kth-largest-element-in-an-array'], ['Find Median from Data Stream', 'find-median-from-data-stream'], ['Task Scheduler', 'task-scheduler'], ['Merge Intervals', 'merge-intervals'], ['Insert Interval', 'insert-interval'], ['Non-overlapping Intervals', 'non-overlapping-intervals'], ['Meeting Rooms II', 'meeting-rooms-ii'], ['Jump Game', 'jump-game']],
+      challenge: 'Merge Intervals and Meeting Rooms II in one sitting, then state the single idea they share.',
+      video: ['Heap and top-K patterns', 'two heaps pattern median data stream'],
+      algomaster: 'AlgoMaster: Top K Elements, Merge Intervals.',
+      milestone: 'Shortlist 5–8 Microsoft roles across IDC Hyderabad, Bangalore and Noida.',
+    },
+    {
+      n: 'W7', start: '2026-11-02', end: '2026-11-08', title: 'Graphs I — and a deliberate light week',
+      light: true,
+      weekdays: 'Diwali falls around the 8th. This week is floor-only by design, not by failure. Grid traversal, islands, BFS shortest path.',
+      weekend: 'Ninety minutes, minimum. Design patterns, second block: State, Command, Decorator, Adapter.',
+      problems: [['Number of Islands', 'number-of-islands'], ['Clone Graph', 'clone-graph'], ['Rotting Oranges', 'rotting-oranges'], ['Pacific Atlantic Water Flow', 'pacific-atlantic-water-flow'], ['Surrounded Regions', 'surrounded-regions'], ['Word Ladder', 'word-ladder']],
+      challenge: 'Seven floors in seven days. That is the entire challenge this week. Holding the chain through a festival week is worth more than ten problems.',
+      video: ['Graph BFS and DFS templates', 'graph traversal template bfs dfs interview'],
+      algomaster: 'AlgoMaster: Graph traversal — go slowly.',
+    },
+    {
+      n: 'W8', start: '2026-11-09', end: '2026-11-15', title: 'Graphs II, backtracking',
+      weekdays: 'Topological sort, union-find, and the backtracking skeleton that covers subsets, permutations and word search alike.',
+      weekend: 'LLD 5 — Vending machine as a pure state machine, fast and high-return. Then mock two: machine coding under a clock.',
+      problems: [['Course Schedule', 'course-schedule'], ['Course Schedule II', 'course-schedule-ii'], ['Alien Dictionary', 'alien-dictionary'], ['Connected Components', 'number-of-connected-components-in-an-undirected-graph'], ['Redundant Connection', 'redundant-connection'], ['Network Delay Time', 'network-delay-time'], ['Subsets', 'subsets'], ['Permutations', 'permutations'], ['Combination Sum', 'combination-sum'], ['Word Search', 'word-search']],
+      challenge: 'Course Schedule II from scratch, then explain topological sort to an imaginary junior in 60 seconds without using the word “topological”.',
+      video: ['Union find and topological sort', 'union find disjoint set topological sort explained'],
+      algomaster: 'AlgoMaster: Topological Sort, Union Find.',
+      milestone: 'Referral asks out. Send five, expect two. A referral gets your resume read — not more than that.',
+    },
+    {
+      n: 'W9', start: '2026-11-16', end: '2026-11-22', title: 'Dynamic programming',
+      weekdays: 'One week, not three. Microsoft asks moderate DP, not competitive DP. Own the 1D set cold and the 2D basics honestly.',
+      weekend: 'LLD 6 — Splitwise. This one tests domain modelling more than patterns; resist adding a pattern where a plain class will do.',
+      problems: [['Climbing Stairs', 'climbing-stairs'], ['House Robber', 'house-robber'], ['House Robber II', 'house-robber-ii'], ['Coin Change', 'coin-change'], ['Longest Increasing Subsequence', 'longest-increasing-subsequence'], ['Word Break', 'word-break'], ['Unique Paths', 'unique-paths'], ['Edit Distance', 'edit-distance'], ['Longest Common Subsequence', 'longest-common-subsequence'], ['Maximum Product Subarray', 'maximum-product-subarray']],
+      challenge: 'Write the recurrence for Edit Distance on paper, correctly, before touching a keyboard.',
+      video: ['DP patterns for interviews', 'dynamic programming patterns interview 1d 2d'],
+      algomaster: 'AlgoMaster: Dynamic Programming track.',
+    },
+    {
+      n: 'W10', start: '2026-11-23', end: '2026-11-29', title: 'Mixed set, and the decision',
+      weekdays: 'Microsoft-tagged problems in random order, 35-minute hard cap each. No topic labels — the difficulty is not knowing what is coming.',
+      weekend: 'HLD 1 — URL shortener, purely to drill the estimation ritual. HLD 2 — distributed rate limiter. Then mock three, to measure the delta from October.',
+      problems: [['Spiral Matrix', 'spiral-matrix'], ['Rotate Image', 'rotate-image'], ['Set Matrix Zeroes', 'set-matrix-zeroes'], ['Populating Next Right Pointers', 'populating-next-right-pointers-in-each-node'], ['Excel Sheet Column Number', 'excel-sheet-column-number'], ['Design Twitter', 'design-twitter'], ['N-Queens', 'n-queens']],
+      challenge: 'Ten Microsoft-tagged problems, 35 minutes each, no hints. Write down the score — it decides your level.',
+      video: ['System design estimation', 'back of envelope estimation system design'],
+      algomaster: 'Switch AlgoMaster to mixed / random practice mode.',
+      milestone: 'Apply. Tell the recruiter you are available from the first week of January. Decide SDE II vs Senior on the mock evidence, not on nerves.',
+    },
+    {
+      n: 'W11', start: '2026-11-30', end: '2026-12-06', title: 'Mixed set two',
+      weekdays: 'Same as last week, random order, timed. You are training recall under pressure now, not learning patterns.',
+      weekend: 'HLD 3 — chat system: WebSockets, presence, fan-out, ordering, offline delivery. HLD 4 — notification service: queues, retries, idempotency, dead letters.',
+      problems: [],
+      challenge: 'Eight problems in random order with no topic hints. Pass condition: no more than two need an editorial.',
+      video: ['Designing a chat system', 'design whatsapp system design interview'],
+      algomaster: 'AlgoMaster: revisit your weakest two patterns.',
+      milestone: 'Recruiter-screen window opens. Be ready from 30 Nov: 30 minutes, resume walkthrough, why Microsoft, notice period.',
+    },
+    {
+      n: 'W12', start: '2026-12-07', end: '2026-12-13', title: 'Repair the weak patterns',
+      weekdays: 'Open the log. Find your two worst patterns by outcome. Spend the whole week there — this is the highest-yield week of the plan.',
+      weekend: 'HLD 5 — file sync and chunking. HLD 6 — search typeahead. Then mock four: drive 45 minutes of system design without being prompted.',
+      problems: [],
+      challenge: 'Five problems in each of your two worst patterns. The log decides which ones, not your mood.',
+      video: ['File sync and chunking design', 'design dropbox system design interview'],
+      algomaster: 'AlgoMaster: the two patterns your log names.',
+    },
+    {
+      n: 'W13', start: '2026-12-14', end: '2026-12-20', title: 'Review only, and the AI designs',
+      weekdays: 'Review backlog plus one new problem a day. Nothing more. You are consolidating, not accumulating.',
+      weekend: 'HLD 7 — booking with strong consistency. HLD 8 — metrics pipeline. HLD 9 — a RAG document Q&A system. Two mocks. This is where your AI learning stops being a separate track.',
+      problems: [],
+      challenge: 'Run HLD 7, 8 and 9 to a 45-minute clock, out loud, recorded. Watch one back. It will be uncomfortable and it will fix more than another ten problems would.',
+      video: ['RAG system design', 'design a RAG system architecture chunking embeddings'],
+      algomaster: 'Clear the AlgoMaster review queue.',
+      milestone: 'Twelve STAR stories written, each ending in a real number.',
+    },
+    {
+      n: 'W14', start: '2026-12-21', end: '2026-12-27', title: 'The full loop',
+      weekdays: 'Review backlog and timed warm-ups. Protect your energy for Saturday.',
+      weekend: 'HLD 10 — LLM inference serving: batching, KV cache, GPU autoscaling, quotas, guardrails. Then Saturday the 26th: four rounds, one day, no breaks longer than fifteen minutes.',
+      problems: [],
+      challenge: 'Saturday 26 December. Two coding rounds, one design, one behavioural — back to back. Stamina is what breaks people in a real loop, not knowledge.',
+      video: ['LLM serving architecture', 'llm inference serving batching kv cache architecture'],
+      algomaster: 'Rest the queue. One pass, no new material.',
+    },
+    {
+      n: 'W15', start: '2026-12-28', end: '2026-12-31', title: 'Taper',
+      weekdays: 'Two easy problems a day to stay warm. Nothing new. Re-read every insight line in your log — that is the entire revision.',
+      weekend: 'Logistics: camera, mic, IDE, a quiet room, water. Then sleep properly for four nights.',
+      problems: [['Two Sum', 'two-sum'], ['Longest Substring Without Repeating', 'longest-substring-without-repeating-characters'], ['Binary Tree Level Order Traversal', 'binary-tree-level-order-traversal'], ['Number of Islands', 'number-of-islands']],
+      challenge: 'Wednesday 30 December: retake the four problems from 20 September. Compare the times. Then close the laptop.',
+      video: ['Interview day preparation', 'software engineer interview day mindset'],
+      algomaster: 'Nothing new. Read your own notes.',
+    },
+  ],
+}
+
+export const plans: Plan[] = [microsoftPlan]
+export const planById = Object.fromEntries(plans.map((p) => [p.id, p]))

@@ -11,6 +11,7 @@ import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,6 +57,19 @@ public class GlobalExceptionHandler {
                 .body(Map.of("message", ex.getBody().getDetail() != null
                         ? ex.getBody().getDetail()
                         : ex.getBody().getTitle()));
+    }
+
+    /**
+     * A missing static file.
+     *
+     * NoResourceFoundException implements ErrorResponse but does not extend
+     * ErrorResponseException, so it slipped past the handler above and into the
+     * catch-all — every absent asset was being reported as a 500 with "an
+     * unexpected error occurred", which reads like the server is broken.
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNoResource(NoResourceFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Not found"));
     }
 
     /**
