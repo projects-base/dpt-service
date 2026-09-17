@@ -1,5 +1,6 @@
 package com.tracker.service.controller;
 
+import com.tracker.service.exception.ConflictException;
 import com.tracker.service.exception.ForbiddenException;
 import com.tracker.service.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Map<String, String>> handleNotFound(NotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", ex.getMessage()));
+    }
+
+    /** A write that would overwrite unseen state. The client re-reads and merges. */
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<Map<String, String>> handleConflict(ConflictException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", ex.getMessage()));
     }
 
     @ExceptionHandler({ForbiddenException.class, AccessDeniedException.class})
