@@ -1,0 +1,848 @@
+<title>The Quiet Campaign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --bg:#f2f1ed; --surface:#fbfaf7; --surface-2:#eceae4;
+  --ink:#232321; --ink-2:#585650; --ink-3:#8b887e;
+  --line:#dedbd2; --line-2:#cbc7bc;
+  --accent:#2b6d62; --accent-ink:#1f5249; --accent-soft:#dde9e5;
+  --boss:#77475f; --boss-soft:#eee1e7;
+  --shadow:0 1px 2px rgba(35,35,33,.05), 0 8px 24px -16px rgba(35,35,33,.18);
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1918; --surface:#212020; --surface-2:#282726;
+    --ink:#e7e3db; --ink-2:#a9a59b; --ink-3:#736f68;
+    --line:#302e2b; --line-2:#3d3a37;
+    --accent:#6fae9f; --accent-ink:#8cc4b6; --accent-soft:#23302d;
+    --boss:#bb90a5; --boss-soft:#2e2429;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1a1918; --surface:#212020; --surface-2:#282726;
+  --ink:#e7e3db; --ink-2:#a9a59b; --ink-3:#736f68;
+  --line:#302e2b; --line-2:#3d3a37;
+  --accent:#6fae9f; --accent-ink:#8cc4b6; --accent-soft:#23302d;
+  --boss:#bb90a5; --boss-soft:#2e2429;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--serif); font-size:18px; line-height:1.68;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+@media (max-width:520px){ body{font-size:17px} }
+
+/* ---------- header ---------- */
+.bar{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:50;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.bar-in{
+  max-width:820px; margin:0 auto; padding:10px 20px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.mark{font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-2); margin-right:auto; white-space:nowrap}
+.mark b{color:var(--accent); font-weight:600}
+.stat{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); white-space:nowrap; font-variant-numeric:tabular-nums}
+.stat b{color:var(--ink); font-weight:500}
+.ghost{
+  font-family:var(--sans); font-size:12px; font-weight:500; color:var(--ink-2);
+  background:none; border:1px solid var(--line-2); border-radius:999px;
+  padding:4px 11px; cursor:pointer; transition:.15s;
+}
+.ghost:hover{color:var(--ink); border-color:var(--ink-3)}
+.ghost[aria-pressed="true"]{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink)}
+
+/* ---------- shell ---------- */
+.wrap{max-width:820px; margin:0 auto; padding-inline:20px; padding-block:0 96px}
+.col{max-width:63ch}
+section{padding-block:38px; border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+
+h1{font-size:clamp(34px,7vw,52px); line-height:1.08; font-weight:500; letter-spacing:-.02em; margin:0 0 14px; text-wrap:balance}
+h2{font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); margin:0 0 20px}
+h3{font-size:23px; font-weight:500; line-height:1.3; margin:0 0 10px; letter-spacing:-.01em; text-wrap:balance}
+p{margin:0 0 17px}
+.lede{font-size:20px; color:var(--ink-2); line-height:1.62}
+.sm{font-family:var(--sans); font-size:14.5px; line-height:1.6; color:var(--ink-2)}
+.xs{font-family:var(--sans); font-size:12.5px; line-height:1.55; color:var(--ink-3)}
+em{font-style:italic}
+strong{font-weight:600; color:var(--ink)}
+a{color:var(--accent-ink); text-underline-offset:3px; text-decoration-thickness:1px}
+code,.m{font-family:var(--mono); font-size:.88em; font-variant-numeric:tabular-nums}
+
+/* ---------- opener ---------- */
+.opener{padding-block:44px 30px}
+.kicker{font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; color:var(--accent); margin:0 0 18px}
+.countdown{font-family:var(--mono); font-size:13px; color:var(--ink-3); margin-top:22px; font-variant-numeric:tabular-nums}
+
+/* ---------- tonight ---------- */
+.tonight{
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:4px; box-shadow:var(--shadow); overflow:hidden;
+}
+.tn-head{
+  display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  padding:16px 22px; border-bottom:1px solid var(--line); background:var(--surface-2);
+}
+.tn-day{font-family:var(--sans); font-size:13px; font-weight:600; color:var(--ink)}
+.tn-meta{font-family:var(--mono); font-size:12px; color:var(--ink-3); margin-left:auto; font-variant-numeric:tabular-nums}
+.tn-body{padding:22px}
+.tn-body h3{margin-bottom:6px}
+.tn-why{font-family:var(--sans); font-size:14px; color:var(--ink-2); margin:0 0 20px; line-height:1.55}
+.tn-list{margin:0 0 22px; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px}
+.tn-list li{display:flex; gap:11px; font-family:var(--sans); font-size:14.5px; line-height:1.5; color:var(--ink-2)}
+.tn-list li::before{content:""; flex:none; width:5px; height:5px; border-radius:50%; background:var(--accent); margin-top:8px; opacity:.6}
+
+.timer{display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding-top:20px; border-top:1px solid var(--line)}
+.clock{font-family:var(--mono); font-size:38px; font-weight:400; letter-spacing:-.02em; font-variant-numeric:tabular-nums; color:var(--ink); line-height:1}
+.clock.run{color:var(--accent)}
+.clock.done{color:var(--boss)}
+.btn{
+  font-family:var(--sans); font-size:13.5px; font-weight:500;
+  padding:8px 16px; border-radius:3px; cursor:pointer; transition:.15s;
+  border:1px solid var(--line-2); background:var(--surface); color:var(--ink);
+}
+.btn:hover{border-color:var(--ink-3)}
+.btn-fill{background:var(--accent); border-color:var(--accent); color:#fff}
+:root[data-theme="dark"] .btn-fill,
+:root:not([data-theme="light"]) .btn-fill{color:#141816}
+@media (prefers-color-scheme:light){ :root:not([data-theme="dark"]) .btn-fill{color:#fff} }
+.btn-fill:hover{filter:brightness(1.07)}
+.btn-fill[data-on="1"]{background:var(--accent-soft); color:var(--accent-ink); border-color:var(--accent)}
+.btn:disabled{opacity:.45; cursor:default}
+.spacer{margin-left:auto}
+
+/* ---------- streak grid ---------- */
+.grid-wrap{overflow-x:auto; padding-bottom:6px}
+.wkrow{display:flex; align-items:center; gap:10px; margin-bottom:5px}
+.wklab{font-family:var(--mono); font-size:10.5px; color:var(--ink-3); width:30px; flex:none; text-align:right}
+.dots{display:flex; gap:5px}
+.dot{
+  width:15px; height:15px; border-radius:2px; flex:none;
+  background:var(--surface-2); border:1px solid var(--line);
+  cursor:pointer; padding:0; transition:.12s;
+}
+.dot:hover{border-color:var(--ink-3)}
+.dot[data-on="1"]{background:var(--accent); border-color:var(--accent)}
+.dot[data-today="1"]{box-shadow:0 0 0 2px var(--bg), 0 0 0 3px var(--ink-3)}
+.dot[data-future="1"]{opacity:.42; cursor:default}
+.dot[data-light="1"]{background:repeating-linear-gradient(45deg,var(--surface-2),var(--surface-2) 3px,var(--line) 3px,var(--line) 4px)}
+.dot[data-light="1"][data-on="1"]{background:var(--accent)}
+.legend{display:flex; gap:18px; flex-wrap:wrap; margin-top:16px}
+
+/* ---------- rules ---------- */
+.rules{display:flex; flex-direction:column; gap:2px; counter-reset:r}
+.rule{display:flex; gap:18px; padding:17px 0; border-bottom:1px solid var(--line)}
+.rule:last-child{border-bottom:none}
+.rule-n{
+  font-family:var(--mono); font-size:12px; color:var(--ink-3); flex:none;
+  width:22px; padding-top:5px;
+}
+.rule h3{font-size:19px; margin-bottom:5px}
+.rule p{margin:0; font-family:var(--sans); font-size:14.5px; line-height:1.6; color:var(--ink-2)}
+
+/* ---------- weeks ---------- */
+.wk{border-bottom:1px solid var(--line)}
+.wk-sum{
+  display:flex; align-items:baseline; gap:13px; width:100%; text-align:left;
+  padding:15px 2px; background:none; border:none; cursor:pointer; color:inherit;
+  font-family:var(--sans); font-size:15px;
+}
+.wk-sum:hover .wk-title{color:var(--accent-ink)}
+.wk-n{font-family:var(--mono); font-size:11.5px; color:var(--ink-3); flex:none; width:30px}
+.wk-title{font-weight:500; color:var(--ink); flex:1; line-height:1.4}
+.wk-date{font-family:var(--mono); font-size:11.5px; color:var(--ink-3); flex:none; white-space:nowrap}
+.wk-tick{flex:none; width:15px; height:15px; border-radius:2px; border:1px solid var(--line-2); background:var(--surface)}
+.wk-tick[data-on="1"]{background:var(--accent); border-color:var(--accent)}
+.wk[data-now="1"] .wk-n{color:var(--accent); font-weight:500}
+.wk-body{padding:4px 2px 26px 45px}
+@media (max-width:560px){ .wk-body{padding-left:2px} .wk-date{display:none} }
+.field{margin-bottom:19px}
+.flabel{font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); margin:0 0 7px}
+.ftext{font-family:var(--sans); font-size:14.5px; line-height:1.6; color:var(--ink-2); margin:0}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{
+  font-family:var(--sans); font-size:12.5px; line-height:1.3;
+  padding:5px 10px; border:1px solid var(--line-2); border-radius:3px;
+  background:var(--surface); color:var(--ink-2); cursor:pointer; transition:.12s;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.chip:hover{border-color:var(--ink-3); color:var(--ink)}
+.chip[data-on="1"]{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink); text-decoration:line-through; text-decoration-thickness:1px}
+.chip a{color:inherit; text-decoration:none; opacity:.5; font-family:var(--mono); font-size:10px}
+.chip a:hover{opacity:1}
+.chal{
+  border-left:2px solid var(--accent); padding:2px 0 2px 16px; margin-bottom:19px;
+}
+.chal.boss{border-left-color:var(--boss)}
+.chal p{font-family:var(--sans); font-size:14.5px; line-height:1.6; margin:0 0 10px; color:var(--ink-2)}
+.chal .flabel{color:var(--accent)}
+.chal.boss .flabel{color:var(--boss)}
+.watch{
+  display:inline-flex; align-items:center; gap:8px; font-family:var(--sans);
+  font-size:13.5px; color:var(--ink-2); text-decoration:none;
+  border:1px solid var(--line-2); border-radius:3px; padding:7px 13px; transition:.12s;
+}
+.watch:hover{border-color:var(--accent); color:var(--accent-ink)}
+.watch span{font-family:var(--mono); font-size:10.5px; color:var(--ink-3)}
+
+/* ---------- quiz ---------- */
+.quiz{margin-top:20px; padding-top:20px; border-top:1px solid var(--line)}
+.q{padding:14px 0; border-bottom:1px solid var(--line)}
+.q:last-child{border-bottom:none}
+.q-t{font-family:var(--sans); font-size:14.5px; line-height:1.55; margin:0 0 10px; color:var(--ink)}
+.q-a{font-family:var(--sans); font-size:14px; line-height:1.6; color:var(--ink-2); margin:0 0 10px; padding:11px 14px; background:var(--surface-2); border-radius:3px}
+.q-btns{display:flex; gap:8px; flex-wrap:wrap}
+.tiny{font-family:var(--sans); font-size:12px; padding:5px 11px; border-radius:3px; border:1px solid var(--line-2); background:var(--surface); color:var(--ink-2); cursor:pointer}
+.tiny:hover{border-color:var(--ink-3); color:var(--ink)}
+.tiny[data-v="ok"]:hover{border-color:var(--accent); color:var(--accent-ink)}
+.tiny[data-v="no"]:hover{border-color:var(--boss); color:var(--boss)}
+
+/* ---------- library ---------- */
+.lib{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line)}
+.lib a{
+  background:var(--bg); padding:15px 16px; text-decoration:none; color:inherit; transition:.12s;
+  display:flex; flex-direction:column; gap:3px;
+}
+.lib a:hover{background:var(--surface)}
+.lib b{font-family:var(--sans); font-size:14px; font-weight:500; color:var(--ink)}
+.lib i{font-style:normal; font-family:var(--sans); font-size:12.5px; color:var(--ink-3); line-height:1.45}
+
+/* ---------- boss table ---------- */
+.bosses{display:flex; flex-direction:column}
+.boss-row{display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--line)}
+.boss-row:last-child{border-bottom:none}
+.boss-d{font-family:var(--mono); font-size:12px; color:var(--ink-3); width:66px; flex:none}
+.boss-t{font-family:var(--sans); font-size:14.5px; color:var(--ink-2); flex:1; line-height:1.45}
+.boss-t b{color:var(--ink); font-weight:500}
+.boss-row[data-big="1"] .boss-t b{color:var(--boss)}
+
+.note{font-family:var(--sans); font-size:13px; color:var(--ink-3); line-height:1.6; margin-top:26px; padding-top:18px; border-top:1px solid var(--line)}
+body[data-focus="1"] .hide-focus{display:none}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:2px}
+</style>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="mark">The Quiet Campaign · <b>Microsoft</b></div>
+    <div class="stat" id="barStreak">— day streak</div>
+    <button class="ghost" id="focusBtn" aria-pressed="false">Focus</button>
+    <button class="ghost" id="themeBtn">Theme</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="opener">
+    <div class="col">
+      <p class="kicker">17 Sep — 31 Dec 2026</p>
+      <h1>Fifteen weeks, twenty-five minutes at a time.</h1>
+      <p class="lede">You don't have the hours. You have the nights. This plan is built so that a bad day costs you nothing and a good day is a bonus — because the thing that has been failing isn't your ability, it's the gap between sessions.</p>
+      <p class="countdown" id="countdown">—</p>
+    </div>
+  </section>
+
+  <section id="tonight-sec">
+    <h2>Tonight</h2>
+    <div class="tonight">
+      <div class="tn-head">
+        <div class="tn-day" id="tnDay">—</div>
+        <div class="tn-meta" id="tnMeta">—</div>
+      </div>
+      <div class="tn-body">
+        <h3 id="tnTitle">—</h3>
+        <p class="tn-why" id="tnWhy">—</p>
+        <ul class="tn-list" id="tnList"></ul>
+        <div class="timer">
+          <div class="clock" id="clock">25:00</div>
+          <button class="btn" id="timerBtn">Start</button>
+          <button class="btn" id="resetBtn">Reset</button>
+          <button class="btn btn-fill spacer" id="floorBtn">Floor hit</button>
+        </div>
+        <div class="quiz" id="quizBox" hidden>
+          <button class="btn" id="quizBtn">Cold-start check</button>
+          <p class="xs" style="margin:9px 0 0">Three questions on what you've already solved. No looking anything up — if you can't state the approach in two minutes, it hasn't stuck yet.</p>
+          <div id="quizOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hide-focus">
+    <h2>106 days</h2>
+    <div class="grid-wrap"><div id="gridBox"></div></div>
+    <div class="legend">
+      <span class="xs"><span class="m" id="lgStreak">0</span> current streak</span>
+      <span class="xs"><span class="m" id="lgBest">0</span> longest</span>
+      <span class="xs"><span class="m" id="lgTotal">0</span> of <span class="m" id="lgElapsed">0</span> days hit</span>
+      <span class="xs">Tap any square to correct it.</span>
+    </div>
+  </section>
+
+  <section class="hide-focus">
+    <h2>The method</h2>
+    <div class="col">
+      <p>Everything below exists to solve one sentence you said: <em>"when I take a break it was gone."</em> That is not a knowledge problem, it's a spacing problem, and it has a known fix.</p>
+    </div>
+    <div class="rules col" style="margin-top:26px">
+      <div class="rule"><div class="rule-n">01</div><div>
+        <h3>Never zero</h3>
+        <p>Twenty-five minutes, every day, including the 15-hour ones. At 11:40 PM if that's what's left. A zero day costs about three days of re-warming; a 25-minute day costs nothing. You're protecting the chain, not the session.</p>
+      </div></div>
+      <div class="rule"><div class="rule-n">02</div><div>
+        <h3>Weekdays code, weekends design</h3>
+        <p>You never decide what to work on — deciding is where tired people lose. Monday to Friday is DSA. One weekend day is the long block: LLD through October and November, HLD through December.</p>
+      </div></div>
+      <div class="rule"><div class="rule-n">03</div><div>
+        <h3>Review at +3, +10, +30</h3>
+        <p>Every solved problem comes back three times. A review is four minutes, not a re-solve: read the title, state the approach out loud in under two minutes, write the core loop from memory. Only a failure sends it back to the start of the queue.</p>
+      </div></div>
+      <div class="rule"><div class="rule-n">04</div><div>
+        <h3>One line per problem, same day</h3>
+        <p><span class="m">2026-09-21 | 3. Longest Substring | sliding-window | 22m | SOLVED-hint | shrink left only while the dup is still in the window</span> — the last field is the whole point. It's what you re-read in December. "Solved it" is not an insight.</p>
+      </div></div>
+      <div class="rule"><div class="rule-n">05</div><div>
+        <h3>Two strikes, then a catch-up — never a restart</h3>
+        <p>Miss two days in a row and you owe one 90-minute weekend session. That is the entire penalty. You do not go back to week one. The restart instinct is what has been eating your months.</p>
+      </div></div>
+      <div class="rule"><div class="rule-n">06</div><div>
+        <h3>Small and retained beats large and forgotten</h3>
+        <p>Around 125 problems seen three times each, not 400 seen once. Blind 75 is the spine; AlgoMaster's pattern tracks map onto the weeks below. Adding a third list is procrastination wearing a productive costume.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="hide-focus">
+    <h2>The sixteen weeks</h2>
+    <div id="weeksBox"></div>
+    <p class="note">Problems are LeetCode links; ticking one is how the page knows what to quiz you on. Each week's challenge has a pass condition you can't argue your way around — that's deliberate.</p>
+  </section>
+
+  <section class="hide-focus">
+    <h2>Boss fights</h2>
+    <div class="col"><p class="sm" style="margin-bottom:22px">Interviewing is a separate skill from problem-solving. Two hundred solved problems teach you nothing about thinking out loud while someone watches you type.</p></div>
+    <div class="bosses" id="bossBox"></div>
+  </section>
+
+  <section class="hide-focus">
+    <h2>Library</h2>
+    <div class="col"><p class="sm" style="margin-bottom:22px">One resource per track. When you're stuck at 11 PM, watch rather than read — but watch the specific thing you're stuck on, not a playlist.</p></div>
+    <div class="lib" id="libBox"></div>
+    <p class="note">The full written plan lives beside this page in <span class="m">microsoft-sde-prep-plan.md</span>, and the daily log in <span class="m">microsoft-prep-log.md</span>. This page is the part you open every night; those are the part you open on Sundays.</p>
+  </section>
+
+</div>
+
+<script>
+"use strict";
+
+/* ================= data ================= */
+const L = s => "https://leetcode.com/problems/" + s + "/";
+const YT = q => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+
+const WEEKS = [
+ {n:"W0", a:"2026-09-17", b:"2026-09-20", t:"Reset and ignition",
+  wd:"Entain round on Fri 18 — nothing else that day. Then set up the log and run the baseline diagnostic.",
+  we:"Read the method twice. Put a recurring 25-minute block in your calendar and name it something you won't feel able to decline.",
+  ps:[["Two Sum","two-sum"],["Longest Substring Without Repeating","longest-substring-without-repeating-characters"],["Binary Tree Level Order Traversal","binary-tree-level-order-traversal"],["Number of Islands","number-of-islands"]],
+  ch:"Run all four timed, with no help, and log the times honestly. Whatever the result, that's your before-photo. You retake the identical four on 30 December.",
+  v:["Blind 75 roadmap explained","neetcode blind 75 roadmap"], am:"Set up your AlgoMaster account and pick the pattern track — don't start solving from it yet."},
+
+ {n:"W1", a:"2026-09-21", b:"2026-09-27", t:"Arrays, hashing, two pointers",
+  wd:"Hashing for lookup, and the two-pointer shrink. Every harder pattern later is one of these with a constraint bolted on.",
+  we:"LLD fundamentals: SOLID, composition over inheritance, and what makes Java code testable — constructor injection, no static state.",
+  ps:[["Two Sum","two-sum"],["Group Anagrams","group-anagrams"],["Product Except Self","product-of-array-except-self"],["Top K Frequent","top-k-frequent-elements"],["Container With Most Water","container-with-most-water"],["3Sum","3sum"],["Trapping Rain Water","trapping-rain-water"],["Valid Palindrome","valid-palindrome"]],
+  ch:"From a blank file, no reference: Two Sum, Group Anagrams and 3Sum in under 35 minutes total.",
+  v:["Two pointers, properly explained","two pointers technique explained neetcode"], am:"AlgoMaster: Prefix Sum and Two Pointers."},
+
+ {n:"W2", a:"2026-09-28", b:"2026-10-04", t:"Sliding window, binary search",
+  wd:"Window expansion and contraction; then binary search on a value range, not just an array. The second one is what most people never really get.",
+  we:"Design patterns, first block: Strategy, Factory, Builder, Observer. Write each one, don't just read it.",
+  ps:[["Longest Substring Without Repeating","longest-substring-without-repeating-characters"],["Minimum Window Substring","minimum-window-substring"],["Longest Repeating Char Replacement","longest-repeating-character-replacement"],["Sliding Window Maximum","sliding-window-maximum"],["Search in Rotated Sorted Array","search-in-rotated-sorted-array"],["Find Minimum in Rotated","find-minimum-in-rotated-sorted-array"],["Koko Eating Bananas","koko-eating-bananas"],["Median of Two Sorted Arrays","median-of-two-sorted-arrays"]],
+  ch:"Explain out loud, in 90 seconds, why binary search works on Koko Eating Bananas when nothing is sorted. If you can't, you've memorised it rather than understood it.",
+  v:["Binary search on the answer","binary search on answer space explained"], am:"AlgoMaster: Sliding Window and Binary Search.",
+  mile:"Resume v1 done — impact-first bullets, every one with a number."},
+
+ {n:"W3", a:"2026-10-05", b:"2026-10-11", t:"Strings, stacks, monotonic stack",
+  wd:"Microsoft asks more string manipulation than almost anyone. Monotonic stack is the one trick that turns several O(n²) problems into O(n).",
+  we:"LLD 1 — Parking Lot. Ninety minutes, compiling Java, then a self-review out loud.",
+  ps:[["Reverse Words in a String","reverse-words-in-a-string"],["String Compression","string-compression"],["Longest Palindromic Substring","longest-palindromic-substring"],["Valid Parentheses","valid-parentheses"],["Roman to Integer","roman-to-integer"],["Min Stack","min-stack"],["Daily Temperatures","daily-temperatures"],["Largest Rectangle in Histogram","largest-rectangle-in-histogram"],["Evaluate RPN","evaluate-reverse-polish-notation"]],
+  ch:"Write Min Stack and Daily Temperatures back to back without looking, then say in one sentence what makes a stack monotonic.",
+  v:["Monotonic stack pattern","monotonic stack explained"], am:"AlgoMaster: Monotonic Stack."},
+
+ {n:"W4", a:"2026-10-12", b:"2026-10-18", t:"Linked lists, design a data structure",
+  wd:"Pointer surgery, and then the category Microsoft loves most: build me this structure with these guarantees.",
+  we:"LLD 2 — LRU and LFU cache as production code. Generics, eviction as a strategy, and a real answer on thread safety.",
+  ps:[["Reverse Linked List","reverse-linked-list"],["Reverse Nodes in k-Group","reverse-nodes-in-k-group"],["Merge k Sorted Lists","merge-k-sorted-lists"],["Linked List Cycle","linked-list-cycle"],["Copy List with Random Pointer","copy-list-with-random-pointer"],["Add Two Numbers","add-two-numbers"],["LRU Cache","lru-cache"],["LFU Cache","lfu-cache"],["Implement Trie","implement-trie-prefix-tree"],["Insert Delete GetRandom O(1)","insert-delete-getrandom-o1"]],
+  ch:"LRU Cache from scratch in under 20 minutes, with a working main() that proves the eviction order.",
+  v:["LRU cache implementation in Java","lru cache design java hashmap doubly linked list"], am:"AlgoMaster: Fast and Slow Pointers, Linked List reversal.",
+  mile:"Resume final and LinkedIn updated — recruiters search LinkedIn."},
+
+ {n:"W5", a:"2026-10-19", b:"2026-10-25", t:"Trees and BSTs",
+  wd:"Traversals until they're automatic, then LCA, validation, serialisation and path sums. This is the densest week for Microsoft specifically.",
+  we:"LLD 3 — Rate limiter. Token bucket and sliding-window log. Where does it live: in-process or shared? That question is your bridge into system design.",
+  ps:[["Level Order Traversal","binary-tree-level-order-traversal"],["Right Side View","binary-tree-right-side-view"],["LCA of a Binary Tree","lowest-common-ancestor-of-a-binary-tree"],["LCA of a BST","lowest-common-ancestor-of-a-binary-search-tree"],["Validate BST","validate-binary-search-tree"],["Serialize and Deserialize","serialize-and-deserialize-binary-tree"],["Diameter of Binary Tree","diameter-of-binary-tree"],["Path Sum III","path-sum-iii"],["Kth Smallest in a BST","kth-smallest-element-in-a-bst"]],
+  ch:"Serialize and deserialize a binary tree, then hand-trace it on a five-node tree on paper without running the code.",
+  v:["Tree traversal patterns","binary tree interview patterns dfs bfs"], am:"AlgoMaster: Tree BFS and Tree DFS."},
+
+ {n:"W6", a:"2026-10-26", b:"2026-11-01", t:"Heaps, intervals, greedy",
+  wd:"Top-K by heap, the interval sweep, and knowing when greedy is actually safe.",
+  we:"LLD 4 — Elevator system, the hardest scheduling one. Then your first mock: DSA. Expect it to go badly; that is the point of doing it in October.",
+  ps:[["Kth Largest Element","kth-largest-element-in-an-array"],["Find Median from Data Stream","find-median-from-data-stream"],["Task Scheduler","task-scheduler"],["Merge Intervals","merge-intervals"],["Insert Interval","insert-interval"],["Non-overlapping Intervals","non-overlapping-intervals"],["Meeting Rooms II","meeting-rooms-ii"],["Jump Game","jump-game"]],
+  ch:"Merge Intervals and Meeting Rooms II in one sitting, then state the single idea they share.",
+  v:["Heap and top-K patterns","two heaps pattern median data stream"], am:"AlgoMaster: Top K Elements, Merge Intervals.",
+  mile:"Shortlist 5–8 Microsoft roles across IDC Hyderabad, Bangalore and Noida."},
+
+ {n:"W7", a:"2026-11-02", b:"2026-11-08", t:"Graphs I — and a deliberate light week",
+  wd:"Diwali falls around the 8th. This week is floor-only by design, not by failure. Grid traversal, islands, BFS shortest path.",
+  we:"Ninety minutes, minimum. Design patterns, second block: State, Command, Decorator, Adapter.",
+  ps:[["Number of Islands","number-of-islands"],["Clone Graph","clone-graph"],["Rotting Oranges","rotting-oranges"],["Pacific Atlantic Water Flow","pacific-atlantic-water-flow"],["Surrounded Regions","surrounded-regions"],["Word Ladder","word-ladder"]],
+  ch:"Seven floors in seven days. That is the entire challenge this week. Holding the chain through a festival week is worth more than ten problems.",
+  v:["Graph BFS and DFS templates","graph traversal template bfs dfs interview"], am:"AlgoMaster: Graph traversal — go slowly."},
+
+ {n:"W8", a:"2026-11-09", b:"2026-11-15", t:"Graphs II, backtracking",
+  wd:"Topological sort, union-find, and the backtracking skeleton that covers subsets, permutations and word search alike.",
+  we:"LLD 5 — Vending machine as a pure state machine, fast and high-return. Then mock two: machine coding under a clock.",
+  ps:[["Course Schedule","course-schedule"],["Course Schedule II","course-schedule-ii"],["Alien Dictionary","alien-dictionary"],["Connected Components","number-of-connected-components-in-an-undirected-graph"],["Redundant Connection","redundant-connection"],["Network Delay Time","network-delay-time"],["Subsets","subsets"],["Permutations","permutations"],["Combination Sum","combination-sum"],["Word Search","word-search"]],
+  ch:"Course Schedule II from scratch, then explain topological sort to an imaginary junior in 60 seconds without using the word 'topological'.",
+  v:["Union find and topological sort","union find disjoint set topological sort explained"], am:"AlgoMaster: Topological Sort, Union Find.",
+  mile:"Referral asks out. Send five, expect two. A referral gets your resume read — not more than that."},
+
+ {n:"W9", a:"2026-11-16", b:"2026-11-22", t:"Dynamic programming",
+  wd:"One week, not three. Microsoft asks moderate DP, not competitive DP. Own the 1D set cold and the 2D basics honestly.",
+  we:"LLD 6 — Splitwise. This one tests domain modelling more than patterns; resist adding a pattern where a plain class will do.",
+  ps:[["Climbing Stairs","climbing-stairs"],["House Robber","house-robber"],["House Robber II","house-robber-ii"],["Coin Change","coin-change"],["Longest Increasing Subsequence","longest-increasing-subsequence"],["Word Break","word-break"],["Unique Paths","unique-paths"],["Edit Distance","edit-distance"],["Longest Common Subsequence","longest-common-subsequence"],["Maximum Product Subarray","maximum-product-subarray"]],
+  ch:"Write the recurrence for Edit Distance on paper, correctly, before touching a keyboard.",
+  v:["DP patterns for interviews","dynamic programming patterns interview 1d 2d"], am:"AlgoMaster: Dynamic Programming track."},
+
+ {n:"W10",a:"2026-11-23", b:"2026-11-29", t:"Mixed set, and the decision",
+  wd:"Microsoft-tagged problems in random order, 35-minute hard cap each. No topic labels — the difficulty is not knowing what's coming.",
+  we:"HLD 1 — URL shortener, purely to drill the estimation ritual. HLD 2 — distributed rate limiter. Then mock three, to measure the delta from October.",
+  ps:[["Spiral Matrix","spiral-matrix"],["Rotate Image","rotate-image"],["Set Matrix Zeroes","set-matrix-zeroes"],["Populating Next Right Pointers","populating-next-right-pointers-in-each-node"],["Excel Sheet Column Number","excel-sheet-column-number"],["Design Twitter","design-twitter"],["N-Queens","n-queens"]],
+  ch:"Ten Microsoft-tagged problems, 35 minutes each, no hints. Write down the score — it decides your level.",
+  v:["System design estimation","back of envelope estimation system design"], am:"Switch AlgoMaster to mixed/random practice mode.",
+  mile:"Apply. Tell the recruiter you're available from the first week of January. Decide SDE II vs Senior on the mock evidence, not on nerves."},
+
+ {n:"W11",a:"2026-11-30", b:"2026-12-06", t:"Mixed set two",
+  wd:"Same as last week, random order, timed. You're training recall under pressure now, not learning patterns.",
+  we:"HLD 3 — chat system: WebSockets, presence, fan-out, ordering, offline delivery. HLD 4 — notification service: queues, retries, idempotency, dead letters.",
+  ps:[],
+  ch:"Eight problems in random order with no topic hints. Pass condition: no more than two need an editorial.",
+  v:["Designing a chat system","design whatsapp system design interview"], am:"AlgoMaster: revisit your weakest two patterns.",
+  mile:"Recruiter-screen window opens. Be ready from 30 Nov: 30 minutes, resume walkthrough, why Microsoft, notice period."},
+
+ {n:"W12",a:"2026-12-07", b:"2026-12-13", t:"Repair the weak patterns",
+  wd:"Open the log. Find your two worst patterns by outcome. Spend the whole week there — this is the highest-yield week of the plan.",
+  we:"HLD 5 — file sync and chunking. HLD 6 — search typeahead. Then mock four: drive 45 minutes of system design without being prompted.",
+  ps:[],
+  ch:"Five problems in each of your two worst patterns. The log decides which ones, not your mood.",
+  v:["File sync and chunking design","design dropbox system design interview"], am:"AlgoMaster: the two patterns your log names."},
+
+ {n:"W13",a:"2026-12-14", b:"2026-12-20", t:"Review only, and the AI designs",
+  wd:"Review backlog plus one new problem a day. Nothing more. You are consolidating, not accumulating.",
+  we:"HLD 7 — booking with strong consistency. HLD 8 — metrics pipeline. HLD 9 — a RAG document Q&A system. Two mocks. This is where your AI learning stops being a separate track.",
+  ps:[],
+  ch:"Run HLD 7, 8 and 9 to a 45-minute clock, out loud, recorded. Watch one back. It will be uncomfortable and it will fix more than another ten problems would.",
+  v:["RAG system design","design a RAG system architecture chunking embeddings"], am:"Clear the AlgoMaster review queue.",
+  mile:"Twelve STAR stories written, each ending in a real number."},
+
+ {n:"W14",a:"2026-12-21", b:"2026-12-27", t:"The full loop",
+  wd:"Review backlog and timed warm-ups. Protect your energy for Saturday.",
+  we:"HLD 10 — LLM inference serving: batching, KV cache, GPU autoscaling, quotas, guardrails. Then Saturday the 26th: four rounds, one day, no breaks longer than fifteen minutes.",
+  ps:[],
+  ch:"Saturday 26 December. Two coding rounds, one design, one behavioural — back to back. Stamina is what breaks people in a real loop, not knowledge.",
+  v:["LLM serving architecture","llm inference serving batching kv cache architecture"], am:"Rest the queue. One pass, no new material."},
+
+ {n:"W15",a:"2026-12-28", b:"2026-12-31", t:"Taper",
+  wd:"Two easy problems a day to stay warm. Nothing new. Re-read every insight line in your log — that is the entire revision.",
+  we:"Logistics: camera, mic, IDE, a quiet room, water. Then sleep properly for four nights.",
+  ps:[["Two Sum","two-sum"],["Longest Substring Without Repeating","longest-substring-without-repeating-characters"],["Binary Tree Level Order Traversal","binary-tree-level-order-traversal"],["Number of Islands","number-of-islands"]],
+  ch:"Wednesday 30 December: retake the four problems from 20 September. Compare the times. Then close the laptop.",
+  v:["Interview day preparation","software engineer interview day mindset"], am:"Nothing new. Read your own notes."}
+];
+
+const BOSSES = [
+ {d:"~31 Oct", t:"<b>Mock 1 — DSA.</b> A baseline. It is supposed to go badly."},
+ {d:"~14 Nov", t:"<b>Mock 2 — LLD.</b> Machine coding against a clock."},
+ {d:"~28 Nov", t:"<b>Mock 3 — DSA.</b> Measure the delta from October. This one sets your level."},
+ {d:"~12 Dec", t:"<b>Mock 4 — HLD.</b> Forty-five minutes, driven by you, unprompted."},
+ {d:"W13", t:"<b>Mocks 5 and 6.</b> One DSA, one HLD, same weekend."},
+ {d:"26 Dec", t:"<b>The full loop.</b> Four rounds in one day. The highest-value four hours in this plan.", big:1},
+ {d:"Dec", t:"<b>Two real interviews elsewhere.</b> Live reps beat mocks. Use another company's loop as free practice."}
+];
+
+const LIB = [
+ {u:"https://algomaster.io/", b:"AlgoMaster", i:"Your pattern track and challenges. Map its patterns to the weeks above."},
+ {u:"https://www.youtube.com/@NeetCode", b:"NeetCode", i:"The clearest DSA explanations. One video per stuck problem, not a playlist."},
+ {u:"https://www.youtube.com/@takeUforward", b:"take U forward", i:"Striver's A2Z sheet and deep pattern walkthroughs."},
+ {u:"https://www.youtube.com/@abdul_bari", b:"Abdul Bari", i:"When you need the algorithm itself, not the interview version."},
+ {u:"https://www.youtube.com/@ByteByteGo", b:"ByteByteGo", i:"System design, short and visual. Pairs with Alex Xu Vol 1."},
+ {u:"https://www.youtube.com/@gkcs", b:"Gaurav Sen", i:"Longer design walkthroughs with real trade-off reasoning."},
+ {u:"https://www.youtube.com/@hnasser", b:"Hussein Nasser", i:"Backend fundamentals — protocols, databases, connections."},
+ {u:YT("Concept and Coding low level design java"), b:"Concept && Coding", i:"LLD in Java, which is exactly the India machine-coding format."},
+ {u:YT("Arpit Bhayani asli engineering system design"), b:"Asli Engineering", i:"Arpit Bhayani — depth on internals when a design answer feels shallow."},
+ {u:"https://leetcode.com/problemset/", b:"LeetCode", i:"Premium for November and December only, for the Microsoft-tagged frequency filter."},
+ {u:"https://refactoring.guru/design-patterns", b:"Refactoring Guru", i:"Design patterns, with Java examples. The LLD reference."},
+ {u:"https://learn.microsoft.com/training/", b:"Microsoft Learn", i:"The AI path. It doubles as material for HLD 9 and 10, so it isn't a detour."}
+];
+
+/* ================= state ================= */
+const DEFAULT = {checkins:{}, problems:{}, challenges:{}, cold:{ok:0,no:0}};
+let state = JSON.parse(JSON.stringify(DEFAULT));
+let dbRef = null, saveTimer = null;
+
+const LS = "ms-campaign-v1";
+function loadLocal(){
+  try{ const r = localStorage.getItem(LS); if(r) state = Object.assign(JSON.parse(JSON.stringify(DEFAULT)), JSON.parse(r)); }catch(e){}
+}
+function saveLocal(){ try{ localStorage.setItem(LS, JSON.stringify(state)); }catch(e){} }
+function save(){
+  saveLocal();
+  if(!dbRef) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{ dbRef.set(JSON.parse(JSON.stringify(state))).catch(()=>{}); }, 450);
+}
+
+/* ================= dates ================= */
+const START = "2026-09-17", END = "2026-12-31";
+function ymd(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function parse(s){ const p=s.split("-"); return new Date(+p[0], +p[1]-1, +p[2]); }
+function addDays(s,n){ const d=parse(s); d.setDate(d.getDate()+n); return ymd(d); }
+function daysBetween(a,b){ return Math.round((parse(b)-parse(a))/86400000); }
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DAY=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+function pretty(s){ const d=parse(s); return d.getDate()+" "+MON[d.getMonth()]; }
+
+const TODAY = ymd(new Date());
+function clampToday(){
+  if(TODAY < START) return START;
+  if(TODAY > END) return END;
+  return TODAY;
+}
+const CUR = clampToday();
+function weekFor(dt){
+  for(const w of WEEKS){ if(dt >= w.a && dt <= w.b) return w; }
+  return WEEKS[WEEKS.length-1];
+}
+
+/* ================= streak ================= */
+function streaks(){
+  let cur=0, best=0, run=0, total=0;
+  const last = TODAY < START ? START : (TODAY > END ? END : TODAY);
+  for(let d=START; d<=END; d=addDays(d,1)){
+    const hit = !!state.checkins[d];
+    if(hit){ total++; run++; if(run>best) best=run; }
+    else if(d <= last){ run=0; }
+    if(d===last){ cur = state.checkins[d] ? run : (state.checkins[addDays(d,-1)] ? runUpTo(addDays(d,-1)) : 0); }
+  }
+  return {cur, best, total};
+}
+function runUpTo(d){
+  let r=0, x=d;
+  while(x>=START && state.checkins[x]){ r++; x=addDays(x,-1); }
+  return r;
+}
+function elapsed(){
+  if(TODAY < START) return 0;
+  const last = TODAY > END ? END : TODAY;
+  return daysBetween(START,last)+1;
+}
+
+/* ================= render ================= */
+function renderBar(){
+  const s = streaks();
+  document.getElementById("barStreak").innerHTML = "<b>"+s.cur+"</b> day streak";
+  document.getElementById("lgStreak").textContent = s.cur;
+  document.getElementById("lgBest").textContent = s.best;
+  document.getElementById("lgTotal").textContent = s.total;
+  document.getElementById("lgElapsed").textContent = elapsed();
+}
+
+function renderCountdown(){
+  const el = document.getElementById("countdown");
+  const toEnd = daysBetween(TODAY, END);
+  const toLoop = daysBetween(TODAY, "2027-01-01");
+  if(toLoop > 0) el.textContent = toEnd+" days of preparation left · "+toLoop+" days until 1 January";
+  else el.textContent = "The campaign is over. Go and take the interview.";
+}
+
+function renderTonight(){
+  const w = weekFor(CUR);
+  const d = parse(TODAY);
+  const dow = d.getDay();
+  const weekend = (dow===0 || dow===6);
+  const idx = WEEKS.indexOf(w);
+
+  document.getElementById("tnDay").textContent = DAY[dow]+", "+pretty(TODAY);
+  document.getElementById("tnMeta").textContent = w.n+" · day "+Math.max(1, daysBetween(START,CUR)+1)+" of 106";
+  document.getElementById("tnTitle").textContent = weekend ? "The weekend anchor" : w.t;
+  document.getElementById("tnWhy").textContent = weekend
+    ? "Three to four hours, on whichever of the two days is freer. This is the only long block of the week — everything design-shaped lives here."
+    : "Twenty-five minutes is a complete session. Anything past that is a bonus, not a debt.";
+
+  const items = weekend
+    ? [w.we, "Ten minutes of the +3/+10/+30 review queue before you start the long block.", "Sunday night: twenty-minute review, and write one STAR story."]
+    : ["Ten minutes — two reviews from the +3/+10/+30 queue.",
+       "Fifteen minutes — one new problem. Brute force counts. If you're stuck at fifteen, read the editorial only until the key idea, then close it.",
+       w.wd,
+       "Log one line before you close the laptop, insight included."];
+
+  document.getElementById("tnList").innerHTML = items.map(t=>"<li>"+esc(t)+"</li>").join("");
+
+  const fb = document.getElementById("floorBtn");
+  const on = !!state.checkins[TODAY];
+  fb.dataset.on = on ? "1" : "0";
+  fb.textContent = on ? "Floor hit ✓" : "Floor hit";
+}
+
+function renderGrid(){
+  const box = document.getElementById("gridBox");
+  box.innerHTML = WEEKS.map(w=>{
+    let dots = "";
+    for(let d=w.a; d<=w.b; d=addDays(d,1)){
+      const future = d > TODAY;
+      const on = !!state.checkins[d];
+      dots += '<button class="dot" data-d="'+d+'" data-on="'+(on?1:0)+'"'
+            + (d===TODAY?' data-today="1"':'')
+            + (future?' data-future="1"':'')
+            + (w.n==="W7"?' data-light="1"':'')
+            + ' title="'+pretty(d)+'" aria-label="'+pretty(d)+'"></button>';
+    }
+    return '<div class="wkrow"><span class="wklab">'+w.n+'</span><div class="dots">'+dots+'</div></div>';
+  }).join("");
+  box.querySelectorAll(".dot").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const d = b.dataset.d;
+      if(d > TODAY) return;
+      if(state.checkins[d]) delete state.checkins[d]; else state.checkins[d]=1;
+      save(); renderGrid(); renderBar(); renderTonight();
+    });
+  });
+}
+
+function esc(s){ return String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function renderWeeks(){
+  const now = weekFor(CUR);
+  document.getElementById("weeksBox").innerHTML = WEEKS.map((w,i)=>{
+    const open = (w===now);
+    const done = !!state.challenges[w.n];
+    const probs = w.ps.length
+      ? '<div class="field"><p class="flabel">Problems</p><div class="chips">'
+        + w.ps.map(p=>{
+            const on = !!state.problems[p[1]];
+            return '<span class="chip" data-p="'+p[1]+'" data-on="'+(on?1:0)+'" role="button" tabindex="0">'+esc(p[0])
+                 + ' <a href="'+L(p[1])+'" target="_blank" rel="noopener" title="Open on LeetCode">↗</a></span>';
+          }).join("")
+        + '</div></div>'
+      : '';
+    return '<div class="wk" data-now="'+(open?1:0)+'">'
+      + '<button class="wk-sum" data-wk="'+i+'" aria-expanded="'+(open?"true":"false")+'">'
+        + '<span class="wk-n">'+w.n+'</span>'
+        + '<span class="wk-title">'+esc(w.t)+'</span>'
+        + '<span class="wk-date">'+pretty(w.a)+'–'+pretty(w.b)+'</span>'
+        + '<span class="wk-tick" data-on="'+(done?1:0)+'"></span>'
+      + '</button>'
+      + '<div class="wk-body" '+(open?"":"hidden")+'>'
+        + '<div class="field"><p class="flabel">Weekdays</p><p class="ftext">'+esc(w.wd)+'</p></div>'
+        + '<div class="field"><p class="flabel">Weekend anchor</p><p class="ftext">'+esc(w.we)+'</p></div>'
+        + probs
+        + '<div class="chal'+(w.n==="W14"?" boss":"")+'"><p class="flabel">Challenge</p><p>'+esc(w.ch)+'</p>'
+          + '<button class="tiny" data-chal="'+w.n+'">'+(done?"Passed ✓":"Mark passed")+'</button></div>'
+        + (w.mile ? '<div class="field"><p class="flabel">Milestone</p><p class="ftext">'+esc(w.mile)+'</p></div>' : '')
+        + '<div class="field"><p class="flabel">AlgoMaster</p><p class="ftext">'+esc(w.am)+'</p></div>'
+        + '<a class="watch" href="'+YT(w.v[1])+'" target="_blank" rel="noopener">'+esc(w.v[0])+' <span>YOUTUBE ↗</span></a>'
+      + '</div></div>';
+  }).join("");
+
+  document.querySelectorAll(".wk-sum").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const body = b.nextElementSibling;
+      const willOpen = body.hidden;
+      body.hidden = !willOpen;
+      b.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    });
+  });
+  document.querySelectorAll(".chip").forEach(c=>{
+    const toggle = ()=>{
+      const k = c.dataset.p;
+      if(state.problems[k]) delete state.problems[k]; else state.problems[k]=1;
+      save(); renderWeeks();
+    };
+    c.addEventListener("click", e=>{ if(e.target.tagName==="A") return; toggle(); });
+    c.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); } });
+  });
+  document.querySelectorAll("[data-chal]").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const k = b.dataset.chal;
+      if(state.challenges[k]) delete state.challenges[k]; else state.challenges[k]=1;
+      save(); renderWeeks();
+    });
+  });
+}
+
+function renderStatic(){
+  document.getElementById("bossBox").innerHTML = BOSSES.map(b=>
+    '<div class="boss-row"'+(b.big?' data-big="1"':'')+'><span class="boss-d">'+b.d+'</span><span class="boss-t">'+b.t+'</span></div>'
+  ).join("");
+  document.getElementById("libBox").innerHTML = LIB.map(x=>
+    '<a href="'+x.u+'" target="_blank" rel="noopener"><b>'+esc(x.b)+'</b><i>'+esc(x.i)+'</i></a>'
+  ).join("");
+}
+
+function renderAll(){ renderBar(); renderTonight(); renderGrid(); renderWeeks(); }
+
+/* ================= timer ================= */
+let left = 25*60, tick = null;
+const clock = document.getElementById("clock");
+const timerBtn = document.getElementById("timerBtn");
+function paint(){
+  const m = Math.floor(left/60), s = left%60;
+  clock.textContent = String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+timerBtn.addEventListener("click", ()=>{
+  if(tick){ clearInterval(tick); tick=null; timerBtn.textContent="Resume"; clock.classList.remove("run"); return; }
+  clock.classList.remove("done"); clock.classList.add("run");
+  timerBtn.textContent = "Pause";
+  tick = setInterval(()=>{
+    left--;
+    if(left<=0){
+      left=0; clearInterval(tick); tick=null;
+      clock.classList.remove("run"); clock.classList.add("done");
+      timerBtn.textContent="Start";
+      document.getElementById("tnWhy").textContent = "That's the floor. Log your line, then stop — or keep going, but the day already counts.";
+    }
+    paint();
+  },1000);
+});
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  clearInterval(tick); tick=null; left=25*60; paint();
+  clock.classList.remove("run","done"); timerBtn.textContent="Start";
+});
+document.getElementById("floorBtn").addEventListener("click", ()=>{
+  if(state.checkins[TODAY]) delete state.checkins[TODAY]; else state.checkins[TODAY]=1;
+  save(); renderBar(); renderGrid(); renderTonight();
+});
+
+/* ================= controls ================= */
+const themeBtn = document.getElementById("themeBtn");
+themeBtn.addEventListener("click", ()=>{
+  const r = document.documentElement;
+  const cur = r.getAttribute("data-theme");
+  const sysDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const next = cur ? (cur==="dark" ? "light" : "dark") : (sysDark ? "light" : "dark");
+  r.setAttribute("data-theme", next);
+  try{ localStorage.setItem("ms-theme", next); }catch(e){}
+});
+try{ const t = localStorage.getItem("ms-theme"); if(t) document.documentElement.setAttribute("data-theme", t); }catch(e){}
+
+const focusBtn = document.getElementById("focusBtn");
+focusBtn.addEventListener("click", ()=>{
+  const on = document.body.dataset.focus === "1";
+  document.body.dataset.focus = on ? "0" : "1";
+  focusBtn.setAttribute("aria-pressed", on ? "false" : "true");
+  if(!on) window.scrollTo({top:0, behavior:"smooth"});
+});
+
+/* ================= boot ================= */
+loadLocal();
+paint();
+renderStatic();
+renderAll();
+renderCountdown();
+
+/* ================= capabilities ================= */
+(async ()=>{
+  if(!window.claude || typeof window.claude.use !== "function") return;
+
+  try{
+    const db = await window.claude.use("db");
+    if(db){
+      dbRef = db.doc("state/progress");
+      let first = true;
+      dbRef.onSnapshot(snap=>{
+        if(snap.exists){
+          state = Object.assign(JSON.parse(JSON.stringify(DEFAULT)), snap.data());
+          saveLocal(); renderAll();
+        }else if(first){
+          const has = Object.keys(state.checkins).length || Object.keys(state.problems).length;
+          if(has) dbRef.set(JSON.parse(JSON.stringify(state))).catch(()=>{});
+        }
+        first = false;
+      }, ()=>{});
+    }
+  }catch(e){}
+
+  try{
+    const sample = await window.claude.use("sample");
+    if(!sample) return;
+    document.getElementById("quizBox").hidden = false;
+    const out = document.getElementById("quizOut");
+    const btn = document.getElementById("quizBtn");
+
+    btn.addEventListener("click", async ()=>{
+      const solved = Object.keys(state.problems);
+      const w = weekFor(CUR);
+      if(solved.length < 3){
+        out.innerHTML = '<p class="xs" style="margin-top:14px">Tick a few problems in the weeks below first — the check is built from what you say you\'ve solved.</p>';
+        return;
+      }
+      btn.disabled = true; btn.textContent = "Thinking…";
+      out.innerHTML = '<p class="xs" style="margin-top:14px">Building three questions from your log…</p>';
+      const pick = solved.sort(()=>Math.random()-0.5).slice(0,12).join(", ");
+      try{
+        const r = await sample.json(
+          "You are running a 2-minute cold-start recall check for a software engineer preparing for Microsoft coding interviews. "+
+          "They have solved these LeetCode problems (slugs): "+pick+". Current focus: "+w.t+". "+
+          "Write exactly 3 questions that test whether the KEY IDEA has stuck — not trivia, not syntax. "+
+          "Good questions ask why an approach works, what invariant is maintained, or when it breaks. "+
+          "Each question must be answerable out loud in under 60 seconds. "+
+          "Return strict JSON: {\"questions\":[{\"q\":\"...\",\"key\":\"the one or two sentence answer\"}]}",
+          {modelTier:"quick"}
+        );
+        const qs = (r && r.questions) || [];
+        if(!qs.length) throw new Error("empty");
+        out.innerHTML = qs.map((x,i)=>
+          '<div class="q"><p class="q-t">'+(i+1)+'. '+esc(x.q)+'</p>'
+          + '<p class="q-a" hidden>'+esc(x.key)+'</p>'
+          + '<div class="q-btns"><button class="tiny" data-reveal="'+i+'">Show the answer</button>'
+          + '<button class="tiny" data-v="ok" data-mark="ok">I had it</button>'
+          + '<button class="tiny" data-v="no" data-mark="no">Gone</button></div></div>'
+        ).join("");
+        out.querySelectorAll("[data-reveal]").forEach(b=>b.addEventListener("click",()=>{
+          const a = b.closest(".q").querySelector(".q-a"); a.hidden = !a.hidden;
+          b.textContent = a.hidden ? "Show the answer" : "Hide";
+        }));
+        out.querySelectorAll("[data-mark]").forEach(b=>b.addEventListener("click",()=>{
+          state.cold[b.dataset.mark === "ok" ? "ok" : "no"]++;
+          save();
+          b.closest(".q-btns").querySelectorAll("[data-mark]").forEach(x=>x.disabled=true);
+          const tot = state.cold.ok + state.cold.no;
+          const rate = tot ? Math.round(state.cold.ok/tot*100) : 0;
+          document.querySelector("#quizBox .xs").textContent = "Cold-start rate so far: "+rate+"% over "+tot+" checks. Target is above 70% by mid-December.";
+        }));
+      }catch(e){
+        out.innerHTML = '<p class="xs" style="margin-top:14px">Couldn\'t build the check just now. Do it the analogue way: pick three solved problems from your log and state each approach out loud in under two minutes.</p>';
+      }
+      btn.disabled = false; btn.textContent = "Cold-start check";
+    });
+  }catch(e){}
+})();
+</script>

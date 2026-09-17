@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EPAM Java Round Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+</head>
+<body>
+<style>
+:root{
+  --ground:#F4F6F4; --surface:#FFFFFF; --surface-2:#EAEFEB;
+  --ink:#111A16; --ink-2:#3C4A44; --ink-3:#6D7C74;
+  --rule:#D9E1DB; --rule-soft:#E6ECE8;
+  --java:#1B5E4A; --java-soft:#E1EEE8;
+  --react:#3A4B9E; --react-soft:#E4E8F7;
+  --warn:#87590A; --warn-soft:#F6EEDD;
+  --code-bg:#F0F4F1; --code-ink:#17281F; --on-accent:#FFFFFF;
+  --shadow:0 1px 2px rgba(17,26,22,.05), 0 8px 24px -16px rgba(17,26,22,.25);
+  --f-display:"IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0D1411; --surface:#141D19; --surface-2:#1B2621;
+    --ink:#E8F0EB; --ink-2:#B4C3BB; --ink-3:#849B90;
+    --rule:#25332C; --rule-soft:#1D2823;
+    --java:#63CFA8; --java-soft:#12291F;
+    --react:#97A5F2; --react-soft:#1A2040;
+    --warn:#E0AC55; --warn-soft:#2A2113;
+    --code-bg:#0F1915; --code-ink:#D8E6DE; --on-accent:#0D1411;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0D1411; --surface:#141D19; --surface-2:#1B2621;
+  --ink:#E8F0EB; --ink-2:#B4C3BB; --ink-3:#849B90;
+  --rule:#25332C; --rule-soft:#1D2823;
+  --java:#63CFA8; --java-soft:#12291F;
+  --react:#97A5F2; --react-soft:#1A2040;
+  --warn:#E0AC55; --warn-soft:#2A2113;
+  --code-bg:#0F1915; --code-ink:#D8E6DE; --on-accent:#0D1411;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--f-body); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px; margin:0 auto; padding:0 24px 96px}
+h1,h2,h3{font-family:var(--f-display); font-weight:600; text-wrap:balance; margin:0}
+p{margin:0}
+code{font-family:var(--f-mono); font-size:.88em}
+a{color:var(--java)}
+
+/* ---------- masthead ---------- */
+.mast{padding:56px 0 28px; border-bottom:1px solid var(--rule)}
+.kicker{
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-3); display:flex; gap:14px; flex-wrap:wrap;
+}
+.kicker b{color:var(--java); font-weight:500}
+h1{font-size:clamp(34px,6vw,52px); line-height:1.08; margin:14px 0 12px; letter-spacing:-.015em}
+.dek{color:var(--ink-2); max-width:62ch; font-size:17px}
+
+.split{display:flex; gap:2px; margin-top:26px; height:34px; font-family:var(--f-mono); font-size:11px; letter-spacing:.08em}
+.split div{display:flex; align-items:center; padding:0 12px; color:var(--on-accent)}
+.split .s-java{flex:70; background:var(--java)}
+.split .s-react{flex:30; background:var(--react)}
+
+/* ---------- sticky bar ---------- */
+.bar{
+  position:sticky; top:0; z-index:20; background:var(--ground);
+  border-bottom:1px solid var(--rule); margin-top:0;
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  padding:10px 0;
+}
+.chip{
+  font-family:var(--f-mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
+  border:1px solid var(--rule); background:var(--surface); color:var(--ink-2);
+  padding:6px 11px; border-radius:2px; cursor:pointer; transition:.14s;
+}
+.chip:hover{border-color:var(--java); color:var(--java)}
+.chip[aria-pressed="true"]{background:var(--java); border-color:var(--java); color:var(--ground)}
+.bar .spacer{flex:1}
+.count{font-family:var(--f-mono); font-size:12px; color:var(--ink-3); white-space:nowrap}
+.count b{color:var(--java); font-weight:500; font-variant-numeric:tabular-nums}
+
+/* ---------- sections ---------- */
+section{margin-top:52px; scroll-margin-top:70px}
+.sec-head{display:flex; align-items:baseline; gap:14px; border-bottom:2px solid var(--ink); padding-bottom:8px; margin-bottom:6px}
+.sec-head h2{font-size:26px; letter-spacing:-.01em}
+.sec-head .tag{
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  padding:3px 8px; border-radius:2px; white-space:nowrap;
+}
+.tag.java{background:var(--java-soft); color:var(--java)}
+.tag.react{background:var(--react-soft); color:var(--react)}
+.tag.warn{background:var(--warn-soft); color:var(--warn)}
+.sec-head .spacer{flex:1}
+.sec-note{color:var(--ink-3); font-size:14px; margin:12px 0 20px; max-width:70ch}
+
+/* ---------- Q&A ---------- */
+.q{border-bottom:1px solid var(--rule-soft); background:transparent}
+.q > summary{
+  list-style:none; cursor:pointer; display:flex; gap:14px; align-items:flex-start;
+  padding:13px 4px 13px 0;
+}
+.q > summary::-webkit-details-marker{display:none}
+.q > summary:hover .qt{color:var(--java)}
+.q:focus-within > summary{outline:2px solid var(--java); outline-offset:2px}
+.qn{
+  font-family:var(--f-mono); font-size:11px; color:var(--ink-3);
+  padding-top:5px; min-width:42px; letter-spacing:.04em; font-variant-numeric:tabular-nums;
+}
+.qt{font-family:var(--f-display); font-size:17px; line-height:1.4; flex:1; transition:.12s}
+.q[open] .qt{color:var(--java)}
+.qa{padding:2px 4px 20px 56px; color:var(--ink-2); font-size:15.3px; display:flex; flex-direction:column; gap:11px}
+.qa strong{color:var(--ink); font-weight:600}
+.qa ul{margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px}
+.qa .tell{
+  border-left:2px solid var(--warn); background:var(--warn-soft); color:var(--ink-2);
+  padding:9px 13px; font-size:14px; border-radius:0 2px 2px 0;
+}
+.qa .tell b{font-family:var(--f-mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--warn); display:block; margin-bottom:3px}
+pre{
+  margin:0; background:var(--code-bg); color:var(--code-ink); border:1px solid var(--rule);
+  padding:13px 15px; overflow-x:auto; border-radius:3px;
+  font-family:var(--f-mono); font-size:13px; line-height:1.62;
+}
+.qa code:not(pre code){background:var(--surface-2); padding:1px 5px; border-radius:2px; color:var(--ink)}
+
+/* ---------- cards / timeline ---------- */
+.grid{display:grid; gap:14px; margin-top:20px}
+@media(min-width:700px){ .grid.two{grid-template-columns:1fr 1fr} }
+.card{background:var(--surface); border:1px solid var(--rule); border-radius:3px; padding:18px 20px; box-shadow:var(--shadow)}
+.card h3{font-size:16px; margin-bottom:8px}
+.card p, .card li{font-size:14.5px; color:var(--ink-2)}
+.card ul{margin:0; padding-left:17px; display:flex; flex-direction:column; gap:5px}
+
+.tl{display:flex; flex-direction:column; gap:0; margin-top:22px; border-top:1px solid var(--rule)}
+.tl-row{display:grid; grid-template-columns:78px 1fr; gap:18px; padding:14px 0; border-bottom:1px solid var(--rule-soft); align-items:start}
+.tl-min{font-family:var(--f-mono); font-size:12px; color:var(--java); padding-top:2px; font-variant-numeric:tabular-nums; letter-spacing:.02em}
+.tl-row h3{font-size:15.5px; font-family:var(--f-body); font-weight:600; margin-bottom:4px}
+.tl-row p{font-size:14.5px; color:var(--ink-2)}
+
+.checklist{list-style:none; padding:0; margin:18px 0 0; display:flex; flex-direction:column; gap:0}
+.checklist li{display:flex; gap:12px; padding:11px 0; border-bottom:1px solid var(--rule-soft); font-size:15px; color:var(--ink-2)}
+.checklist li::before{content:"—"; color:var(--java); font-family:var(--f-mono); flex-shrink:0}
+
+footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--rule); color:var(--ink-3); font-size:13.5px}
+footer a{color:var(--java)}
+
+/* ---------- intro script ---------- */
+.script{
+  background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--java);
+  border-radius:0 3px 3px 0; padding:22px 26px; margin-top:20px;
+  display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow);
+}
+.script .lbl{font-family:var(--f-mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--java)}
+.script p{font-family:var(--f-display); font-size:17px; line-height:1.62; color:var(--ink)}
+.script p em{font-style:normal; background:var(--java-soft); padding:1px 4px; border-radius:2px}
+.hooks{display:grid; margin-top:20px; border-top:1px solid var(--rule)}
+.hooks > div{display:grid; grid-template-columns:minmax(150px,.9fr) 1.5fr; gap:18px; padding:11px 2px; border-bottom:1px solid var(--rule-soft); font-size:14.5px; align-items:start}
+.hooks b{font-weight:600; color:var(--ink)}
+.hooks span{color:var(--ink-2)}
+@media(max-width:620px){ .hooks > div{grid-template-columns:1fr; gap:3px} }
+@media (prefers-reduced-motion:reduce){ *{transition:none !important; animation:none !important} }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kicker">
+    <span>Technical Round · 45 min</span>
+    <span>Wed 26 Aug · <b>14:45–15:30 IST</b></span>
+    <span>EPAM Interview Platform</span>
+  </div>
+  <h1>EPAM Java Round Prep</h1>
+  <p class="dek">Everything EPAM actually asks a 5+ year full-stack engineer, weighted the way your role is weighted. Questions are collapsed on purpose — read the question, answer it out loud, then open it and check yourself.</p>
+  <div class="split">
+    <div class="s-java">JAVA · SPRING · DATA · 70%</div>
+    <div class="s-react">REACT · JS · 30%</div>
+  </div>
+</header>
+
+<nav class="bar">
+  <button class="chip" data-filter="all" aria-pressed="true">All</button>
+  <button class="chip" data-filter="java" aria-pressed="false">Java</button>
+  <button class="chip" data-filter="react" aria-pressed="false">React</button>
+  <button class="chip" data-filter="code" aria-pressed="false">Live coding</button>
+  <button class="chip" id="toggleAll" data-filter="none" aria-pressed="false">Reveal all</button>
+  <span class="spacer"></span>
+  <span class="count"><b id="qcount">0</b> questions</span>
+</nav>
+
+<section id="plan" data-topic="all">
+  <div class="sec-head">
+    <h2>How the 45 minutes will go</h2>
+    <span class="spacer"></span>
+    <span class="tag warn">Read first</span>
+  </div>
+  <p class="sec-note">EPAM's first technical round is deliberately broad rather than deep — the interviewer is filling in a skills matrix, so they sample many topics and go two questions deep wherever you sound confident. The mail names <strong>Java</strong> as the primary skill, so expect roughly 30 minutes of Java and 8–10 minutes of React, with live coding on a shared editor that has no autocomplete.</p>
+  <div class="tl">
+    <div class="tl-row"><div class="tl-min">0–5 min</div><div><h3>Intro and current project</h3><p>Two minutes, not ten. Name the domain, your role, the stack, team size, and one thing you owned end to end. This is the hook they will pull on for the rest of the hour — mention only things you can defend.</p></div></div>
+    <div class="tl-row"><div class="tl-min">5–20 min</div><div><h3>Core Java rapid fire</h3><p>Collections internals, <code>equals</code>/<code>hashCode</code>, immutability, exceptions, generics, Java 8→17 features, memory and GC. Short, precise answers win here; rambling costs you the topics you would have scored on.</p></div></div>
+    <div class="tl-row"><div class="tl-min">20–28 min</div><div><h3>Concurrency, Spring, JPA, SQL</h3><p>Almost guaranteed: <code>volatile</code> vs <code>synchronized</code>, <code>ConcurrentHashMap</code>, <code>@Transactional</code> pitfalls, bean scopes, N+1, isolation levels, one SQL query.</p></div></div>
+    <div class="tl-row"><div class="tl-min">28–38 min</div><div><h3>Live coding</h3><p>Usually one Stream API transformation or one easy/medium DSA problem. Narrate as you type, state the complexity, then mention one edge case. Compiling is less important than reasoning out loud.</p></div></div>
+    <div class="tl-row"><div class="tl-min">38–43 min</div><div><h3>React and front-end</h3><p>Hooks, re-render behaviour, state management choices, and how you split work across the API boundary. Keep it grounded in what you have shipped.</p></div></div>
+    <div class="tl-row"><div class="tl-min">43–45 min</div><div><h3>Your questions</h3><p>Ask two. Not asking any is read as low interest.</p></div></div>
+  </div>
+  <div class="grid two">
+    <div class="card">
+      <h3>What earns points</h3>
+      <ul>
+        <li>Saying "I don't know, but here is how I'd find out" instead of guessing.</li>
+        <li>Trade-offs, not definitions — "we chose X over Y because…".</li>
+        <li>Naming the version: "since Java 8", "since Spring Boot 3".</li>
+        <li>Production stories: an outage, a leak, a slow query you fixed.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What loses points</h3>
+      <ul>
+        <li>Textbook definitions with no example.</li>
+        <li>Claiming Kafka, Kubernetes, or AWS on the résumé and stalling on basics.</li>
+        <li>Silence during coding — they cannot score what they cannot hear.</li>
+        <li>Overrunning the intro so the interviewer has to cut you off.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="intro" data-topic="all">
+  <div class="sec-head">
+    <h2>Your opening 90 seconds</h2>
+    <span class="spacer"></span>
+    <span class="tag java">Rehearse out loud</span>
+  </div>
+  <p class="sec-note">Built from your resume, Java-first because Java is the named primary skill. Say it, don't recite it &mdash; if it sounds memorised it stops working. Every paragraph is a hook you <em>want</em> pulled.</p>
+
+  <div class="script">
+    <div class="lbl">Say this · roughly 75 seconds</div>
+    <p>I'm Akhil. I've been with Signia Software Solutions for about five and a half years &mdash; joined as a junior developer in 2021 and moved into the senior backend role last year.</p>
+    <p>My core work is Java and Spring Boot &mdash; REST APIs in a microservices setup. Two things I've owned end to end. The first is a set of framework-level utilities for our team: common abstractions for things every service was re-implementing. That cut redundant code by about a third, and more importantly cut the bugs in those repeated paths. The second is multi-tenant data pipelines for client financial data &mdash; extracting it, modelling it, and exposing it through QuickSight and Metabase with row-level security, so each tenant only ever sees their own rows. That one taught me the most about data modelling and access control at scale.</p>
+    <p>Alongside that I've run a legacy migration of Windows services onto modern infrastructure, added monitoring and observability so we catch issues before they page us, and I mentor the junior engineers on the team through code reviews and design discussions.</p>
+    <p>On the front end I work in React &mdash; mostly the dashboards and internal tools my own services back, so it's the lighter side of my week next to Java. Comfortable with hooks, state management and the API contract side.</p>
+    <p>The most interesting thing I've built recently is an AI-driven incident triage system &mdash; an LLM with a vector store that classifies incoming faults and routes tickets automatically.</p>
+    <p><em>Happy to go deeper on any of that.</em></p>
+  </div>
+
+  <div class="hooks">
+    <div><b>Framework utilities</b><span>Invites design patterns, SOLID, and "show me an abstraction you built". Your strongest ground &mdash; lead with it.</span></div>
+    <div><b>Multi-tenant + RLS</b><span>Invites data modelling, SQL, security and access control. Have the tenant-isolation approach ready.</span></div>
+    <div><b>Legacy migration</b><span>Invites real-world trade-offs, rollback strategy, and risk management under a deadline.</span></div>
+    <div><b>Mentoring</b><span>The seniority signal. Expect "how do you handle a disagreement in code review?"</span></div>
+    <div><b>AI incident triage</b><span>Deliberately last. EPAM is pushing AI-augmented delivery, so it lands well as a closer &mdash; but opening with it in a Java-primary round reads as deflection from the core skill.</span></div>
+  </div>
+
+  <div class="grid two">
+    <div class="card">
+      <h3>Shore these up first</h3>
+      <ul>
+        <li><strong>React proportion.</strong> The role is 70/30 and your resume evidences React thinly. The wording above is truthful and doesn't oversell &mdash; don't claim a 70/30 split unless it's real.</li>
+        <li><strong>Your percentages.</strong> 35% reusability, 60% velocity, 40&ndash;50% fewer bugs. Expect "how did you measure that?" on at least one.</li>
+        <li><strong>"10&ndash;20% downtime."</strong> Decide now whether you reduced downtime by that much or the cutover incurred it, and say it cleanly.</li>
+        <li><strong>Angular and Go.</strong> Anything on the resume is fair game. If Go is beginner-level, say so before they find out.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Delivery notes</h3>
+      <ul>
+        <li>Two minutes maximum. Overrunning forces the interviewer to cut you off, which sets the wrong tone.</li>
+        <li>Numbers slow down: "about a third" lands better than "thirty-five percent" when spoken.</li>
+        <li>End by handing control back &mdash; that last line is doing real work.</li>
+        <li>Have a 30-second version ready in case they say "just briefly".</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="sec-note" style="margin-top:28px">The five follow-ups your intro is most likely to trigger:</p>
+
+  <details class="q"><summary><span class="qn">SI 01</span><span class="qt">"Tell me more about those framework utilities &mdash; what was actually in them?"</span></summary>
+  <div class="qa"><p>Structure the answer as <strong>problem &rarr; abstraction &rarr; adoption &rarr; result</strong>. Name two or three concrete utilities and the pattern behind each &mdash; a common exception-to-HTTP mapping layer, a retry/resilience wrapper, a base repository or audit interceptor, standardised pagination and filtering. Then say how you got other teams to use it: a shared library with semantic versioning, documentation, a migration guide. Close with what you would change: an over-general abstraction you had to walk back is a strong, honest detail.</p>
+  <div class="tell"><b>Where this goes next</b>Straight into SOLID and design patterns (DP&nbsp;01&ndash;03). Have a pattern name attached to each utility before you describe it.</div></div></details>
+
+  <details class="q"><summary><span class="qn">SI 02</span><span class="qt">"You said 35% more reusable and 60% faster delivery. How did you measure that?"</span></summary>
+  <div class="qa"><p>Never answer "it was an estimate" and stop there. Give the basis, however rough: lines of duplicated code removed across services, story points or cycle time per sprint before and after, defect counts in the affected modules over two quarters. Then be honest about the limits &mdash; "it's a directional number over roughly two quarters, not a controlled measurement" &mdash; which reads as rigour, not weakness. An unbacked number that collapses under one follow-up costs you more than a modest one that holds.</p></div></details>
+
+  <details class="q"><summary><span class="qn">SI 03</span><span class="qt">"How did you implement multi-tenancy and row-level security?"</span></summary>
+  <div class="qa"><p>Name the isolation model first &mdash; separate database per tenant, separate schema, or a shared schema with a discriminator column &mdash; and why you chose it (cost, tenant count, blast radius, noisy-neighbour risk). Then how the tenant id travels: resolved at the gateway or from the JWT claim, carried through the request context, and applied automatically rather than by every developer remembering a WHERE clause. Mention Postgres RLS policies or a Hibernate filter/interceptor, and the failure mode you guarded against &mdash; a query that forgets the tenant predicate must fail, not silently return everyone's rows.</p>
+  <div class="tell"><b>Likely follow-up</b>"How did you test the isolation?" &mdash; the answer they want is an automated test that asserts tenant A cannot read tenant B's data.</div></div></details>
+
+  <details class="q"><summary><span class="qn">SI 04</span><span class="qt">"Walk me through the legacy migration. What could have gone wrong?"</span></summary>
+  <div class="qa"><p>Set the stakes in one sentence, then spend the time on <em>how you de-risked it</em>: inventory of what the old services actually did, a parallel run comparing old and new output, a phased or per-client cutover instead of a big bang, backward-compatible database migrations, a rehearsed rollback, and a monitoring window after go-live. Your Active Directory change &mdash; replacing shared Administrator logins with AD user-based auth &mdash; is a genuinely good security story; make sure you can explain why shared admin credentials were the risk.</p></div></details>
+
+  <details class="q"><summary><span class="qn">SI 05</span><span class="qt">"Tell me about the AI incident triage system."</span></summary>
+  <div class="qa"><p>Keep it engineering-flavoured rather than demo-flavoured: what goes in (alerts, logs, ticket text), how you embed and store it, how retrieval narrows the candidate set before the model classifies, and where the output goes. Then the parts an interviewer actually probes &mdash; how you evaluate accuracy, what happens on a wrong route, whether a human stays in the loop, latency and cost per call, and how you keep sensitive data out of the prompt. "We measured routing accuracy against historical tickets" is the sentence that separates a built system from a prototype.</p>
+  <div class="tell"><b>Careful</b>Your resume also mentions using an AI CLI for prototyping. That's fine as a work practice, but the invite bans AI tools <em>during</em> the interview &mdash; keep the two clearly separate if it comes up.</div></div></details>
+</section>
+
+<section id="core" data-topic="java">
+  <div class="sec-head">
+    <h2>Core Java &amp; collections</h2>
+    <span class="spacer"></span>
+    <span class="tag java">Highest yield</span>
+  </div>
+  <p class="sec-note">This block decides the round. EPAM interviewers open here and stay until they hear either confidence or hedging. Answer in two or three sentences, then stop.</p>
+
+  <details class="q"><summary><span class="qn">CJ 01</span><span class="qt">Walk me through what happens inside <code>HashMap.put()</code>.</span></summary>
+  <div class="qa"><p>The key's <code>hashCode()</code> is spread (<code>h ^ (h >>> 16)</code>) to mix high bits into the low bits, then the bucket index is <code>hash &amp; (n-1)</code>. If the bucket is empty a node is placed; otherwise the chain is walked comparing <code>hash</code> first, then <code>equals</code>. On collision the entry is appended to a linked list, and once a bin holds 8 entries <em>and</em> the table is at least 64 buckets it converts to a red-black tree, dropping worst-case lookup from O(n) to O(log n). Resize happens when size exceeds capacity × 0.75, doubling the table and re-splitting each bin into a low and high list.</p>
+  <div class="tell"><b>Follow-up they will ask</b>Why 0.75? Space/time compromise — lower means wasted memory, higher means more collisions. And why power-of-two capacity? So the modulo becomes a bitmask.</div></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 02</span><span class="qt">What breaks if you override <code>equals</code> but not <code>hashCode</code>?</span></summary>
+  <div class="qa"><p>Two objects that are <code>equals</code> can land in different buckets, so <code>map.get(key)</code> returns null for a key you just inserted and <code>HashSet</code> stores visible duplicates. The contract is one-directional: equal objects <strong>must</strong> have equal hash codes; unequal objects may share one. Also make sure the fields used are immutable — mutating a key's hash field after insertion strands the entry permanently.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 03</span><span class="qt">ArrayList vs LinkedList — when would you actually pick LinkedList?</span></summary>
+  <div class="qa"><p>Almost never. <code>ArrayList</code> is a contiguous array: O(1) random access, cache-friendly, O(n) mid-list insert but with a cheap <code>System.arraycopy</code>. <code>LinkedList</code> gives O(1) insert/remove <em>only when you already hold the node</em> via an iterator, costs 3 object headers per element, and destroys cache locality. Real use case: a queue or deque with heavy head/tail churn — and even there <code>ArrayDeque</code> beats it.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 04</span><span class="qt">Difference between <code>HashMap</code>, <code>LinkedHashMap</code>, <code>TreeMap</code> and <code>ConcurrentHashMap</code>?</span></summary>
+  <div class="qa"><ul>
+  <li><strong>HashMap</strong> — no ordering, one null key, not thread-safe, O(1) average.</li>
+  <li><strong>LinkedHashMap</strong> — maintains insertion order (or access order, which gives you a 5-line LRU cache by overriding <code>removeEldestEntry</code>).</li>
+  <li><strong>TreeMap</strong> — sorted by natural order or a comparator, O(log n), no null keys, gives you <code>headMap</code>/<code>floorKey</code> range queries.</li>
+  <li><strong>ConcurrentHashMap</strong> — thread-safe with per-bin CAS + synchronized locking, no nulls at all, weakly-consistent iterators that never throw <code>ConcurrentModificationException</code>.</li></ul></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 05</span><span class="qt">How does <code>ConcurrentHashMap</code> achieve thread safety without locking the whole map?</span></summary>
+  <div class="qa"><p>Java 7 used 16 segment locks. Java 8+ dropped segments: an empty bin is filled with a CAS, and a non-empty bin is locked using its own head node as the monitor, so writers only contend when they hit the same bucket. Reads are lock-free because the table and node values are <code>volatile</code>. Size is tracked in a striped counter, which is why <code>size()</code> is an estimate, and compound work should go through <code>compute</code>, <code>merge</code> or <code>putIfAbsent</code> rather than get-then-put.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 06</span><span class="qt">Fail-fast vs fail-safe iterators.</span></summary>
+  <div class="qa"><p>Fail-fast iterators (<code>ArrayList</code>, <code>HashMap</code>) track a <code>modCount</code> and throw <code>ConcurrentModificationException</code> the moment the collection is structurally changed outside the iterator — including a single-threaded <code>for</code> loop calling <code>list.remove()</code>. Fail-safe iterators (<code>CopyOnWriteArrayList</code>, <code>ConcurrentHashMap</code>) iterate a snapshot or a weakly-consistent view, so they never throw but may not see the newest writes. To remove safely: <code>iterator.remove()</code> or <code>removeIf</code>.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 07</span><span class="qt">Why are Strings immutable, and what is the string pool?</span></summary>
+  <div class="qa"><p>Immutability makes strings safe to share across threads, lets the hash code be cached, and protects things like class names, file paths and DB URLs from being mutated after a security check. Literals are interned in a pool inside the heap (moved out of PermGen in Java 7), so <code>"a" == "a"</code> is true while <code>new String("a") == "a"</code> is false. <code>intern()</code> pushes a runtime string into the pool. Concatenation in a loop creates garbage — use <code>StringBuilder</code>; a single-expression concat is already optimised by the compiler (invokedynamic since Java 9).</p></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 08</span><span class="qt">How do you make a class truly immutable?</span></summary>
+  <div class="qa"><p>Class <code>final</code> (or all constructors private), all fields <code>private final</code>, no setters, initialise everything in the constructor, and <strong>defensively copy</strong> mutable inputs on the way in and mutable state on the way out. That last part is the answer they are fishing for — storing a caller's <code>List</code> or <code>Date</code> reference directly leaves the object mutable through the back door. A <code>record</code> gives you most of this for free but still needs defensive copies in a compact constructor.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 09</span><span class="qt">Checked vs unchecked exceptions — which do you use in a service layer?</span></summary>
+  <div class="qa"><p><code>Throwable</code> splits into <code>Error</code> (JVM-level, don't catch) and <code>Exception</code>; everything under <code>RuntimeException</code> is unchecked. Modern Spring code leans on unchecked exceptions: they don't pollute every signature, and <code>@Transactional</code> rolls back on runtime exceptions by default while checked ones commit unless you set <code>rollbackFor</code>. I use a small hierarchy of custom runtime exceptions mapped to HTTP codes in a <code>@RestControllerAdvice</code>.</p>
+  <div class="tell"><b>Trap</b>If <code>finally</code> contains a <code>return</code>, it discards the exception and any earlier return value. And try-with-resources closes in reverse order, suppressing secondary exceptions into <code>getSuppressed()</code>.</div></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 10</span><span class="qt">What is type erasure, and what does it stop you doing?</span></summary>
+  <div class="qa"><p>Generics are compile-time only — the compiler checks types, inserts casts, and erases the parameter to its bound (<code>Object</code> unless bounded). So you cannot do <code>new T[]</code>, <code>instanceof List&lt;String&gt;</code>, static fields of type T, or overload on <code>List&lt;String&gt;</code> vs <code>List&lt;Integer&gt;</code>. It also explains <code>PECS</code>: <code>? extends T</code> is a producer you can read from, <code>? super T</code> is a consumer you can write to.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 11</span><span class="qt">Explain the JVM memory layout and what actually causes <code>OutOfMemoryError</code>.</span></summary>
+  <div class="qa"><p>Heap (young: eden + two survivors, plus old gen) holds objects; metaspace holds class metadata and grows natively; each thread gets its own stack, plus PC register and native stack. <code>OutOfMemoryError: Java heap space</code> means live objects exceed the heap — usually a leak: a static collection that never evicts, an unclosed resource, a <code>ThreadLocal</code> not removed in a pooled thread, or listeners never unregistered. <code>StackOverflowError</code> is deep or infinite recursion. <code>Metaspace</code> OOM points at classloader leaks, typical in repeated hot redeploys.</p>
+  <div class="tell"><b>Strong answer</b>Name your tools: heap dump on OOM (<code>-XX:+HeapDumpOnOutOfMemoryError</code>), then Eclipse MAT dominator tree or VisualVM; <code>jcmd</code>/<code>jstat</code> for live GC behaviour.</div></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 12</span><span class="qt">How does garbage collection work, and which collector would you choose?</span></summary>
+  <div class="qa"><p>GC is reachability-based from GC roots (stack refs, statics, JNI), not reference counting, so cycles are collected. Generational hypothesis: most objects die young, so minor GCs copy survivors between survivor spaces and promote after a tenuring threshold. <strong>G1</strong> (default since Java 9) splits the heap into regions and targets a pause goal — the right default for a Spring Boot service. <strong>ZGC / Shenandoah</strong> for sub-millisecond pauses on large heaps. <strong>Parallel</strong> for batch throughput. <code>System.gc()</code> is a suggestion; <code>finalize()</code> is deprecated — use <code>Cleaner</code> or try-with-resources.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 13</span><span class="qt">Overloading vs overriding, and what are covariant return types?</span></summary>
+  <div class="qa"><p>Overloading is compile-time (static binding) on the parameter list; return type alone is not enough. Overriding is runtime dynamic dispatch — same signature, return type may be a subtype (covariant), access cannot be narrowed, and a checked exception cannot be broadened. <code>static</code> and <code>private</code> methods are hidden, not overridden — calling a static through an instance reference resolves by the declared type.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 14</span><span class="qt">Abstract class vs interface in Java 17 — is there still a difference?</span></summary>
+  <div class="qa"><p>Yes, but a narrower one. Interfaces can now hold <code>default</code>, <code>static</code> and <code>private</code> methods, so behaviour is no longer exclusive to abstract classes. What remains: interfaces have no instance state and no constructor, and a class can implement many but extend one. Rule of thumb — interface for a capability (<code>Comparable</code>, <code>PaymentGateway</code>), abstract class for shared state plus a template method. Diamond conflicts on defaults are resolved explicitly with <code>Interface.super.method()</code>.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CJ 15</span><span class="qt">Shallow vs deep copy — how do you clone an object with nested collections?</span></summary>
+  <div class="qa"><p>A shallow copy (default <code>clone()</code>, copy constructor of references) duplicates the outer object but shares the nested references, so mutating a child is visible through both. Deep copy recreates the graph — hand-written copy constructors, a mapper, or serialization round-tripping (correct but slow). In practice I avoid <code>Cloneable</code> entirely: it is a broken interface with a protected method and no contract. Copy constructors or static factories are clearer.</p></div></details>
+</section>
+
+<section id="java8" data-topic="java">
+  <div class="sec-head">
+    <h2>Java 8 → 21 features</h2>
+    <span class="spacer"></span>
+    <span class="tag java">Guaranteed</span>
+  </div>
+  <p class="sec-note">Every EPAM report I could find includes "which Java version do you use and what do you like in it". Have a version number and two features ready, and know what came after the version you use.</p>
+
+  <details class="q"><summary><span class="qn">J8 01</span><span class="qt">Intermediate vs terminal stream operations, and what does "lazy" mean here?</span></summary>
+  <div class="qa"><p>Intermediate ops (<code>map</code>, <code>filter</code>, <code>sorted</code>, <code>peek</code>) return a stream and build a pipeline without executing; nothing runs until a terminal op (<code>collect</code>, <code>forEach</code>, <code>reduce</code>, <code>findFirst</code>, <code>anyMatch</code>) pulls elements through. Elements are processed one at a time down the whole chain, which is why short-circuiting ops can finish an infinite stream. A stream is single-use — reusing one throws <code>IllegalStateException</code>.</p></div></details>
+
+  <details class="q"><summary><span class="qn">J8 02</span><span class="qt"><code>map</code> vs <code>flatMap</code>.</span></summary>
+  <div class="qa"><p><code>map</code> is 1→1; <code>flatMap</code> is 1→many, flattening nested streams into one. Classic use: <code>orders.stream().flatMap(o -&gt; o.getItems().stream())</code> to get all line items across all orders. Same idea on <code>Optional</code>: <code>flatMap</code> when the mapper itself returns an <code>Optional</code>, otherwise you end up with <code>Optional&lt;Optional&lt;T&gt;&gt;</code>.</p></div></details>
+
+  <details class="q"><summary><span class="qn">J8 03</span><span class="qt">Name the built-in functional interfaces and their shapes.</span></summary>
+  <div class="qa"><ul>
+  <li><code>Function&lt;T,R&gt;</code> — <code>apply</code>, T in R out. <code>BiFunction&lt;T,U,R&gt;</code>, <code>UnaryOperator&lt;T&gt;</code>.</li>
+  <li><code>Predicate&lt;T&gt;</code> — <code>test</code>, returns boolean; composable with <code>and/or/negate</code>.</li>
+  <li><code>Consumer&lt;T&gt;</code> — <code>accept</code>, side effect, no return.</li>
+  <li><code>Supplier&lt;T&gt;</code> — <code>get</code>, no input; the basis of lazy evaluation in <code>orElseGet</code>.</li>
+  <li><code>BinaryOperator&lt;T&gt;</code> — the reducer in <code>reduce</code> and <code>Collectors.toMap</code> merge functions.</li></ul>
+  <p><code>@FunctionalInterface</code> is a compile-time assertion of exactly one abstract method.</p></div></details>
+
+  <details class="q"><summary><span class="qn">J8 04</span><span class="qt">Is a lambda just an anonymous inner class?</span></summary>
+  <div class="qa"><p>No. An anonymous class produces a separate <code>.class</code> file and a new object per instantiation, and its <code>this</code> refers to the anonymous instance. A lambda is compiled to a private method plus an <code>invokedynamic</code> call site linked by <code>LambdaMetafactory</code> at first execution; non-capturing lambdas are cached as a singleton, and <code>this</code> refers to the enclosing instance. Captured locals must be effectively final.</p></div></details>
+
+  <details class="q"><summary><span class="qn">J8 05</span><span class="qt">When does a parallel stream actually help — and when does it hurt?</span></summary>
+  <div class="qa"><p>It helps with large datasets, CPU-bound stateless work, and a splittable source (array, <code>ArrayList</code>, <code>IntStream.range</code>). It hurts with small collections, <code>LinkedList</code>/<code>Iterator</code> sources, blocking I/O, or ordered operations like <code>limit</code>/<code>findFirst</code>. The trap: it uses the shared <code>ForkJoinPool.commonPool</code>, so one slow parallel stream stalls every other one in the JVM. In a request-serving service I would use an explicit executor or <code>CompletableFuture</code> instead.</p></div></details>
+
+  <details class="q"><summary><span class="qn">J8 06</span><span class="qt">How do you group and aggregate with collectors?</span></summary>
+  <div class="qa"><pre><code>Map&lt;Dept, Double&gt; avgByDept = emps.stream()
+    .collect(groupingBy(Employee::getDept, averagingDouble(Employee::getSalary)));
+
+Map&lt;Dept, List&lt;String&gt;&gt; namesByDept = emps.stream()
+    .collect(groupingBy(Employee::getDept,
+             mapping(Employee::getName, toList())));
+
+Map&lt;Boolean, List&lt;Employee&gt;&gt; split = emps.stream()
+    .collect(partitioningBy(e -&gt; e.getSalary() &gt; 100_000));</code></pre>
+  <p><code>partitioningBy</code> always returns both <code>true</code> and <code>false</code> keys; <code>groupingBy</code> only returns keys that occurred. <code>toMap</code> throws on duplicate keys unless you pass a merge function, and it NPEs on null values where <code>groupingBy</code> would not.</p></div></details>
+
+  <details class="q"><summary><span class="qn">J8 07</span><span class="qt">What is <code>Optional</code> for, and how should it not be used?</span></summary>
+  <div class="qa"><p>It documents "this may legitimately be absent" in a <strong>return type</strong>. Use <code>map</code>/<code>filter</code>/<code>orElseThrow</code>; prefer <code>orElseGet</code> over <code>orElse</code> when the fallback is expensive, because <code>orElse</code>'s argument is evaluated eagerly. Anti-patterns: <code>Optional</code> fields (not serializable), <code>Optional</code> method parameters, collections wrapped in <code>Optional</code> (return an empty list), and calling <code>get()</code> without <code>isPresent()</code>.</p></div></details>
+
+  <details class="q"><summary><span class="qn">J8 08</span><span class="qt">What do records give you, and what are their limits?</span></summary>
+  <div class="qa"><p>A <code>record</code> (Java 16) is a transparent carrier for immutable data: final fields, canonical constructor, accessors, <code>equals</code>/<code>hashCode</code>/<code>toString</code> generated. Records are implicitly final, cannot extend a class, and cannot add instance fields. Validation goes in a compact constructor. Perfect for DTOs, API responses and value objects; not for JPA entities, which need a no-arg constructor and mutable identity.</p></div></details>
+
+  <details class="q"><summary><span class="qn">J8 09</span><span class="qt">Sealed classes and pattern matching — what problem do they solve?</span></summary>
+  <div class="qa"><p><code>sealed interface Shape permits Circle, Square</code> restricts the hierarchy, which lets the compiler prove a <code>switch</code> is exhaustive — no default branch, and adding a new subtype becomes a compile error instead of a runtime surprise. Combined with record patterns you get algebraic-data-type style code:</p>
+  <pre><code>double area = switch (shape) {
+    case Circle(double r) -&gt; Math.PI * r * r;
+    case Square(double s) -&gt; s * s;
+};</code></pre></div></details>
+
+  <details class="q"><summary><span class="qn">J8 10</span><span class="qt">What arrived in Java 17 and Java 21 that you would use?</span></summary>
+  <div class="qa"><ul>
+  <li><strong>17 (LTS)</strong> — sealed classes, records, pattern matching for <code>instanceof</code>, switch expressions with <code>yield</code>, text blocks, helpful NullPointerExceptions that name the exact null variable.</li>
+  <li><strong>21 (LTS)</strong> — <strong>virtual threads</strong> (Project Loom), pattern matching for switch, record patterns, sequenced collections (<code>getFirst()</code>/<code>getLast()</code>).</li></ul>
+  <p>Virtual threads matter most for a Spring service: thread-per-request without a bounded platform-thread pool, because a blocking call parks the virtual thread and frees the carrier. Caveat: <code>synchronized</code> blocks used to pin the carrier thread, so <code>ReentrantLock</code> was the safer choice around blocking I/O.</p></div></details>
+
+  <details class="q"><summary><span class="qn">J8 11</span><span class="qt">Why replace <code>Date</code>/<code>Calendar</code> with <code>java.time</code>?</span></summary>
+  <div class="qa"><p>The old API is mutable, not thread-safe (<code>SimpleDateFormat</code> is a classic shared-state bug), zero-indexed months, and mixes date and time-zone concerns. <code>java.time</code> types are immutable and explicit: <code>LocalDate</code> (no zone), <code>LocalDateTime</code>, <code>ZonedDateTime</code>, and <code>Instant</code> for a machine timestamp. Store UTC <code>Instant</code>, convert at the edges, and use <code>DateTimeFormatter</code>, which is thread-safe.</p></div></details>
+</section>
+
+<section id="concurrency" data-topic="java">
+  <div class="sec-head">
+    <h2>Concurrency &amp; multithreading</h2>
+    <span class="spacer"></span>
+    <span class="tag java">EPAM favourite</span>
+  </div>
+  <p class="sec-note">The single most reliably asked EPAM topic at senior level. If you only rehearse three things, make them <code>volatile</code> vs <code>synchronized</code>, the executor framework, and <code>CompletableFuture</code>.</p>
+
+  <details class="q"><summary><span class="qn">CC 01</span><span class="qt">Explain the Java Memory Model and happens-before.</span></summary>
+  <div class="qa"><p>Each thread may cache values in registers or CPU caches, and both the compiler and the CPU may reorder instructions, so without synchronisation one thread's write is not guaranteed to be visible to another. The JMM defines <em>happens-before</em>: if A happens-before B, A's effects are visible to B and cannot be reordered past it. The edges you should name: unlocking a monitor happens-before locking it; a <code>volatile</code> write happens-before a subsequent read of the same variable; <code>Thread.start()</code> happens-before anything in that thread; everything in a thread happens-before <code>join()</code> returns; and constructor finalisation of <code>final</code> fields happens-before publication.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CC 02</span><span class="qt"><code>volatile</code> vs <code>synchronized</code> — when is <code>volatile</code> enough?</span></summary>
+  <div class="qa"><p><code>volatile</code> gives visibility and ordering but <strong>not</strong> atomicity, so it is enough for a single write that does not depend on the current value — a <code>boolean running</code> stop flag, or the reference in double-checked-locking singletons. <code>count++</code> is read-modify-write, so <code>volatile</code> does not make it safe; you need <code>synchronized</code>, a <code>Lock</code>, or <code>AtomicInteger</code>. <code>synchronized</code> gives mutual exclusion plus the same visibility guarantees, and is reentrant.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CC 03</span><span class="qt"><code>synchronized</code> vs <code>ReentrantLock</code>.</span></summary>
+  <div class="qa"><p><code>synchronized</code> is a JVM intrinsic — simple, and the monitor is always released when the block exits, even on exception. <code>ReentrantLock</code> adds what the keyword cannot do: <code>tryLock()</code> with a timeout (deadlock avoidance), <code>lockInterruptibly()</code>, an optional fairness policy, multiple <code>Condition</code> queues, and lock/unlock across method boundaries. Cost: you must unlock in a <code>finally</code>. For read-heavy shared state, <code>ReentrantReadWriteLock</code> or <code>StampedLock</code>'s optimistic read is better than either.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CC 04</span><span class="qt">Why <code>ExecutorService</code> instead of <code>new Thread()</code>?</span></summary>
+  <div class="qa"><p>Threads are expensive OS resources (~1 MB stack); creating one per task collapses under load and gives you no queueing, no backpressure and no result handling. A pool reuses threads, bounds concurrency, and returns a <code>Future</code>. Know the constructor arguments of <code>ThreadPoolExecutor</code>: core size, max size, keep-alive, work queue, thread factory, rejection handler — and the trap that with an unbounded <code>LinkedBlockingQueue</code> the pool never grows past core size, while <code>newFixedThreadPool</code>'s unbounded queue can OOM. Always shut down with <code>shutdown()</code> then <code>awaitTermination()</code>.</p>
+  <div class="tell"><b>Follow-up</b><code>Runnable</code> vs <code>Callable</code>: <code>Callable</code> returns a value and may throw a checked exception; submit it and you get a <code>Future</code> whose <code>get()</code> blocks and rethrows the cause wrapped in <code>ExecutionException</code>.</div></div></details>
+
+  <details class="q"><summary><span class="qn">CC 05</span><span class="qt">How do you compose async calls with <code>CompletableFuture</code>?</span></summary>
+  <div class="qa"><pre><code>CompletableFuture&lt;User&gt; u = supplyAsync(() -&gt; userClient.find(id), pool);
+CompletableFuture&lt;List&lt;Order&gt;&gt; o = supplyAsync(() -&gt; orderClient.byUser(id), pool);
+
+return u.thenCombine(o, Profile::new)
+        .orTimeout(2, SECONDS)
+        .exceptionally(ex -&gt; Profile.fallback(id));</code></pre>
+  <p><code>thenApply</code> transforms a value; <code>thenCompose</code> flattens when the mapper returns another future (the monadic flatMap); <code>thenCombine</code> joins two independent futures; <code>allOf</code> waits for many. Always pass your own executor — the default common pool is shared JVM-wide and sized to CPU count, which is wrong for blocking I/O.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CC 06</span><span class="qt">What causes a deadlock and how do you detect one in production?</span></summary>
+  <div class="qa"><p>Four conditions must hold: mutual exclusion, hold-and-wait, no preemption, circular wait. Break any one — the practical fix is global lock ordering, plus <code>tryLock</code> with timeout. Detection: <code>jstack &lt;pid&gt;</code> or <code>jcmd Thread.print</code> prints "Found one Java-level deadlock" with both stacks; VisualVM and Thread MXBean's <code>findDeadlockedThreads()</code> do the same programmatically. Distinguish it from <em>livelock</em> (threads keep responding to each other, no progress) and <em>starvation</em> (a low-priority thread never gets the lock).</p></div></details>
+
+  <details class="q"><summary><span class="qn">CC 07</span><span class="qt">How do atomics and CAS work?</span></summary>
+  <div class="qa"><p><code>AtomicInteger.incrementAndGet()</code> compiles to a hardware compare-and-swap: read the current value, compute the new one, swap only if the memory still holds the expected value, retry otherwise. Lock-free and much faster under moderate contention, but it spins under heavy contention — which is why <code>LongAdder</code> exists, striping the count across cells and summing on read. Mention the ABA problem and <code>AtomicStampedReference</code> if they push.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CC 08</span><span class="qt">Write a thread-safe singleton.</span></summary>
+  <div class="qa"><pre><code>// Best: enum — serialization and reflection safe
+public enum Config { INSTANCE; }
+
+// Or the holder idiom — lazy, no synchronization cost
+public final class Config {
+    private Config() {}
+    private static class Holder { static final Config I = new Config(); }
+    public static Config get() { return Holder.I; }
+}</code></pre>
+  <p>The holder works because class initialisation is guaranteed thread-safe by the JVM. If they ask for double-checked locking, the field <strong>must</strong> be <code>volatile</code> — otherwise another thread can see a non-null but partially constructed object due to reordering.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CC 09</span><span class="qt">What is <code>ThreadLocal</code> good for, and what is the danger?</span></summary>
+  <div class="qa"><p>Per-thread state without passing it through every signature: security context, MDC correlation ids, the old <code>SimpleDateFormat</code> workaround. The danger is thread pools — the thread outlives the request, so a value left behind leaks memory and, worse, leaks one user's context into the next user's request. Always <code>remove()</code> in a <code>finally</code>. With virtual threads, prefer <code>ScopedValue</code>.</p></div></details>
+
+  <details class="q"><summary><span class="qn">CC 10</span><span class="qt">Producer–consumer: how would you implement it?</span></summary>
+  <div class="qa"><p>A <code>BlockingQueue</code> — <code>ArrayBlockingQueue</code> bounded, so <code>put()</code> blocks when full and <code>take()</code> blocks when empty; that boundedness <em>is</em> the backpressure. Doing it by hand means <code>synchronized</code> with <code>wait()</code> in a <code>while</code> loop (never an <code>if</code>, because of spurious wakeups) and <code>notifyAll()</code>. Mentioning the <code>while</code> loop is the detail interviewers look for.</p></div></details>
+</section>
+
+<section id="spring" data-topic="java">
+  <div class="sec-head">
+    <h2>Spring &amp; Spring Boot</h2>
+    <span class="spacer"></span>
+    <span class="tag java">Expect 6–8</span>
+  </div>
+  <p class="sec-note">Know your Boot version and one thing that changed in Boot 3 (Jakarta namespace, Java 17 baseline, observability). Interviewers use it as a proxy for whether you have upgraded anything recently.</p>
+
+  <details class="q"><summary><span class="qn">SP 01</span><span class="qt">What is IoC and which injection style do you use?</span></summary>
+  <div class="qa"><p>Inversion of Control means the container creates and wires dependencies instead of the class doing <code>new</code>; DI is how it is delivered. <strong>Constructor injection</strong> is the right default — it makes dependencies explicit, allows <code>final</code> fields, fails fast on a missing bean, and lets you instantiate the class in a plain unit test without Spring. Field injection with <code>@Autowired</code> hides dependencies and can't be made final. Setter injection is for genuinely optional collaborators. Since Spring 4.3 a single constructor needs no annotation.</p></div></details>
+
+  <details class="q"><summary><span class="qn">SP 02</span><span class="qt">Bean scopes, and what happens when a singleton depends on a prototype?</span></summary>
+  <div class="qa"><p>Scopes: <code>singleton</code> (default, one per container — not one per JVM), <code>prototype</code> (new instance per lookup, and Spring does <em>not</em> manage its destruction), plus web scopes <code>request</code>, <code>session</code>, <code>application</code>, <code>websocket</code>. A singleton injecting a prototype resolves it once at construction and reuses that same instance forever — the fix is <code>ObjectProvider&lt;T&gt;</code>, a <code>@Lookup</code> method, or a scoped proxy.</p></div></details>
+
+  <details class="q"><summary><span class="qn">SP 03</span><span class="qt">Why does <code>@Transactional</code> silently do nothing sometimes?</span></summary>
+  <div class="qa"><p>Because it is implemented with a proxy. It is ignored when: the method is <code>private</code>, <code>final</code> or <code>static</code>; the call is a <strong>self-invocation</strong> from another method in the same bean (bypasses the proxy entirely); or the exception thrown is checked, since default rollback is on <code>RuntimeException</code> and <code>Error</code> only. Fixes: move the method to another bean, inject self, use <code>TransactionTemplate</code>, or switch to AspectJ weaving. Also know <code>REQUIRES_NEW</code> vs <code>REQUIRED</code> propagation and that <code>readOnly = true</code> lets Hibernate skip dirty checking.</p>
+  <div class="tell"><b>They will ask this</b>It appears in almost every EPAM Java write-up. Have a real example of the self-invocation bug if you have hit it.</div></div></details>
+
+  <details class="q"><summary><span class="qn">SP 04</span><span class="qt">How does Spring Boot auto-configuration actually work?</span></summary>
+  <div class="qa"><p><code>@SpringBootApplication</code> = <code>@Configuration</code> + <code>@ComponentScan</code> + <code>@EnableAutoConfiguration</code>. At startup Boot reads auto-configuration class names from <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> (previously <code>spring.factories</code>) and evaluates each one's conditions — <code>@ConditionalOnClass</code>, <code>@ConditionalOnMissingBean</code>, <code>@ConditionalOnProperty</code>. So H2 on the classpath with no <code>DataSource</code> bean gives you an in-memory datasource, and defining your own bean wins. Debug with <code>--debug</code>, which prints the positive/negative match report.</p></div></details>
+
+  <details class="q"><summary><span class="qn">SP 05</span><span class="qt">Bean lifecycle from container start to shutdown.</span></summary>
+  <div class="qa"><p>Definitions loaded → <code>BeanFactoryPostProcessor</code> may modify definitions → instantiate → populate dependencies → <code>Aware</code> callbacks → <code>BeanPostProcessor.postProcessBeforeInitialization</code> → <code>@PostConstruct</code> → <code>afterPropertiesSet</code> → custom init → <code>postProcessAfterInitialization</code> (where AOP proxies are created) → in use → <code>@PreDestroy</code> → <code>destroy()</code>. The reason AOP proxies appear at the last post-processor step is worth saying — it explains the self-invocation problem above.</p></div></details>
+
+  <details class="q"><summary><span class="qn">SP 06</span><span class="qt">How do you handle exceptions across a REST API?</span></summary>
+  <div class="qa"><p>A <code>@RestControllerAdvice</code> with <code>@ExceptionHandler</code> methods mapping domain exceptions to status codes, returning a consistent body — Spring 6 gives you RFC 7807 <code>ProblemDetail</code> for free. Extend <code>ResponseEntityExceptionHandler</code> to reshape validation errors from <code>MethodArgumentNotValidException</code>. Never leak stack traces; always log with a correlation id and return an opaque reference to the caller.</p></div></details>
+
+  <details class="q"><summary><span class="qn">SP 07</span><span class="qt">@Qualifier vs @Primary; @Component vs @Bean.</span></summary>
+  <div class="qa"><p><code>@Primary</code> marks a default when several candidates match; <code>@Qualifier("name")</code> picks explicitly at the injection point and beats <code>@Primary</code>. <code>@Component</code> (and its stereotypes <code>@Service</code>, <code>@Repository</code>, <code>@Controller</code>) is classpath-scanned on classes you own; <code>@Bean</code> is a factory method inside a <code>@Configuration</code> class, which is how you register third-party classes you cannot annotate. <code>@Repository</code> additionally translates persistence exceptions into Spring's <code>DataAccessException</code> hierarchy.</p></div></details>
+
+  <details class="q"><summary><span class="qn">SP 08</span><span class="qt">Filter vs Interceptor vs AOP aspect.</span></summary>
+  <div class="qa"><p><code>Filter</code> is servlet-level, sees every request before Spring MVC, works on raw request/response — right for CORS, auth tokens, request logging, gzip. <code>HandlerInterceptor</code> is Spring MVC-level and knows the resolved handler method, with <code>preHandle</code>/<code>postHandle</code>/<code>afterCompletion</code>. AOP aspects wrap any Spring bean method, not just controllers — right for cross-cutting concerns like audit, retry or timing in the service layer.</p></div></details>
+
+  <details class="q"><summary><span class="qn">SP 09</span><span class="qt">What do you expose from Actuator in production?</span></summary>
+  <div class="qa"><p><code>/health</code> (with liveness and readiness groups wired to Kubernetes probes), <code>/info</code>, <code>/metrics</code> and <code>/prometheus</code> via Micrometer, and <code>/loggers</code> for changing log level at runtime without a redeploy. Everything is secured and typically bound to a separate management port; <code>/env</code>, <code>/heapdump</code> and <code>/threaddump</code> stay off or admin-only. Custom health indicators for downstream dependencies are a good detail to mention.</p></div></details>
+
+  <details class="q"><summary><span class="qn">SP 10</span><span class="qt">How do you secure a Spring Boot REST API?</span></summary>
+  <div class="qa"><p>Stateless JWT or OAuth2 resource server: <code>SecurityFilterChain</code> bean (the <code>WebSecurityConfigurerAdapter</code> class is gone), session creation <code>STATELESS</code>, CSRF disabled for token-based APIs but on for cookie/session apps, authorisation rules per path, and method-level <code>@PreAuthorize</code> for fine-grained checks. Validate the token signature and expiry against the issuer's JWKS, keep tokens short-lived with refresh, and never put secrets in the payload — a JWT is signed, not encrypted.</p></div></details>
+</section>
+
+<section id="data" data-topic="java">
+  <div class="sec-head">
+    <h2>JPA, Hibernate &amp; SQL</h2>
+    <span class="spacer"></span>
+    <span class="tag java">Expect 4–6</span>
+  </div>
+  <p class="sec-note">N+1 comes up in nearly every senior Java interview. Have a story: how you noticed it, how you proved it, how you fixed it.</p>
+
+  <details class="q"><summary><span class="qn">DB 01</span><span class="qt">What is the N+1 select problem and how do you fix it?</span></summary>
+  <div class="qa"><p>One query loads N parents, then touching a lazy association fires one query per parent — 1 + N round trips. Fixes, in order of preference: a <code>JOIN FETCH</code> in JPQL, an <code>@EntityGraph</code> on the repository method, <code>@BatchSize</code> to load associations in chunks of n, or a projection/DTO query that never loads the entity at all. Detect it by turning on <code>spring.jpa.show-sql</code> plus statistics, or a tool like p6spy — and never fix it by making everything <code>EAGER</code>.</p>
+  <div class="tell"><b>Trap</b><code>JOIN FETCH</code> with pagination causes Hibernate to fetch all rows and paginate in memory (HHH000104). Use <code>@EntityGraph</code> with two queries, or fetch ids first, then entities.</div></div></details>
+
+  <details class="q"><summary><span class="qn">DB 02</span><span class="qt">Entity lifecycle states in JPA.</span></summary>
+  <div class="qa"><p><strong>Transient</strong> (new, no id, not tracked) → <strong>Managed</strong> (in the persistence context, dirty-checked and flushed automatically) → <strong>Detached</strong> (context closed; changes are ignored until <code>merge</code>) → <strong>Removed</strong>. Key consequence: on a managed entity you do not need to call <code>save()</code> — a setter inside a transaction is enough, because the flush before commit writes the diff. <code>merge</code> returns a <em>new</em> managed instance; the one you passed in stays detached.</p></div></details>
+
+  <details class="q"><summary><span class="qn">DB 03</span><span class="qt">LAZY vs EAGER, and what is <code>LazyInitializationException</code>?</span></summary>
+  <div class="qa"><p><code>@OneToMany</code>/<code>@ManyToMany</code> default to LAZY; <code>@ManyToOne</code>/<code>@OneToOne</code> default to EAGER, which is usually wrong — override them to LAZY. Lazy associations are proxies, so touching one after the session closes (typically in the controller or during JSON serialisation) throws <code>LazyInitializationException</code>. Fix it by fetching what you need inside the transaction — projection DTOs are the clean answer, not <code>open-in-view</code>, which Boot enables by default and which quietly holds a connection for the whole request.</p></div></details>
+
+  <details class="q"><summary><span class="qn">DB 04</span><span class="qt">First-level vs second-level cache.</span></summary>
+  <div class="qa"><p>L1 is the persistence context — always on, scoped to one transaction, guarantees the same object identity for a given id within it. L2 is optional, shared across sessions and requires a provider (Ehcache, Hazelcast, Infinispan) plus <code>@Cacheable</code> on the entity; it needs a strategy (read-only, read-write, nonstrict) and is dangerous when another application writes the same tables. Query cache is separate and usually more trouble than it is worth.</p></div></details>
+
+  <details class="q"><summary><span class="qn">DB 05</span><span class="qt">Optimistic vs pessimistic locking.</span></summary>
+  <div class="qa"><p>Optimistic uses an <code>@Version</code> column: no DB lock, the update's WHERE clause includes the version, and a mismatch raises <code>OptimisticLockException</code> for the caller to retry. Right for low-contention, high-read web workloads. Pessimistic takes a real database lock (<code>SELECT … FOR UPDATE</code> via <code>PESSIMISTIC_WRITE</code>) — correct for genuinely contended rows like inventory decrement, at the cost of blocking and deadlock risk. I default to optimistic and escalate only where measured contention justifies it.</p></div></details>
+
+  <details class="q"><summary><span class="qn">DB 06</span><span class="qt">Transaction isolation levels and the anomalies they prevent.</span></summary>
+  <div class="qa"><ul>
+  <li><strong>READ UNCOMMITTED</strong> — dirty reads possible.</li>
+  <li><strong>READ COMMITTED</strong> — no dirty reads; non-repeatable reads possible. Postgres and Oracle default.</li>
+  <li><strong>REPEATABLE READ</strong> — same row reads stay stable; phantoms possible (MySQL InnoDB default, which also blocks phantoms via gap locks).</li>
+  <li><strong>SERIALIZABLE</strong> — full isolation, lowest concurrency.</li></ul>
+  <p>ACID in one line each, and know that most production systems run READ COMMITTED and handle the rest with explicit locking or versioning.</p></div></details>
+
+  <details class="q"><summary><span class="qn">DB 07</span><span class="qt">A query got slow in production. Walk me through your process.</span></summary>
+  <div class="qa"><p>Reproduce, then <code>EXPLAIN ANALYZE</code>. Look for sequential scans on large tables, a nested loop where a hash join belongs, and a large gap between estimated and actual rows, which means stale statistics. Then check whether a suitable index exists and whether the query is sargable — a function or implicit cast on the indexed column kills index use. Consider a composite index in the right column order (equality columns first, range last) or a covering index. Confirm with row counts and timings before and after, and check the write cost of any index you add.</p></div></details>
+
+  <details class="q"><summary><span class="qn">DB 08</span><span class="qt">Write a query for the second-highest salary per department.</span></summary>
+  <div class="qa"><pre><code>SELECT dept_id, emp_id, salary
+FROM (
+  SELECT dept_id, emp_id, salary,
+         DENSE_RANK() OVER (PARTITION BY dept_id
+                            ORDER BY salary DESC) AS rnk
+  FROM employees
+) t
+WHERE rnk = 2;</code></pre>
+  <p>Be ready to explain <code>RANK</code> (gaps after ties) vs <code>DENSE_RANK</code> (no gaps) vs <code>ROW_NUMBER</code> (arbitrary tie-break). Also expect the classics: find duplicates with <code>GROUP BY … HAVING COUNT(*) &gt; 1</code>, and <code>LEFT JOIN … WHERE right.id IS NULL</code> for rows with no match.</p></div></details>
+</section>
+
+<section id="micro" data-topic="java">
+  <div class="sec-head">
+    <h2>Microservices &amp; architecture</h2>
+    <span class="spacer"></span>
+    <span class="tag java">Design discussion</span>
+  </div>
+  <p class="sec-note">This is where a 5-year engineer is separated from a 2-year one. Anchor every answer in your own system: "in our order service we…". Draw if the platform gives you a whiteboard.</p>
+
+  <details class="q"><summary><span class="qn">MS 01</span><span class="qt">Describe your current architecture end to end.</span></summary>
+  <div class="qa"><p>Rehearse a 90-second version: client → gateway/BFF → services and what each owns → data stores per service → async messaging → observability → deployment. Then name one hard trade-off you made and why. Have a second version ready for the follow-up "what would you change now?" — a genuine answer here reads as seniority; "nothing" reads as inexperience.</p></div></details>
+
+  <details class="q"><summary><span class="qn">MS 02</span><span class="qt">How do services find each other, and what does the API gateway do?</span></summary>
+  <div class="qa"><p>Service discovery is a registry (Eureka, Consul) or platform DNS — in Kubernetes a Service gives a stable cluster DNS name and does the load balancing, which is why many teams drop Eureka entirely. The gateway is the single entry point handling routing, TLS termination, authentication, rate limiting, and request aggregation, so individual services don't reimplement cross-cutting concerns. A config server or ConfigMap/Secret externalises configuration per environment.</p></div></details>
+
+  <details class="q"><summary><span class="qn">MS 03</span><span class="qt">How do you keep a failing downstream service from taking you down?</span></summary>
+  <div class="qa"><p>Timeouts on every remote call — a missing timeout is the root cause of most cascading failures. Then a circuit breaker (Resilience4j) that opens after a failure-rate threshold, serves a fallback, and half-opens to probe recovery. Add bounded retries with exponential backoff <em>and jitter</em>, but only on idempotent operations, plus a bulkhead so one slow dependency cannot exhaust the whole thread pool. Fail fast and degrade gracefully rather than queueing.</p></div></details>
+
+  <details class="q"><summary><span class="qn">MS 04</span><span class="qt">How do you maintain consistency across services without 2PC?</span></summary>
+  <div class="qa"><p>The <strong>Saga</strong> pattern — a sequence of local transactions, each publishing an event, with compensating transactions to undo prior steps on failure. Choreography (services react to each other's events) is simple but the flow becomes implicit; orchestration (a coordinator drives the steps) is easier to reason about and monitor. The piece people forget is the <strong>transactional outbox</strong>: write the event to an outbox table in the same DB transaction and relay it to the broker, otherwise the DB commit and the publish can diverge. Two-phase commit is avoided because it needs distributed locks and blocks on coordinator failure.</p></div></details>
+
+  <details class="q"><summary><span class="qn">MS 05</span><span class="qt">Explain idempotency and where you enforced it.</span></summary>
+  <div class="qa"><p>Retries and at-least-once delivery mean the same message or request can arrive twice, so any operation with side effects needs a dedupe key — an <code>Idempotency-Key</code> header stored with the response, or a processed-message-id table checked inside the same transaction as the business write. HTTP semantics help: GET, PUT and DELETE are idempotent by definition, POST is not.</p></div></details>
+
+  <details class="q"><summary><span class="qn">MS 06</span><span class="qt">Kafka fundamentals: partitions, consumer groups, delivery guarantees.</span></summary>
+  <div class="qa"><p>A topic is split into partitions; ordering is guaranteed only <em>within</em> a partition, so the key determines both partition and ordering. Within a consumer group each partition is owned by exactly one consumer, so parallelism is capped by partition count and adding consumers beyond that leaves them idle. Delivery: at-most-once (commit before processing), at-least-once (commit after — the common choice, requires idempotent consumers), exactly-once via transactions and the idempotent producer, at real throughput cost. Rebalancing pauses consumption, which is why long processing needs <code>max.poll.interval.ms</code> tuning.</p></div></details>
+
+  <details class="q"><summary><span class="qn">MS 07</span><span class="qt">When would you use messaging instead of a REST call?</span></summary>
+  <div class="qa"><p>Synchronous REST when the caller needs the result to continue and the latency budget allows it. Async messaging when the work can happen later, when multiple consumers care about the same fact, when you need to absorb load spikes, or when you want temporal decoupling so the consumer being down doesn't fail the producer. The cost is eventual consistency and much harder debugging — which is why distributed tracing matters.</p></div></details>
+
+  <details class="q"><summary><span class="qn">MS 08</span><span class="qt">CAP theorem — and what do you actually choose?</span></summary>
+  <div class="qa"><p>Under a network partition you must choose consistency or availability; the "P" is not optional in a distributed system. Payments and inventory lean CP — refuse the write rather than sell stock twice. Catalogue, feeds and recommendations lean AP with eventual consistency. Modern nuance worth mentioning: PACELC — even without a partition, you are trading latency against consistency.</p></div></details>
+
+  <details class="q"><summary><span class="qn">MS 09</span><span class="qt">How do you debug a failure that crosses five services?</span></summary>
+  <div class="qa"><p>Correlation id generated at the gateway and propagated through every hop and log line (Micrometer Tracing / OpenTelemetry, previously Sleuth), centralised logs in ELK or Loki so you can query by that id, distributed traces in Jaeger or Zipkin to see the latency waterfall, and metrics with alerting on the RED signals — rate, errors, duration. Without the correlation id everything else is guesswork.</p></div></details>
+
+  <details class="q"><summary><span class="qn">MS 10</span><span class="qt">How do you version a public REST API without breaking clients?</span></summary>
+  <div class="qa"><p>Prefer additive, backward-compatible changes: new optional fields, never repurpose or remove a field. When a break is unavoidable, version in the URI (<code>/api/v2/...</code>) because it is explicit and cache-friendly; header or media-type versioning is cleaner in theory but harder to operate. Run both versions during a deprecation window with a <code>Sunset</code> header and client metrics telling you when v1 traffic hits zero.</p></div></details>
+</section>
+
+<section id="patterns" data-topic="java">
+  <div class="sec-head">
+    <h2>Design patterns &amp; SOLID</h2>
+    <span class="spacer"></span>
+    <span class="tag java">Quick fire</span>
+  </div>
+  <p class="sec-note">Don't recite the definition — name the pattern, then immediately where it appears in Spring or your own code. That pairing is what scores.</p>
+
+  <details class="q"><summary><span class="qn">DP 01</span><span class="qt">Which patterns do you use, and where do they appear in Spring?</span></summary>
+  <div class="qa"><ul>
+  <li><strong>Singleton</strong> — every Spring bean by default.</li>
+  <li><strong>Factory</strong> — <code>BeanFactory</code>, <code>@Bean</code> methods, <code>Calendar.getInstance()</code>.</li>
+  <li><strong>Builder</strong> — <code>StringBuilder</code>, Lombok <code>@Builder</code>, <code>UriComponentsBuilder</code>; use it when a constructor has more than 4 params or many optional ones.</li>
+  <li><strong>Strategy</strong> — inject <code>List&lt;PaymentProcessor&gt;</code> and pick by type; kills the switch statement.</li>
+  <li><strong>Template method</strong> — <code>JdbcTemplate</code>, <code>RestTemplate</code>, <code>AbstractController</code>.</li>
+  <li><strong>Proxy / decorator</strong> — AOP, <code>@Transactional</code>, <code>@Cacheable</code>.</li>
+  <li><strong>Observer</strong> — <code>ApplicationEventPublisher</code> and <code>@EventListener</code>.</li>
+  <li><strong>Adapter</strong> — <code>HandlerAdapter</code>, wrapping a third-party client behind your own port interface.</li></ul></div></details>
+
+  <details class="q"><summary><span class="qn">DP 02</span><span class="qt">Explain SOLID with an example of one you have violated.</span></summary>
+  <div class="qa"><p><strong>S</strong>ingle responsibility — one reason to change. <strong>O</strong>pen/closed — extend by adding a class, not editing a switch. <strong>L</strong>iskov — a subtype must be usable wherever the parent is (the classic violation: <code>Square extends Rectangle</code>, or an override that throws <code>UnsupportedOperationException</code>). <strong>I</strong>nterface segregation — many small interfaces beat one fat one. <strong>D</strong>ependency inversion — depend on abstractions, which is exactly what constructor injection buys you. Naming a real violation you later refactored is far more convincing than five clean definitions.</p></div></details>
+
+  <details class="q"><summary><span class="qn">DP 03</span><span class="qt">Composition over inheritance — why?</span></summary>
+  <div class="qa"><p>Inheritance couples you to the parent's implementation, breaks encapsulation, and Java allows only one superclass, so the hierarchy calcifies. Composition lets you swap behaviour at runtime, test parts in isolation, and avoids the fragile base class problem. Inherit only for a genuine "is-a" with a stable contract; otherwise delegate.</p></div></details>
+</section>
+
+<section id="testing" data-topic="java">
+  <div class="sec-head">
+    <h2>Testing</h2>
+    <span class="spacer"></span>
+    <span class="tag java">Often asked live</span>
+  </div>
+  <p class="sec-note">EPAM regularly asks candidates to write a unit test on the spot, usually with Mockito. Know the annotations cold.</p>
+
+  <details class="q"><summary><span class="qn">TS 01</span><span class="qt"><code>@Mock</code> vs <code>@Spy</code> vs <code>@InjectMocks</code> vs <code>@MockBean</code>.</span></summary>
+  <div class="qa"><p><code>@Mock</code> is a fully stubbed double — every method returns null/0/empty until stubbed. <code>@Spy</code> wraps a real object and calls real methods except where stubbed; stub a spy with <code>doReturn(x).when(spy).method()</code> to avoid actually invoking it. <code>@InjectMocks</code> builds the class under test and pushes the mocks in via constructor. <code>@MockBean</code> is Spring's — it replaces a bean in the application context, so it belongs in <code>@SpringBootTest</code>/<code>@WebMvcTest</code>, not in a plain unit test.</p></div></details>
+
+  <details class="q"><summary><span class="qn">TS 02</span><span class="qt">Write a JUnit 5 + Mockito test for a service method.</span></summary>
+  <div class="qa"><pre><code>@ExtendWith(MockitoExtension.class)
+class OrderServiceTest {
+
+  @Mock  OrderRepository repo;
+  @Mock  PaymentClient   payments;
+  @InjectMocks OrderService service;
+
+  @Test
+  void placesOrderAndCharges() {
+    when(repo.save(any(Order.class)))
+        .thenAnswer(inv -&gt; inv.getArgument(0));
+
+    Order result = service.place(new OrderRequest("SKU-1", 2));
+
+    assertThat(result.status()).isEqualTo(CONFIRMED);
+    verify(payments).charge(argThat(c -&gt; c.amount().signum() &gt; 0));
+    verifyNoMoreInteractions(payments);
+  }
+
+  @Test
+  void failsWhenPaymentDeclined() {
+    doThrow(new PaymentDeclined()).when(payments).charge(any());
+    assertThrows(OrderFailedException.class,
+                 () -&gt; service.place(new OrderRequest("SKU-1", 1)));
+  }
+}</code></pre>
+  <p>JUnit 5 differences to name: <code>@BeforeEach</code>/<code>@BeforeAll</code>, <code>@ExtendWith</code> instead of runners, <code>@ParameterizedTest</code> with <code>@CsvSource</code>, <code>assertThrows</code> returning the exception, and <code>@DisplayName</code>.</p></div></details>
+
+  <details class="q"><summary><span class="qn">TS 03</span><span class="qt">Unit vs integration tests in a Spring Boot project.</span></summary>
+  <div class="qa"><p>Unit tests instantiate the class with mocks and no Spring context — milliseconds, and where most coverage should live. Slice tests load part of the context: <code>@WebMvcTest</code> for controllers with <code>MockMvc</code>, <code>@DataJpaTest</code> for repositories. Full <code>@SpringBootTest</code> with <strong>Testcontainers</strong> for the real database or broker, kept few because they are slow. The pyramid matters: many unit, some slice, few end-to-end.</p></div></details>
+</section>
+
+<section id="devops" data-topic="java">
+  <div class="sec-head">
+    <h2>Build, Docker &amp; Git</h2>
+    <span class="spacer"></span>
+    <span class="tag java">Sanity check</span>
+  </div>
+
+  <details class="q"><summary><span class="qn">OP 01</span><span class="qt">How do you containerise a Spring Boot app well?</span></summary>
+  <div class="qa"><p>Multi-stage build — Maven/Gradle in the build stage, a slim JRE base (<code>eclipse-temurin:21-jre-alpine</code> or distroless) in the runtime stage. Layer the jar so dependencies cache separately from application classes (<code>layertools extract</code> or Spring Boot's built-in <code>bootBuildImage</code>), run as a non-root user, and set container-aware memory flags — modern JVMs respect cgroup limits, but <code>-XX:MaxRAMPercentage=75</code> is the explicit control. Externalise config through env vars, never bake secrets into the image.</p></div></details>
+
+  <details class="q"><summary><span class="qn">OP 02</span><span class="qt">Git: rebase vs merge, and how do you undo a bad commit?</span></summary>
+  <div class="qa"><p><code>merge</code> preserves history and creates a merge commit; <code>rebase</code> replays your commits onto the new base for a linear history — never rebase a branch others have pulled. To undo: <code>git revert</code> on shared branches (creates an inverse commit, safe), <code>git reset --soft/--hard</code> only locally. Also worth knowing: <code>cherry-pick</code> to port a fix to a release branch, <code>stash</code>, <code>bisect</code> to find the commit that broke a test, and <code>reflog</code> to recover anything you thought you lost.</p></div></details>
+
+  <details class="q"><summary><span class="qn">OP 03</span><span class="qt">What does your CI/CD pipeline do?</span></summary>
+  <div class="qa"><p>On PR: compile, unit tests, integration tests with Testcontainers, static analysis and coverage gate (SonarQube), dependency vulnerability scan. On merge: build a versioned image, push to the registry, deploy to dev automatically, then promote through environments with approval. Mention how you deploy — rolling update with readiness probes, blue/green, or canary — and how you roll back. Database migrations via Flyway or Liquibase, always backward-compatible so the previous version can still run.</p></div></details>
+</section>
+
+<section id="js" data-topic="react">
+  <div class="sec-head">
+    <h2>JavaScript fundamentals</h2>
+    <span class="spacer"></span>
+    <span class="tag react">30% block</span>
+  </div>
+  <p class="sec-note">The React portion usually opens with two or three plain-JS questions to check you are not a copy-paste front-end developer. Closures and the event loop are the two that come up most.</p>
+
+  <details class="q"><summary><span class="qn">JS 01</span><span class="qt">What is a closure and where have you used one?</span></summary>
+  <div class="qa"><p>A function that keeps access to the variables of the scope it was defined in, even after that scope has returned. Practical uses: private state in a module or factory, memoisation caches, and every React hook — <code>useState</code>'s setter and the values captured inside <code>useEffect</code> are closures, which is exactly why stale-closure bugs happen when a dependency array is wrong.</p>
+  <pre><code>const debounce = (fn, ms) =&gt; {
+  let t;                       // captured by the closure
+  return (...args) =&gt; {
+    clearTimeout(t);
+    t = setTimeout(() =&gt; fn(...args), ms);
+  };
+};</code></pre></div></details>
+
+  <details class="q"><summary><span class="qn">JS 02</span><span class="qt">Explain the event loop, microtasks and macrotasks.</span></summary>
+  <div class="qa"><p>JS runs on one thread with a call stack. Async work is handed to the browser/Node APIs; when it completes, the callback is queued. After the stack empties, the loop drains the <strong>entire microtask queue</strong> (promise callbacks, <code>queueMicrotask</code>, <code>MutationObserver</code>) before taking one macrotask (<code>setTimeout</code>, I/O, UI events) — which is why a promise scheduled after a <code>setTimeout(…, 0)</code> still runs first. A long synchronous loop blocks rendering entirely, because paint happens between macrotasks.</p></div></details>
+
+  <details class="q"><summary><span class="qn">JS 03</span><span class="qt">How is <code>this</code> determined, and how do arrow functions change it?</span></summary>
+  <div class="qa"><p>For a normal function, <code>this</code> is bound at call time: method call → the object; standalone call → <code>undefined</code> in strict mode; <code>new</code> → the new instance; <code>call</code>/<code>apply</code>/<code>bind</code> → whatever you pass. Arrow functions have no <code>this</code> of their own — they close over the enclosing lexical scope, which is why they are the right choice for callbacks inside class components and the wrong choice for object methods or prototype methods.</p></div></details>
+
+  <details class="q"><summary><span class="qn">JS 04</span><span class="qt"><code>var</code> vs <code>let</code> vs <code>const</code>, and hoisting.</span></summary>
+  <div class="qa"><p><code>var</code> is function-scoped and hoisted initialised to <code>undefined</code>. <code>let</code>/<code>const</code> are block-scoped and hoisted but sit in the temporal dead zone, so reading before declaration throws <code>ReferenceError</code>. <code>const</code> prevents reassignment of the binding, not mutation of the object it points to. Function declarations are fully hoisted; function expressions are not.</p></div></details>
+
+  <details class="q"><summary><span class="qn">JS 05</span><span class="qt">Promises: <code>all</code> vs <code>allSettled</code> vs <code>race</code> vs <code>any</code>.</span></summary>
+  <div class="qa"><p><code>all</code> resolves with every value but rejects immediately on the first rejection. <code>allSettled</code> always resolves with a status/value or status/reason per entry — the right one when partial failure is acceptable. <code>race</code> settles with the first to settle, success or failure (useful for timeouts). <code>any</code> resolves with the first success and only rejects if all fail. With <code>async/await</code>, remember that awaiting in a loop serialises the calls — build the array of promises first, then <code>await Promise.all</code>.</p></div></details>
+
+  <details class="q"><summary><span class="qn">JS 06</span><span class="qt">Shallow vs deep equality, and <code>==</code> vs <code>===</code>.</span></summary>
+  <div class="qa"><p><code>==</code> coerces types (<code>'1' == 1</code> is true, <code>null == undefined</code> is true) — use <code>===</code> everywhere except the deliberate <code>x == null</code> null-or-undefined check. Objects and arrays compare by reference, which is the root of most React re-render questions: a new object literal each render is never <code>===</code> to the previous one, so it breaks <code>React.memo</code> and retriggers effects.</p></div></details>
+
+  <details class="q"><summary><span class="qn">JS 07</span><span class="qt">Debounce vs throttle.</span></summary>
+  <div class="qa"><p>Debounce waits until activity stops for N ms and then fires once — search-as-you-type, autosave. Throttle fires at most once per N ms during continuous activity — scroll handlers, resize, rate-limited APIs. In React, wrap either in <code>useMemo</code> or <code>useRef</code> so a new debounced function is not created on every render, and cancel it in the effect cleanup.</p></div></details>
+</section>
+
+<section id="react" data-topic="react">
+  <div class="sec-head">
+    <h2>React</h2>
+    <span class="spacer"></span>
+    <span class="tag react">30% block</span>
+  </div>
+  <p class="sec-note">At 5+ years they expect opinions, not API recall: why this state library, why this data-fetching approach, how you found and fixed a performance problem.</p>
+
+  <details class="q"><summary><span class="qn">RE 01</span><span class="qt">What is the virtual DOM and how does reconciliation work?</span></summary>
+  <div class="qa"><p>Render produces a lightweight tree of elements; React diffs the new tree against the previous one and applies the minimum set of real DOM mutations. The diff is heuristic and O(n): different element types at the same position mean the whole subtree is thrown away and remounted, and children are matched by <code>key</code>. React 18's renderer can also interrupt and resume rendering work, which is what makes transitions possible.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 02</span><span class="qt">Why does using array index as <code>key</code> cause bugs?</span></summary>
+  <div class="qa"><p>Keys tell React which element is which across renders. With index keys, inserting or reordering shifts every key, so React reuses the wrong component instances — internal state, uncontrolled input values and focus follow the position instead of the data. Symptom people actually see: type into row 2's input, delete row 1, and the text jumps. Use a stable id from the data; index is only safe for a static, never-reordered list.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 03</span><span class="qt">Rules of hooks, and why do they exist?</span></summary>
+  <div class="qa"><p>Only call hooks at the top level (never in conditions, loops or nested functions) and only from React functions or custom hooks. React tracks hooks by <em>call order</em> in a linked list per fiber, so a conditional hook shifts every subsequent hook onto the wrong slot. The lint plugin enforces this, and it also explains why there is no way to "skip" a hook — you move the condition inside it instead.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 04</span><span class="qt">Explain <code>useEffect</code>: dependency array, cleanup, and the common mistakes.</span></summary>
+  <div class="qa"><p>It runs after paint. No dep array → every render; <code>[]</code> → once after mount; <code>[a, b]</code> → whenever those change by <code>Object.is</code>. The cleanup function runs before the next effect and on unmount — that is where you cancel timers, abort fetches and unsubscribe. Common mistakes: omitting a dependency and capturing a stale value; putting an object or function in deps so it changes every render; setting state unconditionally inside the effect and looping; and using it for derived data that should just be computed during render.</p>
+  <div class="tell"><b>Follow-up</b>Why does the effect run twice in development? React 18 StrictMode intentionally mounts, unmounts and remounts to surface missing cleanup. It does not happen in production.</div></div></details>
+
+  <details class="q"><summary><span class="qn">RE 05</span><span class="qt"><code>useMemo</code> vs <code>useCallback</code> vs <code>React.memo</code> — when do they actually help?</span></summary>
+  <div class="qa"><p><code>useMemo</code> caches a computed value, <code>useCallback</code> caches a function identity, <code>React.memo</code> skips a child's re-render when props are shallow-equal. They only pay off when the work is genuinely expensive or when a memoised child receives the value — otherwise you have added a dependency array to maintain and made the code slower. My rule: measure with the Profiler first, then memoise the specific path. Also worth saying: the React Compiler now automates much of this.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 06</span><span class="qt"><code>useState</code> vs <code>useReducer</code>, and what is state batching?</span></summary>
+  <div class="qa"><p><code>useReducer</code> when the next state depends on the previous one in non-trivial ways, when several fields change together, or when you want the transition logic testable outside the component. Use the functional form <code>setCount(c =&gt; c + 1)</code> whenever the update depends on current state, because state is a snapshot within a render. React 18 batches all updates — including those inside promises, timeouts and native handlers — into a single re-render, which React 17 did not.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 07</span><span class="qt">Context vs Redux vs React Query — how do you choose?</span></summary>
+  <div class="qa"><p>Separate <strong>server state</strong> from <strong>client state</strong>. Server state — anything fetched — belongs in React Query/RTK Query, which gives caching, deduping, background refetch, stale-while-revalidate and loading/error state that you would otherwise hand-roll in every component. Client state that is genuinely global and rarely changes (theme, auth user, locale) fits Context. Redux Toolkit earns its place for complex cross-cutting client state with real workflows and time-travel debugging. The Context anti-pattern to name: a single provider holding frequently-changing state re-renders every consumer, so split providers or use a selector-based store like Zustand.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 08</span><span class="qt">Controlled vs uncontrolled components.</span></summary>
+  <div class="qa"><p>Controlled: React state is the single source of truth, <code>value</code> + <code>onChange</code> — needed for validation as you type, conditional formatting, or disabling submit. Uncontrolled: the DOM keeps the value and you read it via a ref or on submit — cheaper for large forms, which is why React Hook Form is uncontrolled by default and re-renders far less than Formik's controlled approach. File inputs are always uncontrolled.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 09</span><span class="qt">Your React page is slow. How do you find the cause?</span></summary>
+  <div class="qa"><p>React DevTools Profiler first — record an interaction, find which components rendered and why ("Why did this render?" shows the changed prop). Typical causes and fixes: a context or parent re-rendering the whole tree (split state, move state down, memoise), unstable props like inline objects and arrow functions, an unvirtualised long list (react-window), unnecessary re-fetching (React Query cache), and a heavy bundle (route-level <code>React.lazy</code> + <code>Suspense</code>, checked in the bundle analyser). Then confirm with Lighthouse/Web Vitals rather than by feel.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 10</span><span class="qt">How do you handle errors and loading in the component tree?</span></summary>
+  <div class="qa"><p>Error boundaries — a class component with <code>getDerivedStateFromError</code> and <code>componentDidCatch</code> — catch render-phase errors in the subtree and show a fallback; they do <strong>not</strong> catch event handlers, async code or SSR errors, which need try/catch. Place one per route plus one around risky widgets so a single failing card doesn't blank the page. <code>Suspense</code> handles loading boundaries for lazy components and data libraries that support it.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 11</span><span class="qt">What makes a good custom hook?</span></summary>
+  <div class="qa"><p>It extracts stateful logic — not markup — behind a name that reads like intent (<code>useDebouncedValue</code>, <code>usePermissions</code>), returns a stable API, and cleans up after itself. Each component calling it gets its own isolated state; hooks share logic, not state. If a hook needs shared state, that lives in a context or store the hook reads from.</p>
+  <pre><code>function useDebouncedValue(value, delay = 300) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() =&gt; {
+    const t = setTimeout(() =&gt; setDebounced(value), delay);
+    return () =&gt; clearTimeout(t);      // cleanup on every change
+  }, [value, delay]);
+  return debounced;
+}</code></pre></div></details>
+
+  <details class="q"><summary><span class="qn">RE 12</span><span class="qt">How do you test a React component?</span></summary>
+  <div class="qa"><p>React Testing Library with Jest or Vitest, querying the way a user would — <code>getByRole</code>, <code>getByLabelText</code> — rather than by class name or test id, so the test survives refactors. Simulate with <code>userEvent</code> rather than <code>fireEvent</code>, assert on rendered output with <code>findBy*</code> for async, and mock the network at the boundary with MSW instead of stubbing fetch everywhere. Never assert on state or internals; assert on what the user sees.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 13</span><span class="qt">As a full-stack engineer, how do you decide what belongs on the server?</span></summary>
+  <div class="qa"><p>This is the question the "full stack" in the title is really testing. Validation and authorisation always run server-side, with client-side validation only as UX. Aggregation across services belongs in a BFF or gateway rather than five parallel calls from the browser. Pagination, filtering and sorting go to the database, not to the client. Keep the API shaped by the domain, and add view-specific endpoints only where the round-trip cost justifies the coupling. Contract stability matters more than internal elegance once a UI depends on it.</p></div></details>
+
+  <details class="q"><summary><span class="qn">RE 14</span><span class="qt">TypeScript quick hits.</span></summary>
+  <div class="qa"><p><code>interface</code> vs <code>type</code>: interfaces merge and extend naturally, types can express unions and mapped types — use interface for object shapes, type for everything else. <code>unknown</code> is the safe <code>any</code>: it forces a narrowing check before use. <code>enum</code> generates runtime code; a union of string literals is usually better. Generics for reusable components (<code>function first&lt;T&gt;(a: T[]): T | undefined</code>), and utility types worth naming: <code>Partial</code>, <code>Pick</code>, <code>Omit</code>, <code>Record</code>, <code>ReturnType</code>.</p></div></details>
+</section>
+
+<section id="coding" data-topic="code">
+  <div class="sec-head">
+    <h2>Live coding drills</h2>
+    <span class="spacer"></span>
+    <span class="tag warn">Do these on paper first</span>
+  </div>
+  <p class="sec-note">The editor has no autocomplete and only the interviewer can run the code, so muscle memory for imports and method names matters more than usual. Say the approach out loud before you type — if the approach is right and the syntax is shaky, you still pass.</p>
+
+  <details class="q"><summary><span class="qn">LC 01</span><span class="qt">Group a list of employees by department and return the highest paid in each.</span></summary>
+  <div class="qa"><pre><code>Map&lt;String, Optional&lt;Employee&gt;&gt; topByDept = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDepartment,
+        Collectors.maxBy(Comparator.comparingDouble(Employee::getSalary))));
+
+// unwrap the Optional
+Map&lt;String, Employee&gt; clean = employees.stream()
+    .collect(Collectors.toMap(
+        Employee::getDepartment,
+        Function.identity(),
+        BinaryOperator.maxBy(Comparator.comparingDouble(Employee::getSalary))));</code></pre></div></details>
+
+  <details class="q"><summary><span class="qn">LC 02</span><span class="qt">Find the average salary, then list everyone earning below it.</span></summary>
+  <div class="qa"><pre><code>double avg = employees.stream()
+    .mapToDouble(Employee::getSalary)
+    .average()
+    .orElse(0.0);
+
+List&lt;Employee&gt; below = employees.stream()
+    .filter(e -&gt; e.getSalary() &lt; avg)
+    .sorted(Comparator.comparing(Employee::getName))
+    .toList();</code></pre>
+  <p>Two passes are correct here — you cannot filter against an average you have not computed yet. If asked for one pass, use <code>Collectors.teeing(averagingDouble(...), toList(), (a, list) -&gt; ...)</code>.</p></div></details>
+
+  <details class="q"><summary><span class="qn">LC 03</span><span class="qt">Count word frequency in a sentence and return the top 3, descending.</span></summary>
+  <div class="qa"><pre><code>Map&lt;String, Long&gt; counts = Arrays.stream(text.toLowerCase().split("\\W+"))
+    .filter(w -&gt; !w.isBlank())
+    .collect(Collectors.groupingBy(w -&gt; w, Collectors.counting()));
+
+List&lt;Map.Entry&lt;String, Long&gt;&gt; top3 = counts.entrySet().stream()
+    .sorted(Map.Entry.&lt;String, Long&gt;comparingByValue().reversed())
+    .limit(3)
+    .toList();</code></pre></div></details>
+
+  <details class="q"><summary><span class="qn">LC 04</span><span class="qt">Find the first non-repeating character in a string.</span></summary>
+  <div class="qa"><pre><code>Map&lt;Character, Integer&gt; freq = new LinkedHashMap&lt;&gt;();
+for (char c : s.toCharArray())
+    freq.merge(c, 1, Integer::sum);
+
+Character first = freq.entrySet().stream()
+    .filter(e -&gt; e.getValue() == 1)
+    .map(Map.Entry::getKey)
+    .findFirst()
+    .orElse(null);</code></pre>
+  <p><code>LinkedHashMap</code> is the whole trick — it preserves encounter order so "first" is meaningful. O(n) time, O(k) space. Say that out loud.</p></div></details>
+
+  <details class="q"><summary><span class="qn">LC 05</span><span class="qt">Group anagrams from an array of strings. (Asked verbatim in an EPAM round.)</span></summary>
+  <div class="qa"><pre><code>Map&lt;String, List&lt;String&gt;&gt; groups = Arrays.stream(words)
+    .collect(Collectors.groupingBy(w -&gt; {
+        char[] c = w.toCharArray();
+        Arrays.sort(c);
+        return new String(c);
+    }));
+
+return new ArrayList&lt;&gt;(groups.values());</code></pre>
+  <p>O(n · k log k). Mention the alternative key — a 26-length count array rendered as a string — which drops it to O(n · k) for lowercase input.</p></div></details>
+
+  <details class="q"><summary><span class="qn">LC 06</span><span class="qt">Remove duplicate objects from a list by a business key, keeping the first.</span></summary>
+  <div class="qa"><pre><code>List&lt;Customer&gt; unique = customers.stream()
+    .collect(Collectors.toMap(
+        Customer::getEmail,
+        Function.identity(),
+        (existing, replacement) -&gt; existing,   // keep first
+        LinkedHashMap::new))
+    .values().stream().toList();</code></pre>
+  <p>Without the merge function this throws <code>IllegalStateException</code> on the first duplicate — a favourite gotcha.</p></div></details>
+
+  <details class="q"><summary><span class="qn">LC 07</span><span class="qt">Flatten a list of orders into a sorted list of distinct product names.</span></summary>
+  <div class="qa"><pre><code>List&lt;String&gt; products = orders.stream()
+    .flatMap(o -&gt; o.getItems().stream())
+    .map(Item::getProductName)
+    .distinct()
+    .sorted()
+    .toList();</code></pre>
+  <p><code>distinct()</code> uses <code>equals</code>/<code>hashCode</code> — if they hand you objects instead of strings, that is the point of the question.</p></div></details>
+
+  <details class="q"><summary><span class="qn">LC 08</span><span class="qt">Two sum / longest substring without repeating characters.</span></summary>
+  <div class="qa"><pre><code>// Two sum — one pass, O(n)
+Map&lt;Integer, Integer&gt; seen = new HashMap&lt;&gt;();
+for (int i = 0; i &lt; nums.length; i++) {
+    Integer j = seen.get(target - nums[i]);
+    if (j != null) return new int[]{j, i};
+    seen.put(nums[i], i);
+}
+
+// Longest substring without repeats — sliding window, O(n)
+int left = 0, best = 0;
+Map&lt;Character, Integer&gt; last = new HashMap&lt;&gt;();
+for (int right = 0; right &lt; s.length(); right++) {
+    char c = s.charAt(right);
+    if (last.containsKey(c)) left = Math.max(left, last.get(c) + 1);
+    last.put(c, right);
+    best = Math.max(best, right - left + 1);
+}</code></pre>
+  <p>These two cover the sliding-window and hash-lookup families that easy/medium rounds draw from.</p></div></details>
+
+  <details class="q"><summary><span class="qn">LC 09</span><span class="qt">Design a class that tracks the most popular item with increment and decrement. (Asked at EPAM.)</span></summary>
+  <div class="qa"><pre><code>class Popularity {
+    private final Map&lt;String, Integer&gt; counts = new HashMap&lt;&gt;();
+    private final TreeMap&lt;Integer, Set&lt;String&gt;&gt; byCount = new TreeMap&lt;&gt;();
+
+    void increment(String key) { move(key, +1); }
+    void decrement(String key) { move(key, -1); }
+
+    String mostPopular() {
+        return byCount.isEmpty() ? null
+             : byCount.lastEntry().getValue().iterator().next();
+    }
+
+    private void move(String key, int delta) {
+        int old = counts.getOrDefault(key, 0);
+        int now = old + delta;
+        if (old &gt; 0) {
+            byCount.get(old).remove(key);
+            if (byCount.get(old).isEmpty()) byCount.remove(old);
+        }
+        if (now &gt; 0) {
+            counts.put(key, now);
+            byCount.computeIfAbsent(now, k -&gt; new HashSet&lt;&gt;()).add(key);
+        } else {
+            counts.remove(key);
+        }
+    }
+}</code></pre>
+  <p>Talk through the design choice: the <code>TreeMap</code> gives O(log n) max lookup; an O(1) version uses a doubly-linked list of count buckets (the LFU-cache structure). Naming that alternative shows range even if you implement the simpler one.</p></div></details>
+
+  <details class="q"><summary><span class="qn">LC 10</span><span class="qt">React: build a debounced search box that cancels in-flight requests.</span></summary>
+  <div class="qa"><pre><code>function Search() {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const debounced = useDebouncedValue(query, 300);
+
+  useEffect(() =&gt; {
+    if (!debounced) { setResults([]); return; }
+    const controller = new AbortController();
+
+    fetch(`/api/search?q=${encodeURIComponent(debounced)}`,
+          { signal: controller.signal })
+      .then(r =&gt; r.json())
+      .then(setResults)
+      .catch(e =&gt; { if (e.name !== 'AbortError') console.error(e); });
+
+    return () =&gt; controller.abort();   // cancels the stale request
+  }, [debounced]);
+
+  return (
+    &lt;input value={query} onChange={e =&gt; setQuery(e.target.value)}
+           aria-label="Search" /&gt;
+  );
+}</code></pre>
+  <p>The <code>AbortController</code> in the cleanup is the senior detail — without it, a slow earlier response can overwrite a newer one (the race condition they are checking for).</p></div></details>
+</section>
+
+<section id="behavioral" data-topic="all">
+  <div class="sec-head">
+    <h2>The conversation around the code</h2>
+    <span class="spacer"></span>
+    <span class="tag warn">Don't wing it</span>
+  </div>
+
+  <details class="q"><summary><span class="qn">BX 01</span><span class="qt">"Tell me about yourself."</span></summary>
+  <div class="qa"><p>Ninety seconds, three beats: what you do now and the domain, the technical shape of your work ("Java 17 and Spring Boot services with a React front end, roughly 70/30"), and one concrete thing you owned and its outcome with a number attached. End by handing control back: "happy to go deeper on any of that." Do not narrate your résumé chronologically.</p></div></details>
+
+  <details class="q"><summary><span class="qn">BX 02</span><span class="qt">"Tell me about a hard technical problem you solved."</span></summary>
+  <div class="qa"><p>Use STAR and keep the S and T to two sentences each — the interviewer wants the A. Best material for this role: a production incident (memory leak, N+1, connection-pool exhaustion, a race condition), because it lets you show diagnosis, tooling and a measurable fix. Prepare <strong>two</strong>, one backend and one front-end, and know the numbers: before, after, how you verified.</p></div></details>
+
+  <details class="q"><summary><span class="qn">BX 03</span><span class="qt">"What would you do differently in your current project?"</span></summary>
+  <div class="qa"><p>Answer honestly with a design-level regret and what you learned — over-eager microservice split, missing test coverage in a critical path, a schema decision that made a later feature expensive. Avoid blaming people or previous employers. This question is checking self-awareness, and "nothing really" is the only wrong answer.</p></div></details>
+
+  <details class="q"><summary><span class="qn">BX 04</span><span class="qt">When you genuinely do not know the answer.</span></summary>
+  <div class="qa"><p>Say so in one sentence, then show your reasoning: "I haven't used ZGC in production — I know it's a low-pause collector for large heaps, and I'd start by comparing pause distributions against G1 under our load." Interviewers score honest reasoning higher than a confident wrong answer, and a wrong answer delivered confidently is the fastest way to lose a round.</p></div></details>
+
+  <details class="q"><summary><span class="qn">BX 05</span><span class="qt">Two questions worth asking them.</span></summary>
+  <div class="qa"><ul>
+  <li>"What does the split between Java and front-end work look like day to day on this account, and does it shift over a project's life?"</li>
+  <li>"How does the team handle code review and technical decisions — is there an architect, or is it decided within the team?"</li>
+  <li>"What's the next stage of the process and the timeline?" — always close with this.</li></ul>
+  <p>Avoid asking about salary, leave policy or work-from-home in a technical round; those belong with the recruiter.</p></div></details>
+</section>
+
+<section id="checklist" data-topic="all">
+  <div class="sec-head">
+    <h2>Before 14:45</h2>
+    <span class="spacer"></span>
+    <span class="tag warn">Logistics</span>
+  </div>
+  <p class="sec-note">The invite is specific about setup, and platform problems eat interview minutes you cannot get back.</p>
+  <ul class="checklist">
+    <li><strong>Accept the invitation</strong> if you haven't — the mail asks for it as a readiness signal.</li>
+    <li>Open the interview link in <strong>Google Chrome</strong> on a laptop or desktop at least 10 minutes early, and tick the recording/webcam consent box — they reserve the right to cancel without it.</li>
+    <li>Test camera, mic and screen-share permissions in Chrome now, not at 14:44. Close anything that will pop a notification mid-share.</li>
+    <li>Keep an ID document within reach — the invite mentions online ID and biometric verification.</li>
+    <li><strong>No phone, no second screen with notes, no AI assistant.</strong> The mail states it explicitly and interviewers watch eye movement during coding.</li>
+    <li>Wired connection or a seat near the router; have a mobile hotspot ready as a fallback, and the recruiter's address (<code>kamalabharathi_sanmugasundaram@epam.com</code>) open in case you drop.</li>
+    <li>Paper and pen on the desk — allowed, and useful for sketching architecture while you talk.</li>
+    <li>Water, a quiet room, plain background, and the door shut.</li>
+    <li>Re-read your own résumé last: every technology on it is fair game, and the gap between what it claims and what you can defend is where rounds are lost.</li>
+  </ul>
+</section>
+
+<footer>
+  <p><strong>Grounded in reported EPAM interview experiences.</strong> Question weighting follows first-hand write-ups of EPAM Java and senior backend rounds; several items here (group anagrams, the popularity-counter class, Stream API average-and-filter, Mockito <code>@Spy</code>, <code>@Transactional</code> on private methods) were asked verbatim in reported rounds.</p>
+  <p style="margin-top:10px">Sources: <a href="https://medium.com/@emin_yuce/my-comprehensive-epam-senior-java-engineer-interview-experience-dca8827e92c6">EPAM Senior Java Engineer interview experience</a> · <a href="https://leetcode.com/discuss/interview-question/5597888/EPAM-Senior-Backend-Developer-or-Java-or-Microservices-or-5+-YOE/">EPAM Senior Backend Developer, 5+ YOE (LeetCode Discuss)</a> · <a href="https://www.glassdoor.co.in/Interview/EPAM-Systems-Senior-Java-Developer-Interview-Questions-EI_IE15544.0,12_KO13,34.htm">Glassdoor: EPAM Senior Java Developer</a> · <a href="https://medium.com/@g.edwinlal/epam-senior-java-engineer-interview-questions-and-answers-d370ce197fb7">EPAM Senior Java Engineer Q&amp;A</a></p>
+</footer>
+</div>
+
+<script>
+(function () {
+  var qs = Array.prototype.slice.call(document.querySelectorAll('details.q'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section[data-topic]'));
+  var countEl = document.getElementById('qcount');
+  countEl.textContent = qs.length;
+
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip[data-filter]'))
+    .filter(function (c) { return c.id !== 'toggleAll'; });
+
+  function applyFilter(name) {
+    sections.forEach(function (s) {
+      var topic = s.getAttribute('data-topic');
+      var show = name === 'all' || topic === 'all' || topic === name;
+      s.hidden = !show;
+    });
+    chips.forEach(function (c) {
+      c.setAttribute('aria-pressed', String(c.dataset.filter === name));
+    });
+    var visible = qs.filter(function (q) { return q.closest('section').hidden === false; });
+    countEl.textContent = visible.length;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () { applyFilter(c.dataset.filter); });
+  });
+
+  var toggle = document.getElementById('toggleAll');
+  var open = false;
+  toggle.addEventListener('click', function () {
+    open = !open;
+    qs.forEach(function (q) { q.open = open; });
+    toggle.textContent = open ? 'Hide all' : 'Reveal all';
+    toggle.setAttribute('aria-pressed', String(open));
+  });
+})();
+</script>
+</body>
+</html>
