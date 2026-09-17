@@ -32,7 +32,12 @@ public class PrepService {
     private final PrepReferenceRepository references;
     private final PrepPlanWeekRepository planWeeks;
     private final StudyProgressRepository progress;
-    private final ObjectMapper mapper;
+
+    // Constructed rather than injected: this application does not expose an
+    // ObjectMapper bean, and GeminiService already does the same. Keeping it
+    // local also means the stored JSON shape cannot drift with the web layer's
+    // serialisation settings.
+    private final ObjectMapper mapper = new ObjectMapper();
 
     /* ================= import ================= */
 
@@ -52,6 +57,15 @@ public class PrepService {
         references.deleteByUserId(uid);
         topics.deleteByUserId(uid);
         categories.deleteByUserId(uid);
+
+        // Flush before inserting. Hibernate orders its action queue inserts
+        // first and deletes LAST, so without this the re-imported rows collide
+        // with the ones being replaced on (user_id, *_key) and the whole import
+        // fails — but only on the SECOND import, which is easy to miss.
+        questions.flush();
+        references.flush();
+        topics.flush();
+        categories.flush();
 
         int nCat = 0, nTop = 0, nQ = 0, nRef = 0, nWeek = 0;
 
@@ -88,6 +102,7 @@ public class PrepService {
         PlanDto plan = req.plan();
         if (plan != null) {
             planWeeks.deleteByUserIdAndPlanKey(uid, plan.key());
+            planWeeks.flush();
             int i = 0;
             for (PlanWeekDto w : nullSafe(plan.weeks())) {
                 planWeeks.save(PrepPlanWeek.builder()
