@@ -50,6 +50,23 @@ const stripTags = (s) => decode(s.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').
 const cleanHeading = (s) =>
   stripTags(s.replace(/<a[^>]*>\s*[#¶]\s*<\/a>/gi, '')).replace(/\s*#+\s*$/, '').trim()
 
+/**
+ * Repairs markup the legacy kit's markdown converter emitted badly.
+ *
+ * The source contains `<ul>…</ul></p>` — a paragraph that "contains" a list,
+ * which HTML does not allow, so the converter closed the <p> before the list
+ * and then closed it again afterwards. Browsers forgive the stray tag, but it
+ * is malformed, it trips any strict parser, and it is the same family as the
+ * `</div>` that once closed `.prose` early and blanked the Entain material.
+ *
+ * Normalise on the way in, so nothing downstream has to know about it.
+ */
+const normaliseHtml = (html) =>
+  html
+    // a </p> that follows a block close is the converter's, not the author's
+    .replace(/(<\/(?:ul|ol|pre|div|table|blockquote)>)\s*<\/p>/gi, '$1')
+    .trim()
+
 const slug = (s) =>
   stripTags(s)
     .toLowerCase()
@@ -151,7 +168,7 @@ function main() {
             part,
             heading: mark.title,
             level: mark.level,
-            html: prose,
+            html: normaliseHtml(prose),
             source: 'interview-prep.html',
           })
         }
@@ -179,7 +196,9 @@ function main() {
       const aIdx = body.indexOf('<div class="a">')
       let answerHtml = ''
       if (aIdx !== -1) {
-        answerHtml = body.slice(aIdx + '<div class="a">'.length).replace(/<\/div>\s*$/, '').trim()
+        answerHtml = normaliseHtml(
+          body.slice(aIdx + '<div class="a">'.length).replace(/<\/div>\s*$/, ''),
+        )
       }
 
       if (!currentTopic) {
@@ -207,7 +226,7 @@ function main() {
             part,
             heading: currentTopic.name,
             level: 3,
-            html: gap,
+            html: normaliseHtml(gap),
             source: 'interview-prep.html',
           })
         }

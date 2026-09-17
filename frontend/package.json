@@ -10,7 +10,9 @@
     "extract": "node scripts/extract-legacy.mjs",
     "test:visuals": "node scripts/visual-smoke.mjs",
     "export:bank": "node scripts/export-bank.mjs",
-    "push:bank": "node scripts/export-bank.mjs"
+    "push:bank": "node scripts/export-bank.mjs",
+    "test:content": "node scripts/content-check.mjs",
+    "test": "node scripts/content-check.mjs && node scripts/visual-smoke.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",

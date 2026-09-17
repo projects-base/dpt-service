@@ -3,13 +3,20 @@ import { generatedQuestions } from './generated/questions'
 import { generatedTopics } from './generated/topics'
 import { generatedNotes } from './generated/notes'
 import { dsaTopics } from './dsa'
+import { designQuestions } from './design'
 
 export { categories, categoryById } from './categories'
 export { companies, companyById } from './companies'
 export { plans, planById, microsoftPlan } from './plans'
 
-/** Hand-authored questions go here; they merge with the generated bank. */
-export const authoredQuestions: Question[] = []
+/**
+ * Hand-authored questions go here; they merge with the generated bank.
+ *
+ * The design set is kept in its own folder rather than inline: SOLID and the
+ * pattern families change for different reasons and are reviewed separately,
+ * so they are separate files. See data/design/index.ts.
+ */
+export const authoredQuestions: Question[] = [...designQuestions]
 
 export const questions: Question[] = [...generatedQuestions, ...authoredQuestions]
 export const topics: Topic[] = [...generatedTopics, ...dsaTopics]

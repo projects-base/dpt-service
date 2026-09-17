@@ -256,6 +256,40 @@ a {
 }
 .prose .hl { margin: 0 0 16px; }
 
+/* The two paragraphs every answer is built around.
+   The bank marks them up 206 times and nothing styled them, so the one-line
+   summary and the extra-credit line read as ordinary body text — which is the
+   opposite of the point. Both are quiet: a rule and a colour shift, no boxes,
+   because an answer that shouts twice per screen is tiring to revise from. */
+.prose .tldr {
+  margin: 0 0 18px;
+  padding-left: 14px;
+  border-left: 2px solid var(--accent);
+  color: var(--ink);
+}
+.prose .tldr strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  margin-bottom: 3px;
+}
+.prose .bonus {
+  margin: 18px 0 16px;
+  padding: 12px 14px;
+  background: var(--boss-soft);
+  border-radius: 4px;
+  color: var(--ink-2);
+}
+.prose .bonus strong {
+  color: var(--boss);
+  font-weight: 600;
+}
+/* An answer that opens straight into a labelled block shouldn't double the gap. */
+.prose .tldr + p > strong:only-child { display: block; margin-top: 2px; }
+
 /* pygments token colours, retuned to the palette */
 .prose .k, .prose .kd, .prose .kn, .prose .kc, .prose .kt { color: var(--boss); font-weight: 500; }
 .prose .nc, .prose .nf, .prose .nn { color: var(--accent-ink); }

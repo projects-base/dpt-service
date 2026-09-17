@@ -1,4 +1,4 @@
-import"./index-rwfpeIhT.js";const r=[{id:"1-q1-1",topicId:"java--1-oop-language-fundamentals",categoryId:"java",companyId:null,part:1,prompt:"Difference between abstract class and interface (Java 8+)?",answerHtml:`<table>
+import"./index-DW7-fKOG.js";const q=[{id:"1-q1-1",topicId:"java--1-oop-language-fundamentals",categoryId:"java",companyId:null,part:1,prompt:"Difference between abstract class and interface (Java 8+)?",answerHtml:`<table>
 <thead>
 <tr>
 <th></th>
@@ -2114,7 +2114,7 @@ Map&lt;String, Odds&gt; cache = Collections.synchronizedMap(new LruCache&lt;&gt;
 <li><strong>Threads.</strong> If nothing can change, nothing can go wrong when many threads read it at once. No locking needed.</li>
 <li><strong>Caching the hash.</strong> Because it can never change, String calculates its hash code once and remembers it. That makes Strings very fast as HashMap keys.</li>
 <li><strong>Sharing.</strong> Java keeps a pool of Strings and reuses them. That's only safe if nobody can modify them.</li>
-</ul></p>
+</ul>
 <p><strong>↳ Level 2 — "So what do you use when you need to build a string in a loop?"</strong></p>
 <p>"<code>StringBuilder</code>. If I use <code>+</code> inside a loop, every single pass creates a whole new String and throws the old one away. With 10,000 items that's 10,000 wasted objects and it gets slower as the string grows.</p>
 <p>StringBuilder keeps one buffer and appends to it.</p>
@@ -2156,7 +2156,7 @@ Map&lt;String, Odds&gt; cache = Collections.synchronizedMap(new LruCache&lt;&gt;
 <li><strong>Read the error message.</strong> 'Java heap space' means normal objects. 'Metaspace' means too many classes loaded. 'Unable to create new native thread' means too many threads. The message already narrows it down.</li>
 <li><strong>Look at the GC log.</strong> I want one specific number: how full is the old generation <em>right after</em> each full garbage collection. If it goes up and comes back down, that's healthy — just busy. If it keeps creeping up and never comes back down, that's a leak.</li>
 <li><strong>Take a heap dump</strong> and open it in Eclipse MAT. It shows what's holding the most memory and, more importantly, <em>what is keeping it alive</em>. That chain of references is the bug."</li>
-</ol></p>
+</ol>
 <p><strong>↳ Level 2 — "How do you know whether it's a leak or you just need more memory?"</strong></p>
 <p>"That one number from step 2 — old generation usage after a full GC.</p>
 <p>If it returns to roughly the same baseline every time, memory is being reclaimed properly. The app just genuinely needs more room, so I increase the heap.</p>
@@ -2352,7 +2352,7 @@ WHERE salary &lt; (SELECT MAX(salary) FROM employees);
 <ul>
 <li>First request: the insert succeeds, I process the bet, and I save the response.</li>
 <li>Retry: the insert fails because of the unique constraint. So I know I've seen it — I return the saved response and do nothing else.</li>
-</ul></p>
+</ul>
 <p><strong>↳ Level 2 — "Why a database constraint? Couldn't you just check Redis?"</strong></p>
 <p>"Checking first and then acting leaves a gap. Two retries can arrive at the same instant, both check, both see nothing, and both process. That's exactly the bug I was trying to prevent.</p>
 <p>A unique constraint has no gap. The database decides, and only one insert can win. There's no window between checking and acting.</p>
@@ -2418,7 +2418,7 @@ WHERE salary &lt; (SELECT MAX(salary) FROM employees);
 <ul>
 <li>DB commits, publish fails → the bet exists but nothing downstream knows. Silent data loss.</li>
 <li>Publish succeeds, DB rolls back → downstream acts on a bet that doesn't exist. Worse.</li>
-</ul></p>
+</ul>
 <p><strong>↳ The outbox pattern:</strong></p>
 <ol>
 <li>In <strong>one</strong> database transaction, write the bet row <em>and</em> insert a row into an <code>outbox</code> table. Both or neither — the database guarantees it.</li>
@@ -2718,7 +2718,7 @@ class WsConfig implements WebSocketMessageBrokerConfigurer {
 <li><strong>Scale and resilience.</strong> Shard the wallet by customer; circuit breakers and bulkheads per provider; multi-AZ; autoscale for event-driven peaks.</li>
 <li><strong>The bit most candidates forget.</strong> Data residency per jurisdiction, immutable audit trail, RNG certification constraints on releases, responsible-gambling enforcement, and daily reconciliation against provider reports.</li>
 </ol>
-<p class="bonus"><strong>Close on the trade-off, not on a list of boxes.</strong> "If I had to pick the single hardest constraint, it's that the wallet is synchronous, on the path of every spin, called by systems I don't control, over a network that fails — and it must never be wrong. Almost every design decision here comes out of that one sentence." Ending on the core tension is what makes it sound like experience rather than a memorised diagram.</p>`,followUps:[],tags:[],source:"interview-prep.html"}],c=[{id:"java--1-oop-language-fundamentals",categoryId:"java",part:1,companyId:null,name:"1. OOP & Language Fundamentals",order:0},{id:"java--2-collections-framework",categoryId:"java",part:1,companyId:null,name:"2. Collections Framework",order:1},{id:"java--3-java-8-21-features-very-likely-at-5-yrs",categoryId:"java",part:1,companyId:null,name:"3. Java 8 → 21 Features (very likely at 5+ yrs)",order:2},{id:"java--4-jvm-memory-gc",categoryId:"java",part:1,companyId:null,name:"4. JVM, Memory & GC",order:3},{id:"java--5-concurrency-multithreading-heavily-asked",categoryId:"java",part:1,companyId:null,name:"5. Concurrency & Multithreading (heavily asked)",order:4},{id:"java--6-rapid-fire-coding-problems-be-ready-to-write-these-live",categoryId:"java",part:1,companyId:null,name:"6. Rapid-fire coding problems (be ready to write these live)",order:5},{id:"spring--1-spring-core",categoryId:"spring",part:2,companyId:null,name:"1. Spring Core",order:6},{id:"spring--2-spring-boot",categoryId:"spring",part:2,companyId:null,name:"2. Spring Boot",order:7},{id:"spring--3-rest-api-design",categoryId:"spring",part:2,companyId:null,name:"3. REST API Design",order:8},{id:"spring--4-jpa-hibernate",categoryId:"spring",part:2,companyId:null,name:"4. JPA / Hibernate",order:9},{id:"spring--5-sql-databases",categoryId:"spring",part:2,companyId:null,name:"5. SQL & Databases",order:10},{id:"spring--6-microservices",categoryId:"spring",part:2,companyId:null,name:"6. Microservices",order:11},{id:"spring--7-kafka-messaging",categoryId:"spring",part:2,companyId:null,name:"7. Kafka & Messaging",order:12},{id:"spring--8-testing-code-quality",categoryId:"spring",part:2,companyId:null,name:"8. Testing & Code Quality",order:13},{id:"design--1-solid-know-the-definition-a-violation-and-the-fix-for-each",categoryId:"design",part:3,companyId:null,name:"1. SOLID (know the definition, a violation, and the fix for each)",order:14},{id:"design--s-single-responsibility-principle",categoryId:"design",part:3,companyId:null,name:"S — Single Responsibility Principle",order:15},{id:"design--o-open-closed-principle",categoryId:"design",part:3,companyId:null,name:"O — Open/Closed Principle",order:16},{id:"design--l-liskov-substitution-principle",categoryId:"design",part:3,companyId:null,name:"L — Liskov Substitution Principle",order:17},{id:"design--i-interface-segregation-principle",categoryId:"design",part:3,companyId:null,name:"I — Interface Segregation Principle",order:18},{id:"design--d-dependency-inversion-principle",categoryId:"design",part:3,companyId:null,name:"D — Dependency Inversion Principle",order:19},{id:"design--2-design-patterns",categoryId:"design",part:3,companyId:null,name:"2. Design Patterns",order:20},{id:"design--creational",categoryId:"design",part:3,companyId:null,name:"Creational",order:21},{id:"design--structural",categoryId:"design",part:3,companyId:null,name:"Structural",order:22},{id:"design--behavioural",categoryId:"design",part:3,companyId:null,name:"Behavioural",order:23},{id:"design--architectural-enterprise-patterns",categoryId:"design",part:3,companyId:null,name:"Architectural / Enterprise patterns",order:24},{id:"design--3-architecture-styles",categoryId:"design",part:3,companyId:null,name:"3. Architecture Styles",order:25},{id:"design--4-system-design-the-framework",categoryId:"design",part:3,companyId:null,name:"4. System Design — the framework",order:26},{id:"design--5-worked-designs-rehearse-these-out-loud",categoryId:"design",part:3,companyId:null,name:"5. Worked designs (rehearse these out loud)",order:27},{id:"design--a-url-shortener-the-warm-up",categoryId:"design",part:3,companyId:null,name:"A. URL Shortener (the warm-up)",order:28},{id:"design--b-rate-limiter-very-common-ties-to-the-api-gateway",categoryId:"design",part:3,companyId:null,name:"B. Rate Limiter (very common; ties to the API gateway)",order:29},{id:"design--c-notification-service-fan-out-retries-multi-channel",categoryId:"design",part:3,companyId:null,name:"C. Notification Service (fan-out, retries, multi-channel)",order:30},{id:"design--d-e-commerce-order-checkout-epam-s-favourite-shape",categoryId:"design",part:3,companyId:null,name:"D. E-commerce Order / Checkout (EPAM's favourite shape)",order:31},{id:"design--e-betting-wagering-platform-rehearse-this-specifically-for-entain",categoryId:"design",part:3,companyId:null,name:"E. Betting / Wagering Platform ⭐ (rehearse this specifically for Entain)",order:32},{id:"design--f-real-time-chat-websocket-feed",categoryId:"design",part:3,companyId:null,name:"F. Real-time Chat / WebSocket feed",order:33},{id:"design--g-distributed-job-scheduler-cron-in-a-cluster",categoryId:"design",part:3,companyId:null,name:"G. Distributed job scheduler / cron in a cluster",order:34},{id:"design--h-log-metrics-ingestion-pipeline",categoryId:"design",part:3,companyId:null,name:"H. Log/metrics ingestion pipeline",order:35},{id:"design--6-likely-follow-up-how-would-you-handle-x-questions",categoryId:"design",part:3,companyId:null,name:'6. Likely follow-up "how would you handle X" questions',order:36},{id:"web--1-javascript-core",categoryId:"web",part:4,companyId:null,name:"1. JavaScript Core",order:37},{id:"web--2-typescript",categoryId:"web",part:4,companyId:null,name:"2. TypeScript",order:38},{id:"web--3-react",categoryId:"web",part:4,companyId:null,name:"3. React",order:39},{id:"web--4-angular",categoryId:"web",part:4,companyId:null,name:"4. Angular",order:40},{id:"web--5-full-stack-integration-epam-will-ask-this",categoryId:"web",part:4,companyId:null,name:"5. Full-stack integration (EPAM will ask this)",order:41},{id:"web--6-devops-docker-kubernetes-ci-cd",categoryId:"web",part:4,companyId:null,name:"6. DevOps, Docker, Kubernetes, CI/CD",order:42},{id:"behavioural--1-what-each-company-is-actually-assessing",categoryId:"behavioural",part:5,companyId:null,name:"1. What each company is actually assessing",order:43},{id:"behavioural--epam-full-stack-80-backend-20-react-angular",categoryId:"behavioural",part:5,companyId:null,name:"EPAM — Full Stack (80% backend / 20% React + Angular)",order:44},{id:"behavioural--entain-java-backend",categoryId:"behavioural",part:5,companyId:null,name:"Entain — Java Backend",order:45},{id:"behavioural--2-tell-me-about-your-project-build-this-answer-now",categoryId:"behavioural",part:5,companyId:null,name:'2. "Tell me about your project" — build this answer now',order:46},{id:"behavioural--3-behavioural-questions-use-star-situation-task-action-result",categoryId:"behavioural",part:5,companyId:null,name:"3. Behavioural questions (use STAR: Situation, Task, Action, Result)",order:47},{id:"behavioural--4-questions-you-should-ask-asked-in-almost-every-round-not-asking-is-a-r",categoryId:"behavioural",part:5,companyId:null,name:"4. Questions YOU should ask (asked in almost every round; not asking is a red flag)",order:48},{id:"behavioural--5-rapid-fire-self-test-cover-the-answer-and-say-it-aloud",categoryId:"behavioural",part:5,companyId:null,name:"5. Rapid-fire self-test (cover the answer and say it aloud)",order:49},{id:"behavioural--6-a-realistic-study-plan",categoryId:"behavioural",part:5,companyId:null,name:"6. A realistic study plan",order:50},{id:"behavioural--7-interview-day-tactics",categoryId:"behavioural",part:5,companyId:null,name:"7. Interview-day tactics",order:51},{id:"behavioural--8-final-checklist-before-the-call",categoryId:"behavioural",part:5,companyId:null,name:"8. Final checklist before the call",order:52},{id:"java--a1-internals-you-should-be-able-to-recite",categoryId:"java",part:6,companyId:null,name:"A1. Internals you should be able to recite",order:53},{id:"java--a2-collections-pitfalls-high-yield-trick-questions",categoryId:"java",part:6,companyId:null,name:"A2. Collections pitfalls (high-yield trick questions)",order:54},{id:"java--b1-erasure-and-its-consequences",categoryId:"java",part:6,companyId:null,name:"B1. Erasure and its consequences",order:55},{id:"java--b2-wildcards-pecs-and-capture",categoryId:"java",part:6,companyId:null,name:"B2. Wildcards, PECS, and capture",order:56},{id:"java--b3-bounded-types",categoryId:"java",part:6,companyId:null,name:"B3. Bounded types",order:57},{id:"java--b4-generic-methods-vs-generic-classes",categoryId:"java",part:6,companyId:null,name:"B4. Generic methods vs generic classes",order:58},{id:"java--b5-heap-pollution-safevarargs",categoryId:"java",part:6,companyId:null,name:"B5. Heap pollution & @SafeVarargs",order:59},{id:"java--b6-generics-pitfall-questions",categoryId:"java",part:6,companyId:null,name:"B6. Generics pitfall questions",order:60},{id:"spring--a1-bootstrapping-configuration",categoryId:"spring",part:7,companyId:null,name:"A1. Bootstrapping & configuration",order:61},{id:"spring--a2-stereotypes-dependency-injection",categoryId:"spring",part:7,companyId:null,name:"A2. Stereotypes & dependency injection",order:62},{id:"spring--a3-conditional-annotations-how-auto-config-decides",categoryId:"spring",part:7,companyId:null,name:"A3. Conditional annotations (how auto-config decides)",order:63},{id:"spring--a4-web-mvc",categoryId:"spring",part:7,companyId:null,name:"A4. Web / MVC",order:64},{id:"spring--a5-data-jpa",categoryId:"spring",part:7,companyId:null,name:"A5. Data / JPA",order:65},{id:"spring--a6-transactions-async-scheduling-caching-aop",categoryId:"spring",part:7,companyId:null,name:"A6. Transactions, async, scheduling, caching, AOP",order:66},{id:"spring--a7-testing",categoryId:"spring",part:7,companyId:null,name:"A7. Testing",order:67},{id:"spring--a8-lombok-used-everywhere-know-the-traps",categoryId:"spring",part:7,companyId:null,name:"A8. Lombok (used everywhere; know the traps)",order:68},{id:"spring--b1-the-mental-model",categoryId:"spring",part:7,companyId:null,name:"B1. The mental model",order:69},{id:"spring--b2-modern-configuration-boot-3-security-6",categoryId:"spring",part:7,companyId:null,name:"B2. Modern configuration (Boot 3 / Security 6)",order:70},{id:"spring--b3-questions-they-actually-ask",categoryId:"spring",part:7,companyId:null,name:"B3. Questions they actually ask",order:71},{id:"spring--c1-property-source-precedence-highest-wins",categoryId:"spring",part:7,companyId:null,name:"C1. Property source precedence (highest wins)",order:72},{id:"spring--c2-a-realistic-application-yml",categoryId:"spring",part:7,companyId:null,name:"C2. A realistic application.yml",order:73},{id:"spring--c3-value-vs-configurationproperties",categoryId:"spring",part:7,companyId:null,name:"C3. @Value vs @ConfigurationProperties",order:74},{id:"spring--c4-profiles",categoryId:"spring",part:7,companyId:null,name:"C4. Profiles",order:75},{id:"java--1-the-collections-map",categoryId:"java",part:8,companyId:null,name:"1. The collections map",order:76},{id:"java--2-set-algebra-the-venn-diagram",categoryId:"java",part:8,companyId:null,name:"2. Set algebra — the Venn diagram",order:77},{id:"java--3-inside-a-hashmap",categoryId:"java",part:8,companyId:null,name:"3. Inside a HashMap",order:78},{id:"java--4-the-stream-pipeline",categoryId:"java",part:8,companyId:null,name:"4. The stream pipeline",order:79},{id:"java--5-the-collectors-catalogue",categoryId:"java",part:8,companyId:null,name:"5. The Collectors catalogue",order:80},{id:"java--5-1-groupingby-many-buckets-keyed-by-a-function",categoryId:"java",part:8,companyId:null,name:"5.1 groupingBy — many buckets, keyed by a function",order:81},{id:"java--5-2-the-downstream-slot-where-groupingby-gets-powerful",categoryId:"java",part:8,companyId:null,name:"5.2 The downstream slot — where groupingBy gets powerful",order:82},{id:"java--5-3-partitioningby-exactly-two-buckets-always",categoryId:"java",part:8,companyId:null,name:"5.3 partitioningBy — exactly two buckets, always",order:83},{id:"java--5-4-the-rest-of-the-catalogue",categoryId:"java",part:8,companyId:null,name:"5.4 The rest of the catalogue",order:84},{id:"java--5-5-distinct-sorted-limit-skip",categoryId:"java",part:8,companyId:null,name:"5.5 distinct, sorted, limit, skip",order:85},{id:"java--6-one-dataset-every-collector",categoryId:"java",part:8,companyId:null,name:"6. One dataset, every collector",order:86},{id:"java--7-rapid-self-test",categoryId:"java",part:8,companyId:null,name:"7. Rapid self-test",order:87},{id:"company--1-what-each-round-is-actually-scoring",categoryId:"company",part:9,companyId:"epam",name:"1. What each round is actually scoring",order:88},{id:"company--2-the-project-narrative-the-spine-of-both-rounds",categoryId:"company",part:9,companyId:"epam",name:"2. The project narrative — the spine of both rounds",order:89},{id:"company--3-how-did-you-drive-the-team-the-leadership-bank",categoryId:"company",part:9,companyId:"epam",name:'3. "How did you drive the team" — the leadership bank',order:90},{id:"company--4-technical-leadership-inside-the-tr",categoryId:"company",part:9,companyId:"epam",name:"4. Technical leadership inside the TR",order:91},{id:"company--5-the-managerial-round-bank",categoryId:"company",part:9,companyId:"epam",name:"5. The Managerial Round bank",order:92},{id:"company--6-how-you-tackle-a-project-the-delivery-questions",categoryId:"company",part:9,companyId:"epam",name:"6. How you tackle a project — the delivery questions",order:93},{id:"company--7-how-you-tackle-a-team-the-collaboration-questions",categoryId:"company",part:9,companyId:"epam",name:"7. How you tackle a team — the collaboration questions",order:94},{id:"company--8-your-evidence-inventory-fill-this-in-before-the-interviews",categoryId:"company",part:9,companyId:"epam",name:"8. Your evidence inventory — fill this in before the interviews",order:95},{id:"company--9-mid-level-vs-sde3-the-same-question-two-answers",categoryId:"company",part:9,companyId:"epam",name:"9. Mid-level vs SDE3: the same question, two answers",order:96},{id:"company--10-questions-to-ask-them",categoryId:"company",part:9,companyId:"epam",name:"10. Questions to ask them",order:97},{id:"company--11-what-loses-points-at-this-level",categoryId:"company",part:9,companyId:"epam",name:"11. What loses points at this level",order:98},{id:"company--12-two-day-drill-before-the-rounds",categoryId:"company",part:9,companyId:"epam",name:"12. Two-day drill before the rounds",order:99},{id:"company--1-the-reported-process",categoryId:"company",part:10,companyId:"epam",name:"1. The reported process",order:100},{id:"company--2-three-reported-rounds-side-by-side",categoryId:"company",part:10,companyId:"epam",name:"2. Three reported rounds, side by side",order:101},{id:"company--3-core-java",categoryId:"company",part:10,companyId:"epam",name:"3. Core Java",order:102},{id:"company--4-collections",categoryId:"company",part:10,companyId:"epam",name:"4. Collections",order:103},{id:"company--5-concurrency",categoryId:"company",part:10,companyId:"epam",name:"5. Concurrency",order:104},{id:"company--6-java-8-11-17",categoryId:"company",part:10,companyId:"epam",name:"6. Java 8 / 11 / 17",order:105},{id:"company--7-spring-spring-boot",categoryId:"company",part:10,companyId:"epam",name:"7. Spring & Spring Boot",order:106},{id:"company--8-hibernate-jpa-databases",categoryId:"company",part:10,companyId:"epam",name:"8. Hibernate, JPA & databases",order:107},{id:"company--9-microservices-distributed-systems",categoryId:"company",part:10,companyId:"epam",name:"9. Microservices & distributed systems",order:108},{id:"company--10-design-patterns-solid",categoryId:"company",part:10,companyId:"epam",name:"10. Design patterns & SOLID",order:109},{id:"company--11-devops-cloud-git",categoryId:"company",part:10,companyId:"epam",name:"11. DevOps, cloud & Git",order:110},{id:"company--12-reported-coding-problems",categoryId:"company",part:10,companyId:"epam",name:"12. Reported coding problems",order:111},{id:"company--13-the-architecture-deep-dive",categoryId:"company",part:10,companyId:"epam",name:"13. The architecture deep dive",order:112},{id:"company--14-the-managerial-round-what-s-reported",categoryId:"company",part:10,companyId:"epam",name:"14. The managerial round — what's reported",order:113},{id:"company--15-priority-order",categoryId:"company",part:10,companyId:"epam",name:"15. Priority order",order:114},{id:"company--16-sources",categoryId:"company",part:10,companyId:"epam",name:"16. Sources",order:115},{id:"deepdive--1-the-high-frequency-items-as-you-d-say-them",categoryId:"deepdive",part:11,companyId:null,name:"1. The high-frequency items, as you'd say them",order:116},{id:"deepdive--2-the-gaps-reported-questions-not-answered-elsewhere-in-this-kit",categoryId:"deepdive",part:11,companyId:null,name:"2. The gaps — reported questions not answered elsewhere in this kit",order:117},{id:"deepdive--3-the-reported-coding-problems-solved",categoryId:"deepdive",part:11,companyId:null,name:"3. The reported coding problems, solved",order:118},{id:"deepdive--4-two-more-you-ll-almost-certainly-be-asked",categoryId:"deepdive",part:11,companyId:null,name:"4. Two more you'll almost certainly be asked",order:119},{id:"company--1-the-invitation-decoded",categoryId:"company",part:12,companyId:"entain",name:"1. The invitation, decoded",order:120},{id:"company--2-entain-in-ninety-seconds",categoryId:"company",part:12,companyId:"entain",name:"2. Entain in ninety seconds",order:121},{id:"company--3-entain-india-where-you-d-actually-sit",categoryId:"company",part:12,companyId:"entain",name:"3. Entain India — where you'd actually sit",order:122},{id:"company--3-1-the-numbers",categoryId:"company",part:12,companyId:"entain",name:"3.1 The numbers",order:123},{id:"company--3-2-what-employees-say-read-this-before-you-accept-anything",categoryId:"company",part:12,companyId:"entain",name:"3.2 What employees say — read this before you accept anything",order:124},{id:"company--4-the-reported-process-at-entain-india",categoryId:"company",part:12,companyId:"entain",name:"4. The reported process at Entain India",order:125},{id:"company--5-what-entain-has-actually-asked",categoryId:"company",part:12,companyId:"entain",name:"5. What Entain has actually asked",order:126},{id:"company--6-java-concepts-i-memory-management-end-to-end",categoryId:"company",part:12,companyId:"entain",name:"6. Java Concepts I — Memory management, end to end",order:127},{id:"company--7-java-concepts-ii-collections-concurrency",categoryId:"company",part:12,companyId:"entain",name:"7. Java Concepts II — Collections & concurrency",order:128},{id:"company--8-coding-concepts-spring-boot-sql-kafka-redis",categoryId:"company",part:12,companyId:"entain",name:"8. Coding Concepts — Spring Boot, SQL, Kafka, Redis",order:129},{id:"company--9-problem-solving-the-coding-bank",categoryId:"company",part:12,companyId:"entain",name:"9. Problem Solving — the coding bank",order:130},{id:"company--9-1-strings-the-most-likely-category",categoryId:"company",part:12,companyId:"entain",name:"9.1 Strings — the most likely category",order:131},{id:"company--9-2-arrays-and-maps",categoryId:"company",part:12,companyId:"entain",name:"9.2 Arrays and maps",order:132},{id:"company--9-3-concurrency-written-live",categoryId:"company",part:12,companyId:"entain",name:"9.3 Concurrency, written live",order:133},{id:"company--9-4-if-they-push-harder",categoryId:"company",part:12,companyId:"entain",name:"9.4 If they push harder",order:134},{id:"company--10-if-design-comes-up",categoryId:"company",part:12,companyId:"entain",name:"10. If design comes up",order:135},{id:"company--11-questions-to-ask-them",categoryId:"company",part:12,companyId:"entain",name:"11. Questions to ask them",order:136},{id:"company--12-framing-and-the-questions-about-you",categoryId:"company",part:12,companyId:"entain",name:"12. Framing and the questions about you",order:137},{id:"company--13-the-48-hour-drill",categoryId:"company",part:12,companyId:"entain",name:"13. The 48-hour drill",order:138},{id:"company--14-follow-up-chains-level-1-and-level-2",categoryId:"company",part:12,companyId:"entain",name:"14. Follow-up chains — level 1 and level 2",order:139},{id:"company--14-1-collections-the-most-likely-topic",categoryId:"company",part:12,companyId:"entain",name:"14.1 Collections — the most likely topic",order:140},{id:"company--14-2-memory-your-strongest-card",categoryId:"company",part:12,companyId:"entain",name:"14.2 Memory — your strongest card",order:141},{id:"company--14-3-threads-asked-in-two-separate-rounds",categoryId:"company",part:12,companyId:"entain",name:"14.3 Threads — asked in two separate rounds",order:142},{id:"company--14-4-oop-and-core-java",categoryId:"company",part:12,companyId:"entain",name:"14.4 OOP and core Java",order:143},{id:"company--14-5-spring-database-and-apis",categoryId:"company",part:12,companyId:"entain",name:"14.5 Spring, database and APIs",order:144},{id:"company--14-6-when-they-make-you-write-code",categoryId:"company",part:12,companyId:"entain",name:"14.6 When they make you write code",order:145},{id:"company--15-insider-intel-the-five-named-topics",categoryId:"company",part:12,companyId:"entain",name:"15. Insider intel — the five named topics",order:146},{id:"company--15-1-event-driven-architecture",categoryId:"company",part:12,companyId:"entain",name:"15.1 Event-driven architecture",order:147},{id:"company--15-2-websocket",categoryId:"company",part:12,companyId:"entain",name:"15.2 WebSocket",order:148},{id:"company--15-3-aws",categoryId:"company",part:12,companyId:"entain",name:"15.3 AWS",order:149},{id:"company--15-4-casino-architecture",categoryId:"company",part:12,companyId:"entain",name:"15.4 Casino architecture",order:150},{id:"company--16-the-plan-23-hours-left",categoryId:"company",part:12,companyId:"entain",name:"16. The plan — 23 hours left",order:151},{id:"company--16-1-tonight-wednesday",categoryId:"company",part:12,companyId:"entain",name:"16.1 Tonight — Wednesday",order:152},{id:"company--16-2-thursday-two-versions",categoryId:"company",part:12,companyId:"entain",name:"16.2 Thursday — two versions",order:153},{id:"company--16-3-if-tonight-collapses-the-60-minute-version",categoryId:"company",part:12,companyId:"entain",name:"16.3 If tonight collapses — the 60-minute version",order:154},{id:"company--16-4-the-mock-worth-more-than-the-9-45-block",categoryId:"company",part:12,companyId:"entain",name:"16.4 The mock — worth more than the 9:45 block",order:155},{id:"company--16-5-the-five-sentences",categoryId:"company",part:12,companyId:"entain",name:"16.5 The five sentences",order:156},{id:"company--17-sources",categoryId:"company",part:12,companyId:"entain",name:"17. Sources",order:157}],i=[{id:"note-1-6-rapid-fire-coding-problems-be-ready-to-write-these-live-2",topicId:"java--6-rapid-fire-coding-problems-be-ready-to-write-these-live",categoryId:"java",companyId:null,part:1,heading:"6. Rapid-fire coding problems (be ready to write these live)",level:2,html:`<ol>
+<p class="bonus"><strong>Close on the trade-off, not on a list of boxes.</strong> "If I had to pick the single hardest constraint, it's that the wallet is synchronous, on the path of every spin, called by systems I don't control, over a network that fails — and it must never be wrong. Almost every design decision here comes out of that one sentence." Ending on the core tension is what makes it sound like experience rather than a memorised diagram.</p>`,followUps:[],tags:[],source:"interview-prep.html"}],A=[{id:"java--1-oop-language-fundamentals",categoryId:"java",part:1,companyId:null,name:"1. OOP & Language Fundamentals",order:0},{id:"java--2-collections-framework",categoryId:"java",part:1,companyId:null,name:"2. Collections Framework",order:1},{id:"java--3-java-8-21-features-very-likely-at-5-yrs",categoryId:"java",part:1,companyId:null,name:"3. Java 8 → 21 Features (very likely at 5+ yrs)",order:2},{id:"java--4-jvm-memory-gc",categoryId:"java",part:1,companyId:null,name:"4. JVM, Memory & GC",order:3},{id:"java--5-concurrency-multithreading-heavily-asked",categoryId:"java",part:1,companyId:null,name:"5. Concurrency & Multithreading (heavily asked)",order:4},{id:"java--6-rapid-fire-coding-problems-be-ready-to-write-these-live",categoryId:"java",part:1,companyId:null,name:"6. Rapid-fire coding problems (be ready to write these live)",order:5},{id:"spring--1-spring-core",categoryId:"spring",part:2,companyId:null,name:"1. Spring Core",order:6},{id:"spring--2-spring-boot",categoryId:"spring",part:2,companyId:null,name:"2. Spring Boot",order:7},{id:"spring--3-rest-api-design",categoryId:"spring",part:2,companyId:null,name:"3. REST API Design",order:8},{id:"spring--4-jpa-hibernate",categoryId:"spring",part:2,companyId:null,name:"4. JPA / Hibernate",order:9},{id:"spring--5-sql-databases",categoryId:"spring",part:2,companyId:null,name:"5. SQL & Databases",order:10},{id:"spring--6-microservices",categoryId:"spring",part:2,companyId:null,name:"6. Microservices",order:11},{id:"spring--7-kafka-messaging",categoryId:"spring",part:2,companyId:null,name:"7. Kafka & Messaging",order:12},{id:"spring--8-testing-code-quality",categoryId:"spring",part:2,companyId:null,name:"8. Testing & Code Quality",order:13},{id:"design--1-solid-know-the-definition-a-violation-and-the-fix-for-each",categoryId:"design",part:3,companyId:null,name:"1. SOLID (know the definition, a violation, and the fix for each)",order:14},{id:"design--s-single-responsibility-principle",categoryId:"design",part:3,companyId:null,name:"S — Single Responsibility Principle",order:15},{id:"design--o-open-closed-principle",categoryId:"design",part:3,companyId:null,name:"O — Open/Closed Principle",order:16},{id:"design--l-liskov-substitution-principle",categoryId:"design",part:3,companyId:null,name:"L — Liskov Substitution Principle",order:17},{id:"design--i-interface-segregation-principle",categoryId:"design",part:3,companyId:null,name:"I — Interface Segregation Principle",order:18},{id:"design--d-dependency-inversion-principle",categoryId:"design",part:3,companyId:null,name:"D — Dependency Inversion Principle",order:19},{id:"design--2-design-patterns",categoryId:"design",part:3,companyId:null,name:"2. Design Patterns",order:20},{id:"design--creational",categoryId:"design",part:3,companyId:null,name:"Creational",order:21},{id:"design--structural",categoryId:"design",part:3,companyId:null,name:"Structural",order:22},{id:"design--behavioural",categoryId:"design",part:3,companyId:null,name:"Behavioural",order:23},{id:"design--architectural-enterprise-patterns",categoryId:"design",part:3,companyId:null,name:"Architectural / Enterprise patterns",order:24},{id:"design--3-architecture-styles",categoryId:"design",part:3,companyId:null,name:"3. Architecture Styles",order:25},{id:"design--4-system-design-the-framework",categoryId:"design",part:3,companyId:null,name:"4. System Design — the framework",order:26},{id:"design--5-worked-designs-rehearse-these-out-loud",categoryId:"design",part:3,companyId:null,name:"5. Worked designs (rehearse these out loud)",order:27},{id:"design--a-url-shortener-the-warm-up",categoryId:"design",part:3,companyId:null,name:"A. URL Shortener (the warm-up)",order:28},{id:"design--b-rate-limiter-very-common-ties-to-the-api-gateway",categoryId:"design",part:3,companyId:null,name:"B. Rate Limiter (very common; ties to the API gateway)",order:29},{id:"design--c-notification-service-fan-out-retries-multi-channel",categoryId:"design",part:3,companyId:null,name:"C. Notification Service (fan-out, retries, multi-channel)",order:30},{id:"design--d-e-commerce-order-checkout-epam-s-favourite-shape",categoryId:"design",part:3,companyId:null,name:"D. E-commerce Order / Checkout (EPAM's favourite shape)",order:31},{id:"design--e-betting-wagering-platform-rehearse-this-specifically-for-entain",categoryId:"design",part:3,companyId:null,name:"E. Betting / Wagering Platform ⭐ (rehearse this specifically for Entain)",order:32},{id:"design--f-real-time-chat-websocket-feed",categoryId:"design",part:3,companyId:null,name:"F. Real-time Chat / WebSocket feed",order:33},{id:"design--g-distributed-job-scheduler-cron-in-a-cluster",categoryId:"design",part:3,companyId:null,name:"G. Distributed job scheduler / cron in a cluster",order:34},{id:"design--h-log-metrics-ingestion-pipeline",categoryId:"design",part:3,companyId:null,name:"H. Log/metrics ingestion pipeline",order:35},{id:"design--6-likely-follow-up-how-would-you-handle-x-questions",categoryId:"design",part:3,companyId:null,name:'6. Likely follow-up "how would you handle X" questions',order:36},{id:"web--1-javascript-core",categoryId:"web",part:4,companyId:null,name:"1. JavaScript Core",order:37},{id:"web--2-typescript",categoryId:"web",part:4,companyId:null,name:"2. TypeScript",order:38},{id:"web--3-react",categoryId:"web",part:4,companyId:null,name:"3. React",order:39},{id:"web--4-angular",categoryId:"web",part:4,companyId:null,name:"4. Angular",order:40},{id:"web--5-full-stack-integration-epam-will-ask-this",categoryId:"web",part:4,companyId:null,name:"5. Full-stack integration (EPAM will ask this)",order:41},{id:"web--6-devops-docker-kubernetes-ci-cd",categoryId:"web",part:4,companyId:null,name:"6. DevOps, Docker, Kubernetes, CI/CD",order:42},{id:"behavioural--1-what-each-company-is-actually-assessing",categoryId:"behavioural",part:5,companyId:null,name:"1. What each company is actually assessing",order:43},{id:"behavioural--epam-full-stack-80-backend-20-react-angular",categoryId:"behavioural",part:5,companyId:null,name:"EPAM — Full Stack (80% backend / 20% React + Angular)",order:44},{id:"behavioural--entain-java-backend",categoryId:"behavioural",part:5,companyId:null,name:"Entain — Java Backend",order:45},{id:"behavioural--2-tell-me-about-your-project-build-this-answer-now",categoryId:"behavioural",part:5,companyId:null,name:'2. "Tell me about your project" — build this answer now',order:46},{id:"behavioural--3-behavioural-questions-use-star-situation-task-action-result",categoryId:"behavioural",part:5,companyId:null,name:"3. Behavioural questions (use STAR: Situation, Task, Action, Result)",order:47},{id:"behavioural--4-questions-you-should-ask-asked-in-almost-every-round-not-asking-is-a-r",categoryId:"behavioural",part:5,companyId:null,name:"4. Questions YOU should ask (asked in almost every round; not asking is a red flag)",order:48},{id:"behavioural--5-rapid-fire-self-test-cover-the-answer-and-say-it-aloud",categoryId:"behavioural",part:5,companyId:null,name:"5. Rapid-fire self-test (cover the answer and say it aloud)",order:49},{id:"behavioural--6-a-realistic-study-plan",categoryId:"behavioural",part:5,companyId:null,name:"6. A realistic study plan",order:50},{id:"behavioural--7-interview-day-tactics",categoryId:"behavioural",part:5,companyId:null,name:"7. Interview-day tactics",order:51},{id:"behavioural--8-final-checklist-before-the-call",categoryId:"behavioural",part:5,companyId:null,name:"8. Final checklist before the call",order:52},{id:"java--a1-internals-you-should-be-able-to-recite",categoryId:"java",part:6,companyId:null,name:"A1. Internals you should be able to recite",order:53},{id:"java--a2-collections-pitfalls-high-yield-trick-questions",categoryId:"java",part:6,companyId:null,name:"A2. Collections pitfalls (high-yield trick questions)",order:54},{id:"java--b1-erasure-and-its-consequences",categoryId:"java",part:6,companyId:null,name:"B1. Erasure and its consequences",order:55},{id:"java--b2-wildcards-pecs-and-capture",categoryId:"java",part:6,companyId:null,name:"B2. Wildcards, PECS, and capture",order:56},{id:"java--b3-bounded-types",categoryId:"java",part:6,companyId:null,name:"B3. Bounded types",order:57},{id:"java--b4-generic-methods-vs-generic-classes",categoryId:"java",part:6,companyId:null,name:"B4. Generic methods vs generic classes",order:58},{id:"java--b5-heap-pollution-safevarargs",categoryId:"java",part:6,companyId:null,name:"B5. Heap pollution & @SafeVarargs",order:59},{id:"java--b6-generics-pitfall-questions",categoryId:"java",part:6,companyId:null,name:"B6. Generics pitfall questions",order:60},{id:"spring--a1-bootstrapping-configuration",categoryId:"spring",part:7,companyId:null,name:"A1. Bootstrapping & configuration",order:61},{id:"spring--a2-stereotypes-dependency-injection",categoryId:"spring",part:7,companyId:null,name:"A2. Stereotypes & dependency injection",order:62},{id:"spring--a3-conditional-annotations-how-auto-config-decides",categoryId:"spring",part:7,companyId:null,name:"A3. Conditional annotations (how auto-config decides)",order:63},{id:"spring--a4-web-mvc",categoryId:"spring",part:7,companyId:null,name:"A4. Web / MVC",order:64},{id:"spring--a5-data-jpa",categoryId:"spring",part:7,companyId:null,name:"A5. Data / JPA",order:65},{id:"spring--a6-transactions-async-scheduling-caching-aop",categoryId:"spring",part:7,companyId:null,name:"A6. Transactions, async, scheduling, caching, AOP",order:66},{id:"spring--a7-testing",categoryId:"spring",part:7,companyId:null,name:"A7. Testing",order:67},{id:"spring--a8-lombok-used-everywhere-know-the-traps",categoryId:"spring",part:7,companyId:null,name:"A8. Lombok (used everywhere; know the traps)",order:68},{id:"spring--b1-the-mental-model",categoryId:"spring",part:7,companyId:null,name:"B1. The mental model",order:69},{id:"spring--b2-modern-configuration-boot-3-security-6",categoryId:"spring",part:7,companyId:null,name:"B2. Modern configuration (Boot 3 / Security 6)",order:70},{id:"spring--b3-questions-they-actually-ask",categoryId:"spring",part:7,companyId:null,name:"B3. Questions they actually ask",order:71},{id:"spring--c1-property-source-precedence-highest-wins",categoryId:"spring",part:7,companyId:null,name:"C1. Property source precedence (highest wins)",order:72},{id:"spring--c2-a-realistic-application-yml",categoryId:"spring",part:7,companyId:null,name:"C2. A realistic application.yml",order:73},{id:"spring--c3-value-vs-configurationproperties",categoryId:"spring",part:7,companyId:null,name:"C3. @Value vs @ConfigurationProperties",order:74},{id:"spring--c4-profiles",categoryId:"spring",part:7,companyId:null,name:"C4. Profiles",order:75},{id:"java--1-the-collections-map",categoryId:"java",part:8,companyId:null,name:"1. The collections map",order:76},{id:"java--2-set-algebra-the-venn-diagram",categoryId:"java",part:8,companyId:null,name:"2. Set algebra — the Venn diagram",order:77},{id:"java--3-inside-a-hashmap",categoryId:"java",part:8,companyId:null,name:"3. Inside a HashMap",order:78},{id:"java--4-the-stream-pipeline",categoryId:"java",part:8,companyId:null,name:"4. The stream pipeline",order:79},{id:"java--5-the-collectors-catalogue",categoryId:"java",part:8,companyId:null,name:"5. The Collectors catalogue",order:80},{id:"java--5-1-groupingby-many-buckets-keyed-by-a-function",categoryId:"java",part:8,companyId:null,name:"5.1 groupingBy — many buckets, keyed by a function",order:81},{id:"java--5-2-the-downstream-slot-where-groupingby-gets-powerful",categoryId:"java",part:8,companyId:null,name:"5.2 The downstream slot — where groupingBy gets powerful",order:82},{id:"java--5-3-partitioningby-exactly-two-buckets-always",categoryId:"java",part:8,companyId:null,name:"5.3 partitioningBy — exactly two buckets, always",order:83},{id:"java--5-4-the-rest-of-the-catalogue",categoryId:"java",part:8,companyId:null,name:"5.4 The rest of the catalogue",order:84},{id:"java--5-5-distinct-sorted-limit-skip",categoryId:"java",part:8,companyId:null,name:"5.5 distinct, sorted, limit, skip",order:85},{id:"java--6-one-dataset-every-collector",categoryId:"java",part:8,companyId:null,name:"6. One dataset, every collector",order:86},{id:"java--7-rapid-self-test",categoryId:"java",part:8,companyId:null,name:"7. Rapid self-test",order:87},{id:"company--1-what-each-round-is-actually-scoring",categoryId:"company",part:9,companyId:"epam",name:"1. What each round is actually scoring",order:88},{id:"company--2-the-project-narrative-the-spine-of-both-rounds",categoryId:"company",part:9,companyId:"epam",name:"2. The project narrative — the spine of both rounds",order:89},{id:"company--3-how-did-you-drive-the-team-the-leadership-bank",categoryId:"company",part:9,companyId:"epam",name:'3. "How did you drive the team" — the leadership bank',order:90},{id:"company--4-technical-leadership-inside-the-tr",categoryId:"company",part:9,companyId:"epam",name:"4. Technical leadership inside the TR",order:91},{id:"company--5-the-managerial-round-bank",categoryId:"company",part:9,companyId:"epam",name:"5. The Managerial Round bank",order:92},{id:"company--6-how-you-tackle-a-project-the-delivery-questions",categoryId:"company",part:9,companyId:"epam",name:"6. How you tackle a project — the delivery questions",order:93},{id:"company--7-how-you-tackle-a-team-the-collaboration-questions",categoryId:"company",part:9,companyId:"epam",name:"7. How you tackle a team — the collaboration questions",order:94},{id:"company--8-your-evidence-inventory-fill-this-in-before-the-interviews",categoryId:"company",part:9,companyId:"epam",name:"8. Your evidence inventory — fill this in before the interviews",order:95},{id:"company--9-mid-level-vs-sde3-the-same-question-two-answers",categoryId:"company",part:9,companyId:"epam",name:"9. Mid-level vs SDE3: the same question, two answers",order:96},{id:"company--10-questions-to-ask-them",categoryId:"company",part:9,companyId:"epam",name:"10. Questions to ask them",order:97},{id:"company--11-what-loses-points-at-this-level",categoryId:"company",part:9,companyId:"epam",name:"11. What loses points at this level",order:98},{id:"company--12-two-day-drill-before-the-rounds",categoryId:"company",part:9,companyId:"epam",name:"12. Two-day drill before the rounds",order:99},{id:"company--1-the-reported-process",categoryId:"company",part:10,companyId:"epam",name:"1. The reported process",order:100},{id:"company--2-three-reported-rounds-side-by-side",categoryId:"company",part:10,companyId:"epam",name:"2. Three reported rounds, side by side",order:101},{id:"company--3-core-java",categoryId:"company",part:10,companyId:"epam",name:"3. Core Java",order:102},{id:"company--4-collections",categoryId:"company",part:10,companyId:"epam",name:"4. Collections",order:103},{id:"company--5-concurrency",categoryId:"company",part:10,companyId:"epam",name:"5. Concurrency",order:104},{id:"company--6-java-8-11-17",categoryId:"company",part:10,companyId:"epam",name:"6. Java 8 / 11 / 17",order:105},{id:"company--7-spring-spring-boot",categoryId:"company",part:10,companyId:"epam",name:"7. Spring & Spring Boot",order:106},{id:"company--8-hibernate-jpa-databases",categoryId:"company",part:10,companyId:"epam",name:"8. Hibernate, JPA & databases",order:107},{id:"company--9-microservices-distributed-systems",categoryId:"company",part:10,companyId:"epam",name:"9. Microservices & distributed systems",order:108},{id:"company--10-design-patterns-solid",categoryId:"company",part:10,companyId:"epam",name:"10. Design patterns & SOLID",order:109},{id:"company--11-devops-cloud-git",categoryId:"company",part:10,companyId:"epam",name:"11. DevOps, cloud & Git",order:110},{id:"company--12-reported-coding-problems",categoryId:"company",part:10,companyId:"epam",name:"12. Reported coding problems",order:111},{id:"company--13-the-architecture-deep-dive",categoryId:"company",part:10,companyId:"epam",name:"13. The architecture deep dive",order:112},{id:"company--14-the-managerial-round-what-s-reported",categoryId:"company",part:10,companyId:"epam",name:"14. The managerial round — what's reported",order:113},{id:"company--15-priority-order",categoryId:"company",part:10,companyId:"epam",name:"15. Priority order",order:114},{id:"company--16-sources",categoryId:"company",part:10,companyId:"epam",name:"16. Sources",order:115},{id:"deepdive--1-the-high-frequency-items-as-you-d-say-them",categoryId:"deepdive",part:11,companyId:null,name:"1. The high-frequency items, as you'd say them",order:116},{id:"deepdive--2-the-gaps-reported-questions-not-answered-elsewhere-in-this-kit",categoryId:"deepdive",part:11,companyId:null,name:"2. The gaps — reported questions not answered elsewhere in this kit",order:117},{id:"deepdive--3-the-reported-coding-problems-solved",categoryId:"deepdive",part:11,companyId:null,name:"3. The reported coding problems, solved",order:118},{id:"deepdive--4-two-more-you-ll-almost-certainly-be-asked",categoryId:"deepdive",part:11,companyId:null,name:"4. Two more you'll almost certainly be asked",order:119},{id:"company--1-the-invitation-decoded",categoryId:"company",part:12,companyId:"entain",name:"1. The invitation, decoded",order:120},{id:"company--2-entain-in-ninety-seconds",categoryId:"company",part:12,companyId:"entain",name:"2. Entain in ninety seconds",order:121},{id:"company--3-entain-india-where-you-d-actually-sit",categoryId:"company",part:12,companyId:"entain",name:"3. Entain India — where you'd actually sit",order:122},{id:"company--3-1-the-numbers",categoryId:"company",part:12,companyId:"entain",name:"3.1 The numbers",order:123},{id:"company--3-2-what-employees-say-read-this-before-you-accept-anything",categoryId:"company",part:12,companyId:"entain",name:"3.2 What employees say — read this before you accept anything",order:124},{id:"company--4-the-reported-process-at-entain-india",categoryId:"company",part:12,companyId:"entain",name:"4. The reported process at Entain India",order:125},{id:"company--5-what-entain-has-actually-asked",categoryId:"company",part:12,companyId:"entain",name:"5. What Entain has actually asked",order:126},{id:"company--6-java-concepts-i-memory-management-end-to-end",categoryId:"company",part:12,companyId:"entain",name:"6. Java Concepts I — Memory management, end to end",order:127},{id:"company--7-java-concepts-ii-collections-concurrency",categoryId:"company",part:12,companyId:"entain",name:"7. Java Concepts II — Collections & concurrency",order:128},{id:"company--8-coding-concepts-spring-boot-sql-kafka-redis",categoryId:"company",part:12,companyId:"entain",name:"8. Coding Concepts — Spring Boot, SQL, Kafka, Redis",order:129},{id:"company--9-problem-solving-the-coding-bank",categoryId:"company",part:12,companyId:"entain",name:"9. Problem Solving — the coding bank",order:130},{id:"company--9-1-strings-the-most-likely-category",categoryId:"company",part:12,companyId:"entain",name:"9.1 Strings — the most likely category",order:131},{id:"company--9-2-arrays-and-maps",categoryId:"company",part:12,companyId:"entain",name:"9.2 Arrays and maps",order:132},{id:"company--9-3-concurrency-written-live",categoryId:"company",part:12,companyId:"entain",name:"9.3 Concurrency, written live",order:133},{id:"company--9-4-if-they-push-harder",categoryId:"company",part:12,companyId:"entain",name:"9.4 If they push harder",order:134},{id:"company--10-if-design-comes-up",categoryId:"company",part:12,companyId:"entain",name:"10. If design comes up",order:135},{id:"company--11-questions-to-ask-them",categoryId:"company",part:12,companyId:"entain",name:"11. Questions to ask them",order:136},{id:"company--12-framing-and-the-questions-about-you",categoryId:"company",part:12,companyId:"entain",name:"12. Framing and the questions about you",order:137},{id:"company--13-the-48-hour-drill",categoryId:"company",part:12,companyId:"entain",name:"13. The 48-hour drill",order:138},{id:"company--14-follow-up-chains-level-1-and-level-2",categoryId:"company",part:12,companyId:"entain",name:"14. Follow-up chains — level 1 and level 2",order:139},{id:"company--14-1-collections-the-most-likely-topic",categoryId:"company",part:12,companyId:"entain",name:"14.1 Collections — the most likely topic",order:140},{id:"company--14-2-memory-your-strongest-card",categoryId:"company",part:12,companyId:"entain",name:"14.2 Memory — your strongest card",order:141},{id:"company--14-3-threads-asked-in-two-separate-rounds",categoryId:"company",part:12,companyId:"entain",name:"14.3 Threads — asked in two separate rounds",order:142},{id:"company--14-4-oop-and-core-java",categoryId:"company",part:12,companyId:"entain",name:"14.4 OOP and core Java",order:143},{id:"company--14-5-spring-database-and-apis",categoryId:"company",part:12,companyId:"entain",name:"14.5 Spring, database and APIs",order:144},{id:"company--14-6-when-they-make-you-write-code",categoryId:"company",part:12,companyId:"entain",name:"14.6 When they make you write code",order:145},{id:"company--15-insider-intel-the-five-named-topics",categoryId:"company",part:12,companyId:"entain",name:"15. Insider intel — the five named topics",order:146},{id:"company--15-1-event-driven-architecture",categoryId:"company",part:12,companyId:"entain",name:"15.1 Event-driven architecture",order:147},{id:"company--15-2-websocket",categoryId:"company",part:12,companyId:"entain",name:"15.2 WebSocket",order:148},{id:"company--15-3-aws",categoryId:"company",part:12,companyId:"entain",name:"15.3 AWS",order:149},{id:"company--15-4-casino-architecture",categoryId:"company",part:12,companyId:"entain",name:"15.4 Casino architecture",order:150},{id:"company--16-the-plan-23-hours-left",categoryId:"company",part:12,companyId:"entain",name:"16. The plan — 23 hours left",order:151},{id:"company--16-1-tonight-wednesday",categoryId:"company",part:12,companyId:"entain",name:"16.1 Tonight — Wednesday",order:152},{id:"company--16-2-thursday-two-versions",categoryId:"company",part:12,companyId:"entain",name:"16.2 Thursday — two versions",order:153},{id:"company--16-3-if-tonight-collapses-the-60-minute-version",categoryId:"company",part:12,companyId:"entain",name:"16.3 If tonight collapses — the 60-minute version",order:154},{id:"company--16-4-the-mock-worth-more-than-the-9-45-block",categoryId:"company",part:12,companyId:"entain",name:"16.4 The mock — worth more than the 9:45 block",order:155},{id:"company--16-5-the-five-sentences",categoryId:"company",part:12,companyId:"entain",name:"16.5 The five sentences",order:156},{id:"company--17-sources",categoryId:"company",part:12,companyId:"entain",name:"17. Sources",order:157}],E=[{id:"note-1-6-rapid-fire-coding-problems-be-ready-to-write-these-live-2",topicId:"java--6-rapid-fire-coding-problems-be-ready-to-write-these-live",categoryId:"java",companyId:null,part:1,heading:"6. Rapid-fire coding problems (be ready to write these live)",level:2,html:`<ol>
 <li>Reverse a string / check palindrome (with and without library).</li>
 <li>Find duplicates / first non-repeating char in a string.</li>
 <li>Two Sum (HashMap, O(n)); Three Sum (sort + two pointers).</li>
@@ -5122,4 +5122,679 @@ You cannot cover everything in this file, and trying to will leave you with a th
 })();
 <\/script>
 </body>
-</html>`,source:"interview-prep.html"}],l=[{id:"dsa--arrays-hashing",categoryId:"dsa",name:"Arrays & hashing",order:100,blurb:"Hashing for lookup. Every harder pattern is this with a constraint bolted on."},{id:"dsa--two-pointers",categoryId:"dsa",name:"Two pointers",order:101,blurb:"The shrink. Sorted input, or a window whose ends move independently."},{id:"dsa--sliding-window",categoryId:"dsa",name:"Sliding window",order:102,blurb:"Expand right, contract left while the invariant is violated."},{id:"dsa--binary-search",categoryId:"dsa",name:"Binary search",order:103,blurb:"On an array, and — the part most people never get — on a value range."},{id:"dsa--strings",categoryId:"dsa",name:"Strings",order:104,blurb:"Microsoft asks more string manipulation than almost anyone."},{id:"dsa--stacks",categoryId:"dsa",name:"Stacks & monotonic stack",order:105,blurb:"The one trick that turns several O(n²) problems into O(n)."},{id:"dsa--linked-lists",categoryId:"dsa",name:"Linked lists",order:106,blurb:"Pointer surgery, fast/slow, and in-place reversal."},{id:"dsa--design-ds",categoryId:"dsa",name:"Design a data structure",order:107,blurb:"Build me this structure with these guarantees. Microsoft’s favourite category."},{id:"dsa--trees",categoryId:"dsa",name:"Trees & BSTs",order:108,blurb:"Traversals until automatic, then LCA, validation, serialisation, path sums."},{id:"dsa--heaps",categoryId:"dsa",name:"Heaps & top-K",order:109,blurb:"Top-K, running median, scheduling by frequency."},{id:"dsa--intervals",categoryId:"dsa",name:"Intervals & greedy",order:110,blurb:"The sweep, and knowing when greedy is actually safe."},{id:"dsa--graphs",categoryId:"dsa",name:"Graphs",order:111,blurb:"BFS/DFS on grids, topological sort, union-find, shortest path."},{id:"dsa--backtracking",categoryId:"dsa",name:"Backtracking",order:112,blurb:"One skeleton covers subsets, permutations, combinations and word search."},{id:"dsa--dp",categoryId:"dsa",name:"Dynamic programming",order:113,blurb:"Moderate, not competitive. Own the 1D set cold and the 2D basics honestly."}],d=[{id:"dsa",name:"Data structures & algorithms",blurb:"Patterns rather than problems. The spine is Blind 75 plus the Microsoft-frequent set — around 125 problems seen three times each.",kind:"knowledge",order:1},{id:"java",name:"Java, JVM & concurrency",blurb:"Language semantics, collections, memory model, garbage collection and threading. The part interviewers probe hardest at 5+ years.",kind:"knowledge",order:2},{id:"spring",name:"Spring, data & services",blurb:"Spring core and Boot internals, JPA and SQL, REST design, microservices and messaging. Not tested at Microsoft; heavily tested nearly everywhere else.",kind:"knowledge",order:3},{id:"design",name:"Design — LLD & HLD",blurb:"SOLID and the patterns you must be able to write, then distributed systems: sharding, caching, queues, consistency and the capacity math.",kind:"knowledge",order:4},{id:"web",name:"Frontend & DevOps",blurb:"React, Angular, build tooling, CI/CD and containers — the 20% of a full-stack loop.",kind:"knowledge",order:5},{id:"behavioural",name:"Behavioural & leadership",blurb:"STAR stories that end in a number, scope and ambiguity questions, and the growth-mindset framing Microsoft listens for.",kind:"knowledge",order:6},{id:"deepdive",name:"Long-form answers & code",blurb:"The answers that need a page and a code listing rather than a paragraph.",kind:"knowledge",order:7},{id:"company",name:"Company-specific",blurb:"Per-company intelligence: the loop, what each round scores, reported questions, and the topics worth drilling for that employer alone.",kind:"company",order:8},{id:"misc",name:"Unfiled",blurb:"Anything not yet placed.",kind:"knowledge",order:9}],y=Object.fromEntries(d.map(s=>[s.id,s])),h=[{id:"microsoft",name:"Microsoft",role:"SDE II / Senior SDE — IDC",status:"upcoming",interviewDate:"2027-01-01",planId:"microsoft-15w",blurb:"Problems are easier than Google’s; the expectations on how you get there are stricter. Communication and clean code are weighted above algorithmic exotica.",focus:["Arrays, strings, linked lists, trees","“Design this data structure”","LLD / machine coding (common in India loops)","System design at Senior level","Growth mindset — “learn-it-all, not know-it-all”"],rounds:[{name:"Recruiter screen",format:"30 min",scored:"Resume walkthrough, why Microsoft, level calibration, notice period"},{name:"Phone / online screen",format:"45–60 min, 1–2 problems",scored:"Clean code while talking"},{name:"Loop 1–2",format:"60 min each",scored:"DSA and problem solving"},{name:"Loop 3 — design",format:"60 min",scored:"LLD at SDE II, HLD at Senior"},{name:"AA round (“As Appropriate”)",format:"60 min, senior/principal or hiring manager",scored:"Judgment, scope, culture — plus one more technical question. Can override the rest of the loop in either direction."}],drill:["dsa","design","behavioural"],notes:["Dry-run your own solution on an example before they ask. This habit separates hires from no-hires here more than any other.","Restate the problem and confirm constraints before writing anything. State the brute force and its complexity out loud, then improve it.","India loops (Hyderabad / Bangalore / Noida) frequently add a 60–90 minute machine-coding round: real, compiling, testable OO code.","Spring Boot is not tested — the coding rounds are language-agnostic.","Level call is due ~28 Nov on mock evidence: Senior (L63) if HLD mocks land clean and you have 2+ cross-team impact stories, else SDE II (L62).","Do not self-downgrade in the recruiter screen. Let the recruiter calibrate."]},{id:"entain",name:"Entain",role:"SDE II — Entain India",status:"active",interviewDate:"2026-09-18",blurb:"Invite names Java Concepts, Coding Concepts and Problem Solving. A first-hand tip from a current employee points at event-driven, WebSocket, SQL, AWS, multithreading and casino architecture.",focus:["Event-driven architecture","WebSockets","SQL","AWS (they run EKS + Aurora PostgreSQL)","Multithreading","Casino / betting platform architecture","Java memory management"],rounds:[{name:"Technical round",format:"~60 min on Teams",scored:"Java concepts, coding concepts, problem solving"}],drill:["java","spring","design"],notes:["The named invitee is Entain India’s tech recruiter, so an unnamed engineer most likely runs the technical hour.","The employee tip outranks Glassdoor. Weight event-driven, WebSocket, SQL, AWS, multithreading and casino architecture above everything else."]},{id:"epam",name:"EPAM",role:"SDE3 Full Stack",status:"active",blurb:"Roughly 80% Java backend, 20% React and Angular. Two rounds: a technical round and a managerial round on how you tackle projects and teams.",focus:["Java backend depth","React + Angular","Project narrative and delivery","Leading teams without authority"],rounds:[{name:"Technical round",format:"~60 min",scored:"Java depth, design, live coding"},{name:"Managerial round",format:"~45 min",scored:"How you tackle projects and teams"}],drill:["java","web","behavioural"],notes:["The project narrative is the spine of both rounds — the same story, pitched two different ways.","At SDE3 the same question gets a different answer than at mid-level: scope, trade-offs and who you brought with you."]}],w=Object.fromEntries(h.map(s=>[s.id,s])),u=[],o=[...r,...u],n=[...c,...l],g=[...i],f=new Map(o.map(s=>[s.id,s])),v=new Map(n.map(s=>[s.id,s])),t=n.reduce((s,a)=>(s[a.id]=[],s),{});var p;for(const s of o)(t[p=s.topicId]??(t[p]=[])).push(s);const b=g.reduce((s,a)=>{var e;return(s[e=a.topicId]??(s[e]=[])).push(a),s},{}),I=n.reduce((s,a)=>{var e;return(s[e=a.categoryId]??(s[e]=[])).push(a),s},{});o.reduce((s,a)=>(s[a.categoryId]=(s[a.categoryId]??0)+1,s),{});const k=n.reduce((s,a)=>{var e;return a.companyId&&(s[e=a.companyId]??(s[e]=[])).push(a),s},{});export{I as a,y as b,d as c,w as d,h as e,k as f,f as g,o as h,n as i,b as n,t as q,v as t};
+</html>`,source:"interview-prep.html"}],H=[{id:"dsa--arrays-hashing",categoryId:"dsa",name:"Arrays & hashing",order:100,blurb:"Hashing for lookup. Every harder pattern is this with a constraint bolted on."},{id:"dsa--two-pointers",categoryId:"dsa",name:"Two pointers",order:101,blurb:"The shrink. Sorted input, or a window whose ends move independently."},{id:"dsa--sliding-window",categoryId:"dsa",name:"Sliding window",order:102,blurb:"Expand right, contract left while the invariant is violated."},{id:"dsa--binary-search",categoryId:"dsa",name:"Binary search",order:103,blurb:"On an array, and — the part most people never get — on a value range."},{id:"dsa--strings",categoryId:"dsa",name:"Strings",order:104,blurb:"Microsoft asks more string manipulation than almost anyone."},{id:"dsa--stacks",categoryId:"dsa",name:"Stacks & monotonic stack",order:105,blurb:"The one trick that turns several O(n²) problems into O(n)."},{id:"dsa--linked-lists",categoryId:"dsa",name:"Linked lists",order:106,blurb:"Pointer surgery, fast/slow, and in-place reversal."},{id:"dsa--design-ds",categoryId:"dsa",name:"Design a data structure",order:107,blurb:"Build me this structure with these guarantees. Microsoft’s favourite category."},{id:"dsa--trees",categoryId:"dsa",name:"Trees & BSTs",order:108,blurb:"Traversals until automatic, then LCA, validation, serialisation, path sums."},{id:"dsa--heaps",categoryId:"dsa",name:"Heaps & top-K",order:109,blurb:"Top-K, running median, scheduling by frequency."},{id:"dsa--intervals",categoryId:"dsa",name:"Intervals & greedy",order:110,blurb:"The sweep, and knowing when greedy is actually safe."},{id:"dsa--graphs",categoryId:"dsa",name:"Graphs",order:111,blurb:"BFS/DFS on grids, topological sort, union-find, shortest path."},{id:"dsa--backtracking",categoryId:"dsa",name:"Backtracking",order:112,blurb:"One skeleton covers subsets, permutations, combinations and word search."},{id:"dsa--dp",categoryId:"dsa",name:"Dynamic programming",order:113,blurb:"Moderate, not competitive. Own the 1D set cold and the 2D basics honestly."}],j=new Set(["abstract","assert","break","case","catch","class","const","continue","default","do","else","enum","extends","final","finally","for","goto","if","implements","import","instanceof","interface","native","new","package","private","protected","public","record","return","sealed","static","strictfp","super","switch","synchronized","this","throw","throws","transient","try","var","volatile","while","yield"]),R=new Set(["boolean","byte","char","double","float","int","long","short","void","true","false","null"]),M=new RegExp(["(/\\*[\\s\\S]*?\\*/|//[^\\n]*)",`("(?:\\\\.|[^"\\\\])*"|'(?:\\\\.|[^'\\\\])*')`,"(@[A-Za-z_][A-Za-z0-9_]*)","\\b(\\d[\\d_]*\\.?[\\d_]*[fFdDlL]?)\\b","\\b([A-Za-z_$][A-Za-z0-9_$]*)\\b"].join("|"),"g"),h=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),i=(s,n)=>`<span class="${s}">${h(n)}</span>`;function P(s){const n=s.replace(/^\n/,"").replace(/\s+$/,"");let t="",g=0;for(const m of n.matchAll(M)){const b=m.index;t+=h(n.slice(g,b)),g=b+m[0].length;const[,I,k,S,x,c]=m;I?t+=i("c1",I):k?t+=i("s",k):S?t+=i("nc",S):x?t+=i("mi",x):c&&(j.has(c)?t+=i("kd",c):R.has(c)?t+=i("kt",c):/^[A-Z]/.test(c)?t+=i("nc",c):t+=h(c))}return t+=h(n.slice(g)),t}const o=s=>`<p class="tldr"><strong>In one line</strong> — ${s}</p>`,a=s=>`<div class="hl"><pre><code>${P(s)}</code></pre></div>`,e=(s,n)=>`<p><strong>${s}</strong></p>${n}`,r=s=>`<ul>${s.map(n=>`<li>${n}</li>`).join("")}</ul>`,p=s=>`<p class="bonus"><strong>Say this too</strong> — ${s}</p>`,l={srp:"design--s-single-responsibility-principle",ocp:"design--o-open-closed-principle",lsp:"design--l-liskov-substitution-principle",isp:"design--i-interface-segregation-principle",dip:"design--d-dependency-inversion-principle"},O=[{id:"solid-srp",topicId:l.srp,categoryId:"design",prompt:"Single Responsibility — define it, show a violation, and fix it.",difficulty:"easy",tags:["solid","lld"],answerHtml:o("a class should have one reason to change — one <em>actor</em> who can ask for it to change.")+`<p>The common misreading is "a class should do one thing", which is too vague to act
+       on: every class does one thing at some level of zoom. Uncle Bob's own phrasing is
+       sharper — group the things that change <strong>for the same person</strong>.</p>`+e("❌ Violation",a(`
+class OrderService {
+    void place(Order o) {
+        if (o.items().isEmpty()) throw new Invalid();  // rules
+        jdbc.update("insert into orders ...", o.id()); // persistence
+        mail.send(o.email(), "Thanks!", render(o));   // messaging
+        pdf.write(invoiceFor(o));                     // reporting
+    }
+}`))+`<p>Four actors can force a change here: the business (rules), the DBA (schema),
+       marketing (the email), finance (the invoice layout). A new email provider makes
+       you edit — and retest — order logic.</p>`+e("✅ Fix",a(`
+class OrderService {              // orchestrates; decides nothing
+    private final OrderValidator validator;
+    private final OrderRepository repository;
+    private final NotificationService notifications;
+    private final InvoiceGenerator invoices;
+
+    void place(Order o) {
+        validator.validate(o);
+        repository.save(o);
+        notifications.orderPlaced(o);
+        invoices.generate(o);
+    }
+}`))+"<p><strong>Signals you are violating it</strong></p>"+r(['The name contains "And", or is <code>Manager</code>/<code>Util</code>/<code>Helper</code> — names that mean "miscellaneous".',"The unit test needs six mocks to reach one branch.","Two teams keep touching the same file for unrelated reasons, and keep hitting merge conflicts.","A change to a private method forces a change to an unrelated public one."])+p(`SRP is the principle most often taken too far. Split until the reasons to change are separate,
+         then stop — a codebase of 200 one-method classes has simply moved the complexity into the wiring.
+         The honest version of this answer names that trade-off.`),followUps:[{q:"Is a class with one public method automatically SRP-compliant?",a:`No. <code>process()</code> that validates, saves and notifies has one method and four reasons
+            to change. The count that matters is reasons, not methods.`},{q:"How does SRP relate to cohesion and coupling?",a:`It is high cohesion stated as a rule. Members of a class should be used together by the same
+            caller; when one group of fields is only touched by one group of methods, that is the seam
+            to split on. Splitting well usually lowers coupling too, because each piece now depends on less.`},{q:"Does SRP apply above the class level?",a:`Yes, and it bites hardest there. A microservice owned by two teams for two different reasons
+            has the same problem, with a network in the middle — every release needs both teams to agree.
+            Service boundaries drawn along actors survive; boundaries drawn along nouns do not.`}]},{id:"solid-ocp",topicId:l.ocp,categoryId:"design",prompt:"Open/Closed — define it, show a violation, and fix it.",difficulty:"medium",tags:["solid","lld","strategy"],answerHtml:o("open for extension, closed for modification — add behaviour by adding code, not editing it.")+e("❌ Violation",a(`
+BigDecimal fee(Payment p) {
+    if (p.type() == CARD)   return pct(p, "0.029");
+    if (p.type() == PAYPAL) return pct(p, "0.034");
+    // every new type edits this method, risking the existing ones
+    throw new IllegalArgumentException("unknown type");
+}`))+`<p>The cost is not the edit, it is the retest. Touching this method puts CARD and PAYPAL
+       back in scope for regression every time someone adds a type.</p>`+e("✅ Fix — polymorphism, with the dispatch done once",a(`
+public interface FeeCalculator {
+    boolean supports(PaymentType type);
+    BigDecimal fee(Payment p);
+}
+
+@Service
+class CardFee implements FeeCalculator {
+    public boolean supports(PaymentType t) { return t == CARD; }
+    public BigDecimal fee(Payment p) { return pct(p, "0.029"); }
+}
+
+@Service
+class FeeService {
+    // Spring injects every implementation it can find
+    private final List<FeeCalculator> calculators;
+
+    BigDecimal fee(Payment p) {
+        return calculators.stream()
+            .filter(c -> c.supports(p.type()))
+            .findFirst()
+            .orElseThrow(() -> new NoCalculator(p.type()))
+            .fee(p);
+    }
+}`))+`<p>A new payment type is now a new file. <code>FeeService</code> is never reopened,
+       so the existing calculators are never put at risk.</p>`+p(`The honest caveat: OCP is only free if you guessed the axis of change correctly. Abstracting
+         the wrong axis costs you an interface and buys nothing. The professional move is to write the
+         <code>if</code> the first time, and refactor to this the <em>second</em> time a type appears —
+         at which point the axis is evidence rather than a guess.`),followUps:[{q:"Is a switch statement always an OCP violation?",a:`No. Over a genuinely closed set — days of the week, the four suits, an enum you own and that
+            will not grow — a switch is clearer than polymorphism, and Java's exhaustive switch over a
+            sealed type makes the compiler tell you when the set does grow. The violation is a switch
+            over an <em>open</em> set.`},{q:"How does Spring itself use this?",a:`<code>List&lt;T&gt;</code> injection of every implementation is the mechanism above.
+            <code>HandlerMethodArgumentResolver</code> is the same shape — Spring MVC never edits its
+            dispatch to support a new parameter type, you register a resolver. So is
+            <code>@ConditionalOnMissingBean</code>: Boot's auto-configuration extends by addition.`},{q:"What breaks if two calculators both claim to support a type?",a:`<code>findFirst()</code> silently picks whichever Spring ordered first — a genuinely nasty
+            bug. Either make it explicit with <code>@Order</code>, or fail loudly: collect the matches
+            and throw when there is more than one. I prefer failing loudly, because the alternative is
+            a fee that is correct in test and wrong in production.`}]},{id:"solid-lsp",topicId:l.lsp,categoryId:"design",prompt:"Liskov Substitution — define it, show a violation, and fix it.",difficulty:"medium",tags:["solid","lld","inheritance"],answerHtml:o("a subtype must be usable anywhere its supertype is, without the caller knowing or changing.")+`<p>It is a rule about <em>behaviour</em>, not shape. The compiler checks the shape;
+       LSP is the part the compiler cannot check.</p>`+e("❌ Violation — the textbook one, which is textbook because it is real",a(`
+class Rectangle {
+    protected int w, h;
+    void setWidth(int w)  { this.w = w; }
+    void setHeight(int h) { this.h = h; }
+    int area() { return w * h; }
+}
+
+class Square extends Rectangle {
+    // keeps its own invariant by breaking the caller's
+    void setWidth(int w)  { this.w = w; this.h = w; }
+    void setHeight(int h) { this.w = h; this.h = h; }
+}
+
+// Correct for every Rectangle, wrong for Square:
+r.setWidth(5); r.setHeight(4);
+assert r.area() == 20;              // Square gives 16`))+e("✅ Fix",a(`
+// A square IS-A rectangle in geometry, but a mutable Square is
+// not a behavioural subtype of a mutable Rectangle. Two ways out:
+
+// 1. Immutable — with no setters the invariant cannot break.
+record Rectangle(int w, int h) { int area() { return w * h; } }
+record Square(int side)        { int area() { return side * side; } }
+
+// 2. Or share an interface rather than an implementation.
+interface Shape { int area(); }`))+"<p><strong>The rules a subtype must obey</strong></p>"+r(["<strong>Preconditions may not be strengthened</strong> — the override cannot demand more than the parent (parent accepts any <code>int</code>, child rejects negatives).","<strong>Postconditions may not be weakened</strong> — it must still deliver everything the parent promised.","<strong>Invariants must be preserved</strong> — the <code>Square</code> failure above.","<strong>No new exceptions</strong> the caller was not written to handle. <code>UnsupportedOperationException</code> in an override is the loudest possible LSP violation."])+p(`The JDK violates it deliberately and documents the cost: <code>Arrays.asList()</code> and
+         <code>List.of()</code> return lists whose <code>add()</code> throws
+         <code>UnsupportedOperationException</code>. That is why <code>Collection</code> has the
+         "optional operations" wording — an admission that the hierarchy is not substitutable, and
+         the reason unmodifiable collections are a runtime surprise rather than a compile error.`),followUps:[{q:"How would you detect an LSP violation in a code review?",a:`Look for <code>instanceof</code> or a type check in the <em>caller</em> — it means the caller
+            has learned the subtypes are not interchangeable. Also: an override that throws where the
+            parent does not, an override that is empty, and any comment of the form "don't pass a X here".`},{q:"Does LSP mean I should never use inheritance?",a:`It means inheritance is for substitutability, not for code reuse. If all you want is to reuse
+            a method, compose. "Prefer composition over inheritance" is the practical form of LSP —
+            composition has no substitutability obligation to break.`},{q:"Give a non-textbook example.",a:`A <code>ReadOnlyRepository</code> extending <code>Repository</code> and throwing on
+            <code>save()</code>. Every caller written against <code>Repository</code> is now a
+            landmine. The fix is the ISP one: <code>ReadRepository</code> and
+            <code>WriteRepository</code> as separate interfaces, with the read-only type implementing
+            only the first.`}]},{id:"solid-isp",topicId:l.isp,categoryId:"design",prompt:"Interface Segregation — define it, show a violation, and fix it.",difficulty:"easy",tags:["solid","lld"],answerHtml:o("no client should be forced to depend on methods it does not use.")+e("❌ Violation",a(`
+interface Worker {
+    void work();
+    void eat();       // a robot does not eat
+    void sleep();     // nor sleep
+}
+
+class Robot implements Worker {
+    public void work()  { /* ... */ }
+    // and now LSP is broken too
+    public void eat()   { throw new UnsupportedOperationException(); }
+    public void sleep() { throw new UnsupportedOperationException(); }
+}`))+`<p>Note what just happened: a fat interface forced an LSP violation. The two
+       principles fail together, which is why interviewers like this pair.</p>`+e("✅ Fix — split along the clients, not along the nouns",a(`
+interface Workable  { void work(); }
+interface Feedable  { void eat(); }
+interface Restable  { void sleep(); }
+
+class Robot  implements Workable {}
+class Human  implements Workable, Feedable, Restable {}`))+`<p>The test is not "is this interface small?" but "does every implementor
+       have a meaningful body for every method?" If the answer is no, the interface is
+       serving two different clients and wants splitting.</p>`+p(`This is the one principle I can point at in this very codebase. The dashboard's
+         portals feature needed to add a single node to the knowledge graph, and was importing the
+         vis-network <code>nodes</code> and <code>edges</code> DataSets to do it — which meant knowing
+         the node shape and remembering the pillar edge. It now calls
+         <code>addNodeToRenderedGraph(node)</code>: the narrow thing it needed instead of the wide
+         thing it had.`),followUps:[{q:'Is ISP just "keep interfaces small"?',a:`No — it is "keep interfaces focused on one client". A six-method interface where every
+            implementor implements all six meaningfully is fine. A two-method interface where half the
+            implementors throw on one of them is not.`},{q:"How do Java 8 default methods change this?",a:`They relieve the symptom and can hide the disease. A <code>default</code> lets you add to an
+            interface without breaking implementors — genuinely useful, and how <code>stream()</code>
+            reached <code>Collection</code>. But a default that throws, or that no-ops, is still forcing
+            a client to carry a method it does not want. The smell moved, it did not leave.`},{q:"Where does the JDK get this right?",a:`<code>Runnable</code>, <code>Callable</code>, <code>Comparable</code>,
+            <code>AutoCloseable</code> — one method, one reason for a client to care, which is exactly
+            why they compose so freely and why they became the functional interfaces.`}]},{id:"solid-dip",topicId:l.dip,categoryId:"design",prompt:"Dependency Inversion — define it, show a violation, and fix it.",difficulty:"medium",tags:["solid","lld","spring"],answerHtml:o("high-level policy should not depend on low-level detail — both should depend on an abstraction owned by the policy.")+e("❌ Violation",a(`
+class OrderService {
+    // concrete, and self-constructed: no seam to substitute at
+    private final MySqlOrderRepo repo = new MySqlOrderRepo();
+    private final SmtpMailer mailer = new SmtpMailer("smtp.corp");
+}`))+`<p>Two separate problems. It depends on a <em>detail</em> (MySQL, SMTP), and it
+       <em>constructs</em> that detail, so there is no seam to substitute at. You cannot unit test
+       this without a database and a mail server.</p>`+e("✅ Fix",a(`
+// The abstraction is declared next to the POLICY, and phrased in
+// the policy's language — not "MailSender" but what the domain wants.
+public interface OrderNotifier { void orderPlaced(Order o); }
+public interface OrderRepository { void save(Order o); }
+
+class OrderService {
+    private final OrderRepository repo;
+    private final OrderNotifier notifier;
+
+    // injected, not constructed
+    OrderService(OrderRepository repo, OrderNotifier notifier) {
+        this.repo = repo;
+        this.notifier = notifier;
+    }
+}
+
+// The detail depends on the abstraction, not the other way round.
+// This lives in infrastructure and implements the domain's interface.
+@Component
+class SmtpOrderNotifier implements OrderNotifier { /* ... */ }`))+`<p><strong>Where the "inversion" actually is.</strong> Without it the arrow runs
+       policy → detail. With it, both arrows point at the interface, and since the interface is owned
+       by the policy, the detail's compile-time dependency now points <em>up</em>. That reversal is the
+       whole principle; it is also exactly what lets the domain module compile with no knowledge that
+       a database exists.</p>`+p(`Distinguish the three, because interviewers conflate them and are pleased when you do not.
+         <strong>DIP</strong> is the principle — depend on abstractions.
+         <strong>Dependency injection</strong> is a technique for supplying them.
+         <strong>A DI container</strong> (Spring) is a tool that automates the technique.
+         You can obey DIP with no framework at all — constructor parameters and a <code>main</code>
+         that wires them is enough, and is exactly what the composition root in this dashboard does.`),followUps:[{q:"Which layer should own the interface?",a:`The consumer — the high-level policy. If <code>OrderRepository</code> lives in the
+            persistence package next to its JDBC implementation, nothing is inverted: the domain still
+            points at infrastructure. Put it in the domain package and the arrow flips. This is the
+            core of hexagonal architecture — the port belongs to the inside.`},{q:"Is field injection a DIP violation?",a:`Not strictly — the dependency is still an abstraction. But <code>@Autowired</code> on a field
+            hides the dependency from the constructor, so the class can be built in an invalid state and
+            cannot be tested without reflection or a container. Constructor injection makes the
+            dependency list honest, and lets the field be <code>final</code>.`},{q:"What's the cost of applying DIP everywhere?",a:`An interface with exactly one implementation, forever, is indirection with no payoff — you
+            now read two files to follow one call. Apply it where you need a seam: at I/O boundaries,
+            at things you must fake in tests, at things you genuinely expect to swap. An in-process
+            helper with one caller does not need a port.`}]}],T="design--2-design-patterns",L=[{id:"pat-how-to-choose",topicId:T,categoryId:"design",prompt:"How do you decide which pattern to use?",difficulty:"medium",tags:["patterns","lld"],answerHtml:o("you do not choose a pattern, you name the force that is already hurting — patterns are refactoring targets, not building blocks.")+"<p>The strong answer starts from the problem, so say what the problem sounds like:</p>"+r(['"A new type means editing this conditional" → <strong>Strategy</strong> (or polymorphism, which is the same thing without ceremony).','"This object behaves differently depending on its status, and the ifs are nested three deep" → <strong>State</strong>.','"Several things need to know when this happens, and I keep adding calls at the end of the method" → <strong>Observer</strong>.','"The constructor takes seven arguments and four are optional" → <strong>Builder</strong>.',`"This library's interface is wrong for us" → <strong>Adapter</strong>.`,'"I need to add behaviour to some instances, not all, and the combinations are multiplying" → <strong>Decorator</strong>.','"Every caller repeats the same five-step dance" → <strong>Facade</strong>, or <strong>Template Method</strong> if the steps vary.','"The request needs queueing, retrying or undoing" → <strong>Command</strong>.','"A tree and a leaf should answer the same question" → <strong>Composite</strong>.'])+`<p>Then the sentence that separates senior from mid: <strong>the pattern is
+       usually the second thing you write, not the first.</strong> Write the straightforward version,
+       and let the second or third requirement show you where the axis of change actually is. A pattern
+       applied on the first requirement is a guess; applied on the third it is evidence.</p>`+p(`Be ready to argue against patterns too, because it is a trap question. Over-patterning is a real
+         and common failure: five interfaces with one implementation each, a factory that calls
+         <code>new</code>, a strategy that will never have a second strategy. Each one costs a file, an
+         indirection and a reader's afternoon. "I'd write the <code>if</code> and revisit it when a
+         second case appears" is a legitimate, senior answer — and an interviewer who is listening
+         properly prefers it to a recital.`),followUps:[{q:"Are design patterns still relevant given modern language features?",a:`Some collapsed into syntax and that is the honest answer. Strategy with one method is a
+            lambda; Iterator is a for-each; Singleton is a Spring bean; Command is a
+            <code>Runnable</code>; Visitor is largely replaced by pattern matching over sealed types.
+            What survives is the <em>vocabulary</em> — being able to say "that's a proxy" and have the
+            room understand the trade-offs in three words. The catalogue aged; the shared language did not.`},{q:"Which pattern do you see misused most?",a:`Singleton, comfortably. It is the easiest to implement and the hardest to remove, because
+            every caller reaches it through a static and nothing declares the dependency. By the time
+            you want to test around it, the reference is in forty files.`}]},{id:"pat-in-real-code",topicId:T,categoryId:"design",prompt:"Point at patterns in code you have actually used — JDK, Spring, or your own.",difficulty:"easy",tags:["patterns","jdk","spring"],answerHtml:o("naming patterns in code you use daily proves you recognise them in the wild rather than only in a book.")+"<p><strong>In the JDK</strong></p>"+r(["<strong>Decorator</strong> — <code>new BufferedReader(new InputStreamReader(in))</code>, and <code>Collections.unmodifiableList()</code>.","<strong>Adapter</strong> — <code>Arrays.asList()</code>, <code>InputStreamReader</code> (bytes → chars).","<strong>Factory method</strong> — <code>Collection.iterator()</code>, <code>Calendar.getInstance()</code>.","<strong>Flyweight</strong> — <code>Integer.valueOf()</code>'s −128..127 cache, and String interning.","<strong>Template method</strong> — <code>AbstractList</code>, <code>InputStream.read()</code>.","<strong>Command</strong> — <code>Runnable</code>, <code>Callable</code>, everything an <code>ExecutorService</code> takes.","<strong>Builder</strong> — <code>HttpRequest.newBuilder()</code>, <code>Stream.Builder</code>.","<strong>Strategy</strong> — <code>Comparator</code>, passed to <code>sort</code>."])+"<p><strong>In Spring</strong></p>"+r(["<strong>Proxy</strong> — <code>@Transactional</code>, <code>@Cacheable</code>, <code>@Async</code>; JDK dynamic proxies or CGLIB subclasses.","<strong>Template method</strong> — <code>JdbcTemplate</code>, <code>RestTemplate</code>, <code>TransactionTemplate</code>. The name is the pattern.","<strong>Chain of responsibility</strong> — the Spring Security filter chain, and <code>javax.servlet.Filter</code>.","<strong>Singleton</strong> — the default bean scope, one per container rather than per classloader.","<strong>Factory</strong> — <code>FactoryBean&lt;T&gt;</code>, <code>BeanFactory</code> itself.","<strong>Observer</strong> — <code>ApplicationEvent</code> and <code>@EventListener</code>.","<strong>Dependency injection</strong> — the container is one large application of DIP."])+p(`Best of all is pointing at your own code and explaining the force that drove it — a reviewer
+         trusts "we had a conditional that grew a branch per payment provider, so we moved to a
+         <code>List&lt;FeeCalculator&gt;</code> injected by Spring" far more than a correct definition
+         of Strategy. If you have one of those stories, lead with it.`),followUps:[{q:"Which JDK pattern is a cautionary tale?",a:`<code>java.io</code>. It is the canonical Decorator example <em>and</em> the canonical
+            complaint about it: deep stacks, verbose assembly, an order you have to know, and stack
+            traces four wrappers deep. <code>Files.newBufferedReader()</code> exists because the
+            assembly was too tedious to leave exposed — a facade over a decorator stack.`}]}],y="design--creational",D=[{id:"pat-singleton",topicId:y,categoryId:"design",prompt:"Implement Singleton safely. Which form would you actually ship, and why?",difficulty:"medium",tags:["patterns","creational","concurrency"],answerHtml:o("the enum is the safest form; the static holder idiom is the best lazy one. Double-checked locking works but needs <code>volatile</code>.")+e("1. Enum — what Josh Bloch recommends",a(`
+public enum Config {
+    INSTANCE;
+    private final Properties props = load();
+    public String get(String key) { return props.getProperty(key); }
+}`))+`<p>Free serialisation safety, and reflection cannot construct a second one —
+       <code>Constructor.newInstance()</code> explicitly rejects enum types. The downside is that it is
+       eager and cannot extend a class.</p>`+e("2. Static holder — lazy, thread-safe, no locking",a(`
+public final class Config {
+    private Config() {}
+    private static class Holder {
+        static final Config INSTANCE = new Config();
+    }
+    public static Config getInstance() { return Holder.INSTANCE; }
+}`))+`<p>The JVM guarantees a class is initialised once, lazily, on first use, under a lock it
+       manages itself. <code>Holder</code> is not loaded until <code>getInstance()</code> is first
+       called — so this is lazy and thread-safe with zero synchronisation in your code.</p>`+e("3. Double-checked locking — correct only with volatile",a(`
+public final class Config {
+    // volatile is NOT optional
+    private static volatile Config instance;
+
+    public static Config getInstance() {
+        if (instance == null) {              // no lock on the hot path
+            synchronized (Config.class) {
+                if (instance == null) instance = new Config();
+            }
+        }
+        return instance;
+    }
+}`))+`<p><strong>Why <code>volatile</code>.</strong> <code>new Config()</code> is three steps:
+       allocate, run the constructor, assign the reference. The JVM is allowed to reorder the last two.
+       Without <code>volatile</code>, another thread can see a non-null <code>instance</code> whose
+       constructor has not finished — a fully constructed reference to a half-constructed object.
+       <code>volatile</code> forbids that reordering and publishes the writes.</p>`+p(`Then say the part that shows judgement: Singleton is frequently an anti-pattern. It is global
+         mutable state, it hides dependencies from the constructor, and it makes tests order-dependent
+         because you cannot get a fresh one. In Spring you almost never write any of this — beans are
+         singleton-scoped by default, which gives you one instance <em>per container</em> with the
+         lifecycle managed and the dependency still injected and therefore still fakeable.`),followUps:[{q:"How would you break a non-enum singleton?",a:`Three ways. <strong>Reflection</strong> — <code>setAccessible(true)</code> on the private
+            constructor; defend by throwing from the constructor if the instance already exists.
+            <strong>Serialization</strong> — deserialising makes a second one; defend with
+            <code>readResolve()</code> returning the instance. <strong>Two classloaders</strong> — each
+            gets its own copy, and there is no defence, which is why "one per JVM" is really "one per
+            classloader".`},{q:"Is `synchronized` on the whole getInstance method acceptable?",a:`It is correct, and it was the standard advice before Java 5. The cost is a lock on every read
+            forever to guard a write that happens once. With modern JIT and biased-locking removal it is
+            rarely the bottleneck people assume, but the holder idiom is simpler <em>and</em> faster,
+            so there is no reason to choose this one.`},{q:"Spring singleton vs the GoF singleton — same thing?",a:`No, and the distinction is a good one to draw. GoF is one instance per classloader, enforced
+            by the class itself, reached through a global static. Spring is one instance per application
+            context, enforced by the container, reached by injection. The Spring version keeps the seam:
+            you can inject a different implementation in a test. The GoF one removes it.`}]},{id:"pat-factory",topicId:y,categoryId:"design",prompt:"Factory Method vs Abstract Factory — what is the actual difference?",difficulty:"medium",tags:["patterns","creational"],answerHtml:o("Factory Method makes <em>one</em> product and varies by subclass; Abstract Factory makes a <em>family</em> of related products that must match.")+e("Factory Method — one product, chosen by the subclass",a(`
+abstract class Dialog {
+    abstract Button createButton();          // the factory method
+
+    void render() {              // the algorithm is fixed here
+        Button b = createButton();
+        b.onClick(this::close);
+        b.paint();
+    }
+}
+
+class WindowsDialog extends Dialog {
+    Button createButton() { return new WindowsButton(); }
+}
+class WebDialog extends Dialog {
+    Button createButton() { return new HtmlButton(); }
+}`))+e("Abstract Factory — a family that must be consistent",a(`
+// every method returns a member of one family
+interface UiFactory {
+    Button   createButton();
+    Checkbox createCheckbox();
+    Menu     createMenu();
+}
+
+class WindowsFactory implements UiFactory { /* all Windows* */ }
+class MacFactory     implements UiFactory { /* all Mac*     */ }
+
+// The point: you cannot pair a Windows button with a Mac checkbox.
+// The factory makes the mismatch unrepresentable.`))+`<p><strong>The distinction in one sentence:</strong> Factory Method is about
+       <em>deferring</em> one instantiation to a subclass; Abstract Factory is about
+       <em>guaranteeing</em> that several instantiations come from the same family.</p>`+r(["Factory Method varies by <strong>inheritance</strong> — a new product means a new subclass.","Abstract Factory varies by <strong>composition</strong> — you pass a different factory object in.",'A "simple factory" (a static method with a switch) is neither, and is not a GoF pattern — but it is the right answer most of the time, and saying so is a point in your favour.'])+p(`Where they already are: <code>Calendar.getInstance()</code> and
+         <code>NumberFormat.getInstance(locale)</code> are simple factories.
+         <code>Collection.iterator()</code> is a genuine factory method — the collection subclass
+         decides which iterator you get. <code>DocumentBuilderFactory</code> is the JDK's clearest
+         abstract factory. In Spring, <code>FactoryBean&lt;T&gt;</code> is the extension point for
+         beans whose construction is too complicated for a constructor.`),followUps:[{q:"When is a plain constructor the right answer?",a:`Almost always. A factory earns its keep when construction needs to <em>choose</em> a type,
+            <em>cache</em> or pool instances, return a subtype the caller should not name, or hide a
+            genuinely messy build. If it just calls <code>new</code>, it is a layer of indirection with
+            no payoff.`},{q:"How do static factory methods differ from the pattern?",a:`<code>List.of()</code>, <code>Optional.of()</code>, <code>Integer.valueOf()</code> are
+            static factory <em>methods</em> — an Effective Java idiom, not the GoF pattern. Their value
+            is different: they have names, they need not create a new object (<code>valueOf</code>
+            caches −128..127), and they can return a private subtype. No polymorphism is involved, which
+            is exactly what makes them not the pattern.`}]},{id:"pat-builder",topicId:y,categoryId:"design",prompt:"Implement Builder. What problem does it solve that constructors do not?",difficulty:"easy",tags:["patterns","creational"],answerHtml:o("it replaces telescoping constructors and unreadable argument lists, and it lets an immutable object be assembled in steps and validated once.")+e("❌ The problem",a(`
+// Which is the port, which the timeout? What is the third boolean?
+new HttpClient("api.corp.local", 443, 5000, 3, true, false, null);
+
+// ...and the telescoping alternative, which grows as 2^optional-args
+HttpClient(String host)
+HttpClient(String host, int port)
+HttpClient(String host, int port, int timeoutMs)`))+e("✅ Builder",a(`
+public final class HttpClient {
+    private final String host;
+    private final int port;
+    private final Duration timeout;
+
+    private HttpClient(Builder b) {     // only the builder constructs
+        this.host = b.host;
+        this.port = b.port;
+        this.timeout = b.timeout;
+    }
+
+    public static Builder builder(String h) { return new Builder(h); }
+
+    public static final class Builder {
+        private final String host;           // required -> constructor
+        private int port = 443;          // optional -> default
+        private Duration timeout = Duration.ofSeconds(10);
+
+        private Builder(String h) { this.host = requireNonNull(h); }
+
+        public Builder port(int p) { port = p; return this; }
+        public Builder timeout(Duration d) { timeout = d; return this; }
+
+        public HttpClient build() {
+            if (port < 1 || port > 65535) throw new BadPort(port);
+            return new HttpClient(this);      // validate once, here
+        }
+    }
+}
+
+HttpClient c = HttpClient.builder("api.corp.local")
+                         .timeout(Duration.ofSeconds(5))
+                         .build();`))+`<p>Three things that buys you: the call site names every argument, the object is
+       <strong>immutable</strong> once built, and there is exactly one place —
+       <code>build()</code> — where cross-field validation can live.</p>`+r(["Required arguments go in the <strong>builder's constructor</strong>, not as setters. That way the compiler enforces them rather than <code>build()</code> throwing at runtime.","Validate in <code>build()</code>, not in each setter, so rules spanning two fields have somewhere to live.",'Copy mutable fields in the private constructor, or the builder can still mutate a "finished" object.'])+p(`In Java 16+, a <code>record</code> with a compact constructor covers many of the cases people
+         reach for Builder for — immutability, validation in one place, and generated accessors. Builder
+         still wins when there are many optional fields, when you want a fluent DSL, or when the object
+         is assembled across several methods. Lombok's <code>@Builder</code> generates all of the above,
+         at the cost of the reader not seeing it.`),followUps:[{q:"Is a builder thread-safe?",a:`The built object is (if it is immutable). The builder itself is not, and must not be shared —
+            it is mutable by design. One builder per construction, and never a static one.`},{q:"Where is this in the JDK and Spring?",a:`<code>StringBuilder</code> (loosely — it is mutable and has no <code>build()</code>),
+            <code>Stream.Builder</code>, <code>Calendar.Builder</code>,
+            <code>HttpRequest.newBuilder()</code> in the Java 11 HTTP client — that last one is a
+            textbook implementation. In Spring: <code>UriComponentsBuilder</code>,
+            <code>MockMvcRequestBuilders</code>, and the whole of the security DSL.`}]}],d="design--structural",U=[{id:"pat-adapter",topicId:d,categoryId:"design",prompt:"Adapter — implement it, and say how it differs from Facade and Decorator.",difficulty:"easy",tags:["patterns","structural"],answerHtml:o("it converts one interface into another a client already expects — it changes the shape, never the behaviour.")+a(`
+// What we have: a third-party library we cannot change.
+class StripeGateway {
+    StripeCharge charge(long cents, String ccy, String token);
+}
+
+// What our domain wants to talk to.
+public interface PaymentProcessor {
+    Receipt pay(Money amount, Card card);
+}
+
+// Implements ours, delegates to theirs, translates both ways.
+public class StripeAdapter implements PaymentProcessor {
+    private final StripeGateway stripe;
+
+    public StripeAdapter(StripeGateway s) { this.stripe = s; }
+
+    public Receipt pay(Money amount, Card card) {
+        StripeCharge c = stripe.charge(
+            amount.toCents(), amount.currency().code(), card.token());
+        // translate their model into ours
+        return new Receipt(c.id(), c.status() == SUCCEEDED);
+    }
+}`)+"<p><strong>The three get confused constantly, so separate them by intent:</strong></p>"+r(["<strong>Adapter</strong> — the interface is <em>wrong</em>. Different interface, same behaviour.","<strong>Decorator</strong> — the interface is <em>right</em>, the behaviour is missing something. Same interface, more behaviour.","<strong>Facade</strong> — the interface is <em>too much</em>. A new, simpler interface over many objects.","<strong>Proxy</strong> — the interface is right and the behaviour is right, but access needs controlling. Same interface, same behaviour, different <em>when</em> or <em>whether</em>."])+p(`This is also the pattern that makes DIP practical against third-party code. The domain declares
+         <code>PaymentProcessor</code> in its own language; the adapter lives in the infrastructure
+         layer and absorbs the vendor's model. Swapping Stripe for Adyen then touches one file, and the
+         domain does not recompile.`),followUps:[{q:"Object adapter vs class adapter?",a:`Class adapter extends the adaptee (needs multiple inheritance, so in Java it only works when
+            the adaptee is an interface); object adapter <em>holds</em> it. Prefer the object form —
+            it composes, it can adapt subclasses, and it does not inherit the adaptee's whole surface.`},{q:"Where is it in the JDK?",a:`<code>Arrays.asList()</code> adapts an array to <code>List</code>.
+            <code>InputStreamReader</code> adapts a byte stream to a character stream — the canonical
+            example, because the conversion (bytes → chars via a charset) is exactly the translation
+            work an adapter does.`}]},{id:"pat-decorator",topicId:d,categoryId:"design",prompt:"Decorator — implement it, and explain why the JDK I/O streams are built this way.",difficulty:"medium",tags:["patterns","structural"],answerHtml:o("it adds behaviour to one object at runtime by wrapping it in something of the same type — composition instead of a subclass per combination.")+a(`
+public interface DataSource { void write(String data); String read(); }
+
+class FileDataSource implements DataSource { /* the real one */ }
+
+// The base decorator: same interface, holds one of the same interface.
+abstract class DataSourceDecorator implements DataSource {
+    protected final DataSource wrapped;
+    protected DataSourceDecorator(DataSource w) { this.wrapped = w; }
+}
+
+class EncryptionDecorator extends DataSourceDecorator {
+    EncryptionDecorator(DataSource w) { super(w); }
+    public void write(String data) { wrapped.write(encrypt(data)); }
+    public String read()           { return decrypt(wrapped.read()); }
+}
+
+class CompressionDecorator extends DataSourceDecorator { /* ditto */ }
+
+// Stack in any order, at runtime, with no class per combination:
+DataSource source = new EncryptionDecorator(
+                        new CompressionDecorator(
+                            new FileDataSource("x.dat")));`)+`<p><strong>Why not inheritance.</strong> Two optional behaviours need
+       <code>EncryptedFile</code>, <code>CompressedFile</code>, <code>EncryptedCompressedFile</code> —
+       and the count is 2ⁿ. Decorators are <em>n</em> classes for the same 2ⁿ combinations, chosen at
+       runtime rather than compile time.</p>`+e("The JDK example to name",a(`
+new BufferedReader(
+    new InputStreamReader(          // bytes→chars: an adapter
+        new FileInputStream("f.txt")));
+
+new DataOutputStream(
+    new BufferedOutputStream(new FileOutputStream("f.bin")));`))+`<p>This is also the honest criticism of the pattern: <code>java.io</code> is the standard
+       example of decorators <em>and</em> the standard complaint about them. The stack is verbose, the
+       stack trace is deep, and you must know the right wrapping order. <code>Files.newBufferedReader()</code>
+       exists because the assembly was too tedious to expose.</p>`+p(`<code>Collections.unmodifiableList()</code> and <code>synchronizedList()</code> are decorators
+         too — and <code>unmodifiableList</code> is the one that breaks LSP, since it decorates by
+         <em>removing</em> behaviour (<code>add()</code> throws). A decorator is supposed to add.
+         Spotting that is a strong answer.`),followUps:[{q:"Decorator vs Proxy — both wrap and both keep the interface.",a:`Intent, and who decides. A decorator <em>adds</em> behaviour and the client deliberately
+            composes the stack. A proxy <em>controls access</em> to the subject — lazily creating it,
+            checking rights, caching, going over the network — and the client usually does not know it
+            is there. Same structure, opposite relationship with the caller.`},{q:"Does order matter?",a:`Yes, and it is a real source of bugs. Compress-then-encrypt is right; encrypt-then-compress
+            barely compresses, because ciphertext is high-entropy. Decorators are not commutative, and
+            nothing in the type system tells you that.`}]},{id:"pat-proxy",topicId:d,categoryId:"design",prompt:"Proxy — implement it, and explain how Spring AOP uses it (and the trap that follows).",difficulty:"hard",tags:["patterns","structural","spring"],answerHtml:o("a stand-in with the same interface that controls access to the real object — and it is the mechanism behind <code>@Transactional</code>, <code>@Cacheable</code> and <code>@Async</code>.")+a(`
+public interface ReportService { Report generate(int id); }
+
+class RealReportService implements ReportService {
+    public Report generate(int id) { /* slow */ }
+}
+
+// Virtual + caching proxy: controls WHEN the real work happens.
+class CachingReportProxy implements ReportService {
+    private final ReportService real;
+    private final Map<Integer, Report> cache =
+        new ConcurrentHashMap<>();
+
+    CachingReportProxy(ReportService real) { this.real = real; }
+
+    public Report generate(int id) {
+        return cache.computeIfAbsent(id, real::generate);
+    }
+}`)+`<p><strong>How Spring does it.</strong> When you annotate a bean with
+       <code>@Transactional</code>, Spring does not inject your object. It injects a proxy — a JDK
+       dynamic proxy if the class implements an interface, a CGLIB subclass if not. The proxy opens the
+       transaction, calls your method, then commits or rolls back.</p>`+e("⚠ The trap every interviewer asks about — self-invocation",a(`
+@Service
+class OrderService {
+    public void processAll(List<Order> orders) {
+        for (Order o : orders) {
+            save(o);      // ← plain 'this': the proxy is NOT involved
+        }                       //   @Transactional here does NOTHING
+    }
+
+    @Transactional
+    public void save(Order o) { repo.save(o); }
+}`))+`<p>The proxy wraps the <em>bean</em>, so only calls that arrive from outside go through
+       it. <code>this.save(o)</code> is a direct invocation on the target, and the annotation is
+       silently ignored — no error, no warning, no transaction.</p>`+r(["<strong>Fix</strong> — move <code>save</code> to a separate bean and inject it, so the call crosses the proxy boundary.","Or self-inject the proxy (<code>@Lazy ApplicationContext</code>/self reference) — it works, and it reads like an apology.","Or switch to AspectJ load-time weaving, which modifies the bytecode and so has no proxy boundary at all.","Same trap applies to <code>@Cacheable</code>, <code>@Async</code>, <code>@PreAuthorize</code> — anything proxy-based."])+p(`Two more consequences worth volunteering: with CGLIB the method cannot be <code>final</code> or
+         <code>private</code> (the proxy subclasses and overrides it — a <code>final</code> method
+         cannot be overridden, so the annotation silently does nothing again), and a proxied bean's
+         constructor runs on the target, not the proxy, so <code>@Transactional</code> in
+         <code>@PostConstruct</code> does not apply either.`),followUps:[{q:"JDK dynamic proxy vs CGLIB — when does Spring pick which?",a:`JDK proxies require an interface and implement it via <code>InvocationHandler</code>; CGLIB
+            generates a subclass at runtime and needs a non-final class with a usable constructor.
+            Spring Boot defaults to CGLIB (<code>proxyTargetClass=true</code>) so behaviour does not
+            change the day someone adds an interface.`},{q:"Name the kinds of proxy.",a:`<strong>Virtual</strong> — defer creating something expensive (Hibernate lazy loading is
+            exactly this, and is why touching a lazy collection outside the session throws
+            <code>LazyInitializationException</code>). <strong>Protection</strong> — access control.
+            <strong>Remote</strong> — the object is on another machine. <strong>Caching</strong> — as above.`},{q:"How does this relate to the Decorator you just described?",a:`Structurally identical — both implement the interface and hold an instance of it. The
+            difference is intent and ownership: the client builds a decorator stack deliberately, while
+            a proxy is usually installed by the framework and the client never knows. That is why the
+            self-invocation trap is surprising: you cannot see the wrapper in the code.`}]},{id:"pat-facade-composite-flyweight",topicId:d,categoryId:"design",prompt:"Facade, Composite and Flyweight — one example each, and when they earn their keep.",difficulty:"medium",tags:["patterns","structural"],answerHtml:o("Facade simplifies a subsystem; Composite lets a tree and a leaf share one interface; Flyweight shares immutable state across many objects.")+e("Facade — one door into a subsystem",a(`
+public class VideoConverter {                       // the facade
+    public File convert(String filename, String format) {
+        // five collaborators the caller should not know about
+        VideoFile file = new VideoFile(filename);
+        Codec source = CodecFactory.extract(file);
+        Codec target = format.equals("mp4")
+            ? new Mp4Codec() : new OggCodec();
+        Buffer buffer = BitrateReader.read(file, source);
+        return AudioMixer.fix(BitrateReader.convert(buffer, target));
+    }
+}`))+`<p>It adds no behaviour and blocks nothing — the subsystem stays reachable for callers
+       who need it. That is the difference from an adapter, which exists because the old interface is
+       unusable.</p>`+e("Composite — a leaf and a branch answer the same question",a(`
+interface FileSystemNode { long size(); }
+
+record FileNode(String name, long bytes) implements FileSystemNode {
+    public long size() { return bytes; }
+}
+
+record Directory(String name, List<FileSystemNode> children)
+        implements FileSystemNode {
+    public long size() {          // recursion the caller never sees
+        return children.stream().mapToLong(FileSystemNode::size).sum();
+    }
+}`))+`<p>The win is that the client never writes <code>if (node instanceof Directory)</code>.
+       Any tree where "one" and "many" should be treated alike is a candidate — UI component trees,
+       menus, org charts, a rendered DOM.</p>`+e("Flyweight — share what is the same, pass in what differs",a(`
+// Intrinsic state (shared, immutable) lives in the flyweight:
+record TreeType(String name, Color colour, Texture texture) {
+    void draw(Canvas c, int x, int y) { /* x,y are extrinsic */ }
+}
+
+class TreeTypeRegistry {
+    private static final Map<String, TreeType> CACHE =
+        new ConcurrentHashMap<>();
+    static TreeType of(String name, Color c, Texture t) {
+        return CACHE.computeIfAbsent(
+            name + c + t, k -> new TreeType(name, c, t));
+    }
+}
+
+// A million trees, a handful of TreeType objects.
+record Tree(int x, int y, TreeType type) {}`))+p(`Flyweight is already in your JVM and it has a visible side effect. <code>Integer.valueOf()</code>
+         caches −128..127, which is why <code>Integer a = 127, b = 127; a == b</code> is <code>true</code>
+         but the same with <code>128</code> is <code>false</code>. String interning is the same idea.
+         That cache is the reason <code>==</code> on boxed types is a bug that passes its unit test.`),followUps:[{q:"When is a Facade a bad idea?",a:`When it becomes the only way in and keeps growing — a "god facade" that every feature adds a
+            method to has just moved the mess behind a door. A facade should serve one use case; several
+            small ones beat one large one.`},{q:"What does Composite cost?",a:`Type safety. If <code>Directory</code> and <code>FileNode</code> share an interface, methods
+            meaningful for only one of them (<code>add()</code>) either live on the interface and throw
+            for leaves — an LSP violation — or live only on the branch, and the client is back to
+            checking types. GoF acknowledged this trade-off and did not resolve it; neither can you.`}]}],w="design--behavioural",B=[{id:"pat-strategy-vs-state",topicId:w,categoryId:"design",prompt:"Strategy and State look identical in UML. What actually separates them?",difficulty:"hard",tags:["patterns","behavioural"],answerHtml:o("Strategy swaps an algorithm the <em>caller</em> chose and the strategies do not know each other; State swaps behaviour the <em>object</em> chose, and the states know the transitions.")+e("Strategy — the client picks, the strategies are peers",a(`
+public interface SortStrategy { void sort(int[] data); }
+
+class QuickSort implements SortStrategy {
+    public void sort(int[] d) { /* ... */ }
+}
+class MergeSort implements SortStrategy {
+    public void sort(int[] d) { /* ... */ }
+}
+
+class Sorter {
+    private SortStrategy strategy;
+    // the CALLER decides
+    void setStrategy(SortStrategy s) { this.strategy = s; }
+    void sort(int[] data) { strategy.sort(data); }
+}`))+e("State — the object transitions itself",a(`
+interface OrderState {
+    void next(OrderContext ctx);
+    default void cancel(OrderContext ctx) {
+        throw new IllegalStateException("cannot cancel");
+    }
+}
+
+class Placed implements OrderState {
+    // ← a state knows what follows it
+    public void next(OrderContext c)   { c.setState(new Paid()); }
+    public void cancel(OrderContext c) { c.setState(new Cancelled()); }
+}
+
+class Shipped implements OrderState {
+    public void next(OrderContext c) { c.setState(new Delivered()); }
+    // cancel() deliberately not overridden — a shipped order cannot
+    // be cancelled, so the illegal transition is now enforced, not
+    // merely discouraged
+}
+
+class OrderContext {
+    private OrderState state = new Placed();
+    void setState(OrderState s) { this.state = s; }
+    void next()   { state.next(this); }
+    void cancel() { state.cancel(this); }
+}`))+"<p><strong>The three real differences:</strong></p>"+r(["<strong>Who chooses</strong> — the client injects a Strategy; the object moves itself between States.","<strong>Awareness</strong> — strategies are mutually ignorant; states reference the states they lead to.","<strong>Lifetime</strong> — a Strategy is usually set once; State changes many times during one object's life."])+p(`The payoff of State is that it deletes the nested <code>if (status == PLACED && ...)</code>
+         ladder that these objects otherwise grow, and it makes illegal transitions <em>impossible
+         to express</em> rather than merely unlikely. Say that, then say the cost honestly: one class
+         per state, and the transition graph is now spread across all of them instead of visible in one
+         table — which is why a small state machine is often better as an enum with a transition map.`),followUps:[{q:"Can a Java enum implement State?",a:`Yes, and for a fixed, small machine it is the nicest form — constant-specific method bodies
+            give you one class, an exhaustive switch, and free serialisation. It stops working when a
+            state needs its own fields, or when states are added by configuration.`},{q:"How does Strategy relate to Open/Closed?",a:`It is the usual mechanism for it. The fee-calculator fix for OCP <em>is</em> Strategy: a new
+            payment type adds a class instead of editing a conditional. In Java, a strategy with one
+            method is just a lambda — <code>Comparator</code> is the pattern with the ceremony removed.`}]},{id:"pat-observer",topicId:w,categoryId:"design",prompt:"Observer — implement it, and say when you would reach for an event bus instead.",difficulty:"medium",tags:["patterns","behavioural"],answerHtml:o("one-to-many notification where the subject knows only that listeners exist, not who they are.")+a(`
+public interface OrderListener { void onOrderPlaced(Order order); }
+
+public class OrderService {
+    // safe iteration under concurrent add
+    private final List<OrderListener> listeners =
+        new CopyOnWriteArrayList<>();
+    public void add(OrderListener l)    { listeners.add(l); }
+    public void remove(OrderListener l) { listeners.remove(l); }
+
+    public void place(Order order) {
+        repository.save(order);
+        for (OrderListener l : listeners) {
+            try {
+                // one bad listener must not fail the order
+                l.onOrderPlaced(order);
+            } catch (RuntimeException e) {
+                log.error("listener {} failed", l, e);
+            }
+        }
+    }
+}`)+"<p>Three details that separate a real implementation from a whiteboard one:</p>"+r(["<code>CopyOnWriteArrayList</code>, or a listener that unsubscribes during notification gives you <code>ConcurrentModificationException</code>.","Catch per listener. Otherwise the fifth observer's bug rolls back the order.","<strong>The lapsed listener leak</strong> — a subject holds strong references forever, so a listener that forgets to unregister is never collected, and neither is anything it points at. This is one of the most common real memory leaks in long-lived Java apps. Return an unsubscribe handle, or hold weak references."])+e("When to use a bus instead",`<p>When the subject should not hold the listener list at all. The dashboard in this
+         very repository does exactly that: three pairs of modules had a genuine downward
+         dependency plus one call back upwards, and that upward call became an announcement
+         (<code>TAB_CHANGED</code>, <code>CATEGORIES_CHANGED</code>). The publisher says what
+         happened and does not know who listens — which is what broke the import cycles.</p>`)+p(`Do not reach for a bus by default. An event bus used for everything is a global with extra
+         steps: you lose "find all callers", the ordering becomes implicit, and a typo in an event name
+         fails silently instead of at compile time. Use it where a direct import would create a cycle —
+         and where it would not, keep the plain import.`),followUps:[{q:"Why was java.util.Observable deprecated in Java 9?",a:`It is a class, not an interface, so it burns your one inheritance slot; it is not
+            serialisable; its notification order is unspecified; and it is not thread-safe in any useful
+            way. The replacements are <code>PropertyChangeListener</code>, a plain listener interface
+            like the one above, or <code>Flow</code>/reactive streams when you need back-pressure.`},{q:"Synchronous or asynchronous notification?",a:`Synchronous is simpler and keeps the listener inside the caller's transaction — which is
+            sometimes exactly what you want and sometimes a disaster, because a slow listener now slows
+            the order. Spring lets you choose: <code>@EventListener</code> is synchronous,
+            <code>@TransactionalEventListener(phase = AFTER_COMMIT)</code> fires only once the data is
+            actually durable, which is usually the correct choice for "send the confirmation email".`}]},{id:"pat-template-command-chain",topicId:w,categoryId:"design",prompt:"Template Method, Command and Chain of Responsibility — one example each.",difficulty:"medium",tags:["patterns","behavioural"],answerHtml:o("Template Method fixes the steps and varies one; Command turns a request into an object; Chain passes a request along handlers until one takes it.")+e("Template Method — the skeleton is final, the holes are abstract",a(`
+abstract class DataImporter {
+    // final: subclasses change steps, never the order
+    public final void run(Path file) {
+        var raw = read(file);
+        var records = parse(raw);               // ← the hole
+        validate(records);
+        persist(records);
+        afterImport(records);        // ← optional hook, no-op default
+    }
+
+    protected abstract List<Record> parse(String raw);
+    protected void afterImport(List<Record> records) {}
+}
+
+class CsvImporter extends DataImporter {
+    protected List<Record> parse(String raw) { /* ... */ }
+}
+class JsonImporter extends DataImporter {
+    protected List<Record> parse(String raw) { /* ... */ }
+}`))+`<p>Note <code>final</code> on <code>run</code> — without it a subclass can override the
+       algorithm and the pattern's one guarantee is gone. It is the "Hollywood principle": the base
+       class calls you.</p>`+e("Command — a request with an identity, so it can be queued, logged and undone",a(`
+public interface Command {
+    void execute();
+    void undo();
+}
+
+class AddTextCommand implements Command {
+    private final Document doc; private final String text;
+    AddTextCommand(Document d, String t) { doc = d; text = t; }
+
+    public void execute() { doc.append(text); }
+    public void undo()    { doc.removeLast(text.length()); }
+}
+
+class CommandHistory {                       // undo falls out for free
+    private final Deque<Command> done = new ArrayDeque<>();
+    void run(Command c)  { c.execute(); done.push(c); }
+    void undo()          { if (!done.isEmpty()) done.pop().undo(); }
+}`))+`<p>Once a request is an object it can be put on a queue, retried, serialised to a log and
+       replayed, or scheduled — which is why <code>Runnable</code> is a Command, and why every task
+       executor takes one.</p>`+e("Chain of Responsibility — each link handles it or passes it on",a(`
+public abstract class Handler {
+    private Handler next;
+
+    public Handler linkTo(Handler n) { this.next = n; return n; }
+
+    public final void handle(Request r) {
+        if (canHandle(r)) { process(r); return; }
+        if (next != null) next.handle(r);
+        else throw new IllegalStateException("nobody handled " + r);
+    }
+
+    protected abstract boolean canHandle(Request r);
+    protected abstract void process(Request r);
+}`))+p(`Point at where these already are, because it proves you have read code and not only a book.
+         <strong>Template Method</strong>: <code>AbstractList</code>, <code>InputStream.read()</code>,
+         Spring's <code>JdbcTemplate</code> and <code>RestTemplate</code> — the name is the pattern.
+         <strong>Command</strong>: <code>Runnable</code>, <code>Callable</code>, every
+         <code>ExecutorService.submit()</code>.
+         <strong>Chain</strong>: <code>javax.servlet.Filter</code> and Spring Security's filter chain,
+         which is the clearest production example most Java developers touch weekly.`),followUps:[{q:"Template Method vs Strategy — both vary one step.",a:`Template Method varies it by <strong>inheritance</strong>, at compile time, and the subclass
+            can only fill the holes the base class left. Strategy varies it by <strong>composition</strong>,
+            at runtime, and the strategy is swappable per call. Prefer Strategy when you can — inheritance
+            binds the variation to the type, and you get one subclass per combination again.`},{q:"What is the risk with Chain of Responsibility?",a:`That nothing handles the request and it vanishes silently. Always define the terminal
+            behaviour explicitly — the <code>throw</code> above — rather than letting the chain fall off
+            the end. Debugging is the other cost: the stack is deep and the routing is implicit.`}]}],N=[...O,...L,...D,...U,...B],F=[{id:"dsa",name:"Data structures & algorithms",blurb:"Patterns rather than problems. The spine is Blind 75 plus the Microsoft-frequent set — around 125 problems seen three times each.",kind:"knowledge",order:1},{id:"java",name:"Java, JVM & concurrency",blurb:"Language semantics, collections, memory model, garbage collection and threading. The part interviewers probe hardest at 5+ years.",kind:"knowledge",order:2},{id:"spring",name:"Spring, data & services",blurb:"Spring core and Boot internals, JPA and SQL, REST design, microservices and messaging. Not tested at Microsoft; heavily tested nearly everywhere else.",kind:"knowledge",order:3},{id:"design",name:"Design — LLD & HLD",blurb:"SOLID and the patterns you must be able to write, then distributed systems: sharding, caching, queues, consistency and the capacity math.",kind:"knowledge",order:4},{id:"web",name:"Frontend & DevOps",blurb:"React, Angular, build tooling, CI/CD and containers — the 20% of a full-stack loop.",kind:"knowledge",order:5},{id:"behavioural",name:"Behavioural & leadership",blurb:"STAR stories that end in a number, scope and ambiguity questions, and the growth-mindset framing Microsoft listens for.",kind:"knowledge",order:6},{id:"deepdive",name:"Long-form answers & code",blurb:"The answers that need a page and a code listing rather than a paragraph.",kind:"knowledge",order:7},{id:"company",name:"Company-specific",blurb:"Per-company intelligence: the loop, what each round scores, reported questions, and the topics worth drilling for that employer alone.",kind:"company",order:8},{id:"misc",name:"Unfiled",blurb:"Anything not yet placed.",kind:"knowledge",order:9}],Q=Object.fromEntries(F.map(s=>[s.id,s])),W=[{id:"microsoft",name:"Microsoft",role:"SDE II / Senior SDE — IDC",status:"upcoming",interviewDate:"2027-01-01",planId:"microsoft-15w",blurb:"Problems are easier than Google’s; the expectations on how you get there are stricter. Communication and clean code are weighted above algorithmic exotica.",focus:["Arrays, strings, linked lists, trees","“Design this data structure”","LLD / machine coding (common in India loops)","System design at Senior level","Growth mindset — “learn-it-all, not know-it-all”"],rounds:[{name:"Recruiter screen",format:"30 min",scored:"Resume walkthrough, why Microsoft, level calibration, notice period"},{name:"Phone / online screen",format:"45–60 min, 1–2 problems",scored:"Clean code while talking"},{name:"Loop 1–2",format:"60 min each",scored:"DSA and problem solving"},{name:"Loop 3 — design",format:"60 min",scored:"LLD at SDE II, HLD at Senior"},{name:"AA round (“As Appropriate”)",format:"60 min, senior/principal or hiring manager",scored:"Judgment, scope, culture — plus one more technical question. Can override the rest of the loop in either direction."}],drill:["dsa","design","behavioural"],notes:["Dry-run your own solution on an example before they ask. This habit separates hires from no-hires here more than any other.","Restate the problem and confirm constraints before writing anything. State the brute force and its complexity out loud, then improve it.","India loops (Hyderabad / Bangalore / Noida) frequently add a 60–90 minute machine-coding round: real, compiling, testable OO code.","Spring Boot is not tested — the coding rounds are language-agnostic.","Level call is due ~28 Nov on mock evidence: Senior (L63) if HLD mocks land clean and you have 2+ cross-team impact stories, else SDE II (L62).","Do not self-downgrade in the recruiter screen. Let the recruiter calibrate."]},{id:"entain",name:"Entain",role:"SDE II — Entain India",status:"active",interviewDate:"2026-09-18",blurb:"Invite names Java Concepts, Coding Concepts and Problem Solving. A first-hand tip from a current employee points at event-driven, WebSocket, SQL, AWS, multithreading and casino architecture.",focus:["Event-driven architecture","WebSockets","SQL","AWS (they run EKS + Aurora PostgreSQL)","Multithreading","Casino / betting platform architecture","Java memory management"],rounds:[{name:"Technical round",format:"~60 min on Teams",scored:"Java concepts, coding concepts, problem solving"}],drill:["java","spring","design"],notes:["The named invitee is Entain India’s tech recruiter, so an unnamed engineer most likely runs the technical hour.","The employee tip outranks Glassdoor. Weight event-driven, WebSocket, SQL, AWS, multithreading and casino architecture above everything else."]},{id:"epam",name:"EPAM",role:"SDE3 Full Stack",status:"active",blurb:"Roughly 80% Java backend, 20% React and Angular. Two rounds: a technical round and a managerial round on how you tackle projects and teams.",focus:["Java backend depth","React + Angular","Project narrative and delivery","Leading teams without authority"],rounds:[{name:"Technical round",format:"~60 min",scored:"Java depth, design, live coding"},{name:"Managerial round",format:"~45 min",scored:"How you tackle projects and teams"}],drill:["java","web","behavioural"],notes:["The project narrative is the spine of both rounds — the same story, pitched two different ways.","At SDE3 the same question gets a different answer than at mid-level: scope, trade-offs and who you brought with you."]}],K=Object.fromEntries(W.map(s=>[s.id,s])),J=[...N],v=[...q,...J],u=[...A,...H],G=[...E],V=new Map(v.map(s=>[s.id,s])),Y=new Map(u.map(s=>[s.id,s])),f=u.reduce((s,n)=>(s[n.id]=[],s),{});var C;for(const s of v)(f[C=s.topicId]??(f[C]=[])).push(s);const X=G.reduce((s,n)=>{var t;return(s[t=n.topicId]??(s[t]=[])).push(n),s},{}),_=u.reduce((s,n)=>{var t;return(s[t=n.categoryId]??(s[t]=[])).push(n),s},{});v.reduce((s,n)=>(s[n.categoryId]=(s[n.categoryId]??0)+1,s),{});const Z=u.reduce((s,n)=>{var t;return n.companyId&&(s[t=n.companyId]??(s[t]=[])).push(n),s},{});export{_ as a,Q as b,F as c,K as d,W as e,Z as f,V as g,v as h,u as i,X as n,f as q,Y as t};
