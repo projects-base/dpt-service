@@ -18,7 +18,11 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
-    port: 3000,
+    // NOT 3000: that port is registered with Google OAuth for the dashboard,
+    // and this dev server would take it first and break sign-in. The study app
+    // is served from the jar at :8080/prep anyway — this is only for hot
+    // reload while editing the UI.
+    port: 5180,
     strictPort: true,
     // The dev server proxies to the locally running service, so the app sees
     // the same same-origin /api it gets in production.
