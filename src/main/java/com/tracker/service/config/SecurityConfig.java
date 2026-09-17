@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
@@ -33,7 +34,43 @@ public class SecurityConfig {
     @Value("${app.cors.allowed-origins}")
     private List<String> allowedOrigins;
 
+    /**
+     * Who may embed the study app in a frame.
+     *
+     * Defaults to the CORS origins, since the dashboard that frames /prep is
+     * the same site that calls the API.
+     */
+    @Value("${app.frame-ancestors:${app.cors.allowed-origins}}")
+    private List<String> frameAncestors;
+
+    /**
+     * The study app's own chain, ahead of the API's.
+     *
+     * It exists for one reason: the dashboard embeds /prep in a panel, and the
+     * application-wide default of X-Frame-Options: DENY forbids that. Framing
+     * is widened HERE and nowhere else, so every API route keeps DENY.
+     *
+     * X-Frame-Options cannot express a cross-origin allowlist — ALLOW-FROM was
+     * never widely implemented and is now dropped — so it is turned off for
+     * this path and replaced with a CSP frame-ancestors list, which can.
+     */
     @Bean
+    @Order(1)
+    public SecurityFilterChain prepAppFilterChain(HttpSecurity http) throws Exception {
+        http
+            .securityMatcher("/prep", "/prep/**")
+            .cors(Customizer.withDefaults())
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authz -> authz.anyRequest().permitAll())
+            .headers(headers -> headers
+                .frameOptions(frame -> frame.disable())
+                .contentSecurityPolicy(csp -> csp.policyDirectives(
+                    "frame-ancestors 'self' " + String.join(" ", frameAncestors))));
+        return http.build();
+    }
+
+    @Bean
+    @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .cors(Customizer.withDefaults())
@@ -47,12 +84,6 @@ public class SecurityConfig {
                 // The shared concept catalogue is readable by anyone; writing to it
                 // requires an administrator (enforced in the controller).
                 .requestMatchers(HttpMethod.GET, "/api/concepts/**").permitAll()
-                // The study app's own bundle. These are static assets, not data:
-                // the app signs in from the browser and every /api/prep call it
-                // makes is still authenticated. Serving the shell behind auth
-                // would be a chicken-and-egg problem, since the sign-in button
-                // lives inside it.
-                .requestMatchers(HttpMethod.GET, "/prep", "/prep/**").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
